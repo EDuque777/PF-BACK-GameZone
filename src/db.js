@@ -42,11 +42,11 @@ let capsEntries = entries.map((entry) => [entry[0][0].toUpperCase() + entry[0].s
 sequelize.models = Object.fromEntries(capsEntries);
 
 
-//const { Recipe, Diet } = sequelize.models;
+const { Games, Users } = sequelize.models;
 
 
-//Recipe.belongsToMany(Diet, {through: "recipes_diets"});
-//Diet.belongsToMany(Recipe, {through: "recipes_diets"});
+Games.belongsToMany(Users, {through: "UserGame"});
+Users.belongsToMany(Games, {through: "UserGame"});
 
 
 module.exports = {
