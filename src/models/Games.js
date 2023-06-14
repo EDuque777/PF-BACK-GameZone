@@ -47,7 +47,7 @@ module.exports = (sequelize) => {
 
     release_date: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
 
     coming_soon:{
