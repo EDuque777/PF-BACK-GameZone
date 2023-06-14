@@ -11,7 +11,7 @@ const saveGames = async (req, res) => {
       .filter(app => app.name.length > 0)
       .map(app => app.appid);
 
-    for (let i = 0; i <= 500; i++) {
+    for (let i = 0; i <= 20; i++) {
       const { data } = await axios.get(`${gameUrl}${idGames[i]}`);
       const info = data[idGames[i].toString()].data;
       if (info) {
@@ -24,7 +24,7 @@ const saveGames = async (req, res) => {
           detailed_description: info.detailed_description || 'No description available',
           about_the_game: info.about_the_game || 'No description available',
           release_date: info.release_date.date || 'Unknown',
-          metacritic: info.metacritic?.score || 'No score available',
+          metacritic: info.metacritic?.score || 0,
           coming_soon: info.release_date.coming_soon,
           price_overview: info.price_overview?.final_formatted,
           support_info: info.support_info || 'No support information available'

@@ -1,10 +1,12 @@
 const {Games} = require("../db")
 
-const allGames = async(req, res) => {
+const genresGames = async(req, res) => {
 
     try {
 
-        const dbGames = await Games.findAll({})
+        const dbGames = await Games.findAll({
+
+        })
 
         return res.status(200).json(dbGames);
         
@@ -18,5 +20,5 @@ const allGames = async(req, res) => {
 
 
 module.exports = {
-    allGames
+    genresGames
 }
