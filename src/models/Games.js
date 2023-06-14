@@ -69,6 +69,16 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: true
     },
+
+    header_image: {
+      type:DataTypes.STRING,
+      allowNull:false
+    },
+
+    capsule_image: {
+      type:DataTypes.STRING,
+      allowNull:false
+    },
     
   },
   {
