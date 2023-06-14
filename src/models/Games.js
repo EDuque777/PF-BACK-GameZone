@@ -47,7 +47,7 @@ module.exports = (sequelize) => {
 
     release_date: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
 
     coming_soon:{
@@ -68,6 +68,16 @@ module.exports = (sequelize) => {
     price_overview:{
       type: DataTypes.STRING,
       allowNull: true
+    },
+
+    header_image: {
+      type:DataTypes.STRING,
+      allowNull:false
+    },
+
+    capsule_image: {
+      type:DataTypes.STRING,
+      allowNull:false
     },
     
   },
