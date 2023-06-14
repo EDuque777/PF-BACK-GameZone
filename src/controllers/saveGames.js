@@ -30,6 +30,7 @@ const saveGames = async (req, res) => {
           header_image: info.header_image,
         };
         await Games.create(newGame);
+        
       } 
     }
     res.status(200).json('Juegos guardados');
