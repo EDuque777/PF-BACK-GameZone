@@ -9,7 +9,7 @@ module.exports = (sequelize) => {
             primaryKey: true,
         },
         platform: {
-            type: DataTypes.BOOLEAN,
+            type: DataTypes.STRING,
             allowNull: false,
         },
     },
