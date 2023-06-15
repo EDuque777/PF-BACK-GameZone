@@ -7,11 +7,11 @@ const gameUrl = 'https://store.steampowered.com/api/appdetails?appids=';
 const saveGames = async (req, res) => {
   try {
     const { data: appList } = await axios.get(URL);
-    const idGames = appList.applist.apps.filter(app => app.name.length > 0).map(app => app.appid);
+    const idGames = appList.applist.apps.filter(app => app.name.length > 0);
 
     for (let i = 0; i <= 10; i++) {
-      const { data } = await axios.get(`${gameUrl}${idGames[i]}`);
-      const info = data[idGames[i].toString()].data;
+      const { data } = await axios.get(`${gameUrl}${idGames[i].appid}`);
+      const info = data[idGames[i].appid.toString()].data;
       if (info) {
         const newGame = {
           name: info.name || 'Unknown',
