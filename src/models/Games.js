@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-  
+
   sequelize.define('Games', {
     id: {
       type: DataTypes.UUID,
@@ -50,7 +50,7 @@ module.exports = (sequelize) => {
       allowNull: true
     },
 
-    coming_soon:{
+    coming_soon: {
       type: DataTypes.BOOLEAN,
       allowNull: false
     },
@@ -64,24 +64,24 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
       allowNull: true
     },
-    
-    price_overview:{
+
+    price_overview: {
       type: DataTypes.STRING,
       allowNull: true
     },
 
     header_image: {
-      type:DataTypes.STRING,
-      allowNull:false
+      type: DataTypes.STRING,
+      allowNull: false
     },
 
     capsule_image: {
-      type:DataTypes.STRING,
-      allowNull:false
+      type: DataTypes.STRING,
+      allowNull: false
     },
-    
+
   },
-  {
-    timestamps: false
-  });
+    {
+      timestamps: false
+    });
 };
