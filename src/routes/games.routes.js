@@ -1,7 +1,6 @@
 const { Router } = require('express');
 const { getAllGames, getGame, createGames, deleteGame, updateGame, banGame } = require('../controllers/games.controllers');
 
-
 const router = Router();
 // Ruta para tarer todos los Games
 router.get('/games', getAllGames);
@@ -14,7 +13,7 @@ router.delete('/games/:id', deleteGame);
 // Ruta para actualizar datos un Game
 router.put('/games/:id', updateGame);
 // Ruta para banear un Game (borrado lógico)
-// router.put('/games/:gamesId/ban', banGame);
+router.put('/games/:gamesId/ban', banGame);
 
 
 

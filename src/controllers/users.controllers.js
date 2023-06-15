@@ -30,8 +30,8 @@ const createUser = async (req, res) => {
             where: {
                 name: name,
                 email: email,
-                password: password,
-                user_name: user_name,
+                password:password,
+                user_name:user_name,
                 country: country,
             }
         })

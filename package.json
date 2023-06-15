@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js",
+    "start": "nodemon src/index.js",
     "test": "mocha -w ./tests/**/*.spec.js",
     "test:01": "jest ../tests/models/recipes.test.js",
     "test:02": "jest ../tests/models/diets.test.js",
@@ -28,7 +27,7 @@
     "express-session": "^1.17.3",
     "jsonwebtoken": "^9.0.0",
     "morgan": "^1.10.0",
-    "pg": "^8.11.0",
+    "pg": "^8.5.1",
     "sequelize": "^6.3.5"
   },
   "devDependencies": {
