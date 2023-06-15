@@ -51,5 +51,6 @@ Users.belongsToMany(Games, {through: "UserGame"});
 
 module.exports = {
   ...sequelize.models, 
-  conn: sequelize,     
+  conn: sequelize,
+  Users
 };
