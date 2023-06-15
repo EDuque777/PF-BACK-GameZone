@@ -46,12 +46,28 @@ let capsEntries = entries.map((entry) => [entry[0][0].toUpperCase() + entry[0].s
 sequelize.models = Object.fromEntries(capsEntries);
 
 
-const { Games, Users } = sequelize.models;
+const { Games, Users, Categories, Languages, Developers, Genres, Platforms, Publishers} = sequelize.models;
 
+Games.belongsToMany(Users, {through: "UserGame", foreignKey: 'gamesId', otherKey: 'usersId'});
+Users.belongsToMany(Games, {through: "UserGame", foreignKey: 'usersId', otherKey: 'gamesId'});
 
-Games.belongsToMany(Users, {through: "UserGame"});
-Users.belongsToMany(Games, {through: "UserGame"});
+Games.belongsToMany(Categories, {through: "CategoryGame", foreignKey: 'gamesId', otherKey: 'categoriesId'});
+Categories.belongsToMany(Games, {through: "CategoryGame", foreignKey: 'categoriesId', otherKey: 'gamesId'});
 
+Games.belongsToMany(Languages, {through: "LanguageGame", foreignKey: 'gamesId', otherKey: 'languagesId'});
+Languages.belongsToMany(Games, {through: "LanguageGame", foreignKey: 'languagesId', otherKey: 'gamesId'});
+
+Games.belongsToMany(Platforms, {through: "PlatformGame", foreignKey: 'gamesId', otherKey: 'platformsId'})
+Platforms.belongsToMany(Games, {through: "PlatformGame", foreignKey: 'platformsId', otherKey: 'gamesId'})
+
+Games.belongsToMany(Genres, {through: "GenreGame", foreignKey: 'gamesId', otherKey: 'genreId'})
+Genres.belongsToMany(Games, {through: "GenreGame", foreignKey: 'genreId', otherKey: 'gamesId'})
+
+Games.belongsToMany(Developers, {through: "DeveloperGame", foreignKey: 'gamesId', otherKey: 'developersId'})
+Developers.belongsToMany(Games, {through: "DeveloperGame", foreignKey: 'developersId', otherKey: 'gamesId'})
+
+Games.belongsToMany(Publishers, {through: "PublisherGame", foreignKey: 'gamesId', otherKey: 'publishersId'})
+Publishers.belongsToMany(Games, {through: "PublisherGame", foreignKey: 'publishersId', otherKey: 'gamesId'})
 
 module.exports = {
   ...sequelize.models, 
