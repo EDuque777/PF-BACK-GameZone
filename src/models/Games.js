@@ -85,3 +85,8 @@ module.exports = (sequelize) => {
       timestamps: false
     });
 };
+
+//especials
+//coming_soon
+//top_selers
+//new_realeases
