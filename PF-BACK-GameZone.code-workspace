@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "PF-FRONT-GameZone",
+			"path": "../PF-FRONT-GameZone"
+		}
+	],
+	"settings": {}
+}

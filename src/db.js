@@ -1,7 +1,11 @@
 require('dotenv').config();
 const { Sequelize } = require('sequelize');
+
 // const RecipeModel = require('./models/Recipe');
 // const DietsModel = require('./models/Diets');
+
+
+
 const fs = require('fs');
 const path = require('path');
 const {
@@ -51,5 +55,5 @@ Users.belongsToMany(Games, {through: "UserGame"});
 
 module.exports = {
   ...sequelize.models, 
-  conn: sequelize,     
+  conn: sequelize,    
 };
