@@ -7,6 +7,7 @@ const {platformGames} = require("../controllers/platformGames")
 const {languageGames} = require("../controllers/languageGames")
 const {developersGames} = require("../controllers/developersGames")
 const {editorsGames} = require("../controllers/editorsGames")
+const getDevs = require('../controllers/developerRelation')
 const router = Router();
 
 router.get("/back/", (req, res) => {
@@ -39,6 +40,10 @@ router.get("/developersGames", (req, res) => {
 
 router.get("/editorsGames", (req, res) => {
     editorsGames(req, res);
+})
+
+router.get('/pub/', (req, res) => {
+    getDevs(req, res)
 })
 
 module.exports = router;

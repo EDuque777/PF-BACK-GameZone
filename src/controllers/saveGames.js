@@ -46,7 +46,7 @@
 // module.exports = saveGames;
 
 const axios = require('axios');
-const { Games, Platforms } = require('../db.js');
+const { Games, Developers, Publishers, Languages, Platforms, Genres, Categories } = require('../db.js');
 require('dotenv').config();
 const { URL } = process.env;
 const gameUrl = 'https://store.steampowered.com/api/appdetails?appids=';
@@ -54,11 +54,11 @@ const gameUrl = 'https://store.steampowered.com/api/appdetails?appids=';
 const saveGames = async (req, res) => {
   try {
     const { data: appList } = await axios.get(URL);
-    const idGames = appList.applist.apps.filter(app => app.name.length > 0).map(app => app.appid);
+    const idGames = appList.applist.apps.filter(app => app.name.length > 0);
 
-    for (let i = 0; i <= 20; i++) {
-      const { data } = await axios.get(`${gameUrl}${idGames[i]}`);
-      const info = data[idGames[i].toString()].data;
+    for (let i = 0; i <= 10; i++) {
+      const { data } = await axios.get(`${gameUrl}${idGames[i].appid}`);
+      const info = data[idGames[i].appid.toString()].data;
       if (info) {
         const newGame = {
           name: info.name || 'Unknown',
@@ -77,7 +77,7 @@ const saveGames = async (req, res) => {
           header_image: info.header_image,
         };
         const game = await Games.create(newGame);
-
+        
         const platformsSet = new Set();
 
         if (info && info.platforms) {
@@ -86,21 +86,79 @@ const saveGames = async (req, res) => {
           if (platforms.mac) platformsSet.add('mac');
           if (platforms.linux) platformsSet.add('linux');
         }
-
+        
         for (const platform of platformsSet) {
-          const relationPlatforms = await Platforms.findOrCreate({where:{ platform: platform }});
+          const relationPlatforms = await Platforms.findOrCreate({ where: { platform: platform } });
           await game.addPlatforms(relationPlatforms[0]);
         }
-
+        
+        const genresSet = new Set();
+        
+        if (info && info.genres) {
+          const genres = info.genres;
+          genres.map(genre => genresSet.add(genre.description));
+        }
+        
+        for (const genre of genresSet) {
+          const relationGenres = await Genres.findOrCreate({ where: { genre: genre } });
+          await game.addGenres(relationGenres[0]);
+        }
+        
+        const publishersSet = new Set();
+        
+        if (info && info.publishers) {
+          const publishers = info.publishers;
+          publishers.map(publisher => publishersSet.add(publisher));
+        }
+        
+        for (const publisher of publishersSet) {
+          const relationPublisher = await Publishers.findOrCreate({ where: { publisher: publisher } });
+          await game.addPublishers(relationPublisher[0]);
+        }
+        
+        const developersSet = new Set();
+        
+        if (info && info.developers) {
+          const developers = info.developers;
+          developers.map(developer => developersSet.add(developer));
+        }
+        
+        for (const developer of developersSet) {
+          const relationDeveloper = await Developers.findOrCreate({ where: { developer: developer } });
+          await game.addDevelopers(relationDeveloper[0]);
+        }
+        
+        const languagesSet = new Set();
+        
+        if (info && info.supported_languages) {
+          const languages = info.supported_languages.split(',');
+          languages.map(language => { if (/^[a-zA-Z\s-]+$/.test(language)) { languagesSet.add(language);
+            }
+          });
+        }
+        
+        for (const language of languagesSet) {
+          const relationLanguage = await Languages.findOrCreate({ where: { language: language } });
+          await game.addLanguages(relationLanguage[0]);
+        }
+        
+        const categoriesSet = new Set();
+        
+        if (info && info.categories) {
+          const categories = info.categories;
+          categories.map(category => categoriesSet.add(category.description));
+        }
+        
+        for (const category of categoriesSet) {
+          const relationCategory = await Categories.findOrCreate({ where: { category: category } });
+          await game.addCategories(relationCategory[0]);
+        }
+        
       }
     }
-
-    const dbGames = await Games.findAll({})
-
+    const dbGames = await Games.findAll();
     return res.status(200).json(dbGames);
-
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: error.message });
   }
 };
