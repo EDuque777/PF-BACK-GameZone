@@ -67,5 +67,6 @@ Publishers.belongsToMany(Games, {through: "PublisherGame", foreignKey: 'publishe
 
 module.exports = {
   ...sequelize.models, 
-  conn: sequelize,     
+  conn: sequelize,
+  Users
 };
