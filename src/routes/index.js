@@ -7,7 +7,10 @@ const {platformGames} = require("../controllers/platformGames")
 const {languageGames} = require("../controllers/languageGames")
 const {developersGames} = require("../controllers/developersGames")
 const {editorsGames} = require("../controllers/editorsGames")
-const getDevs = require('../controllers/developerRelation')
+const comingSoon = require('../controllers/comingSoon')
+const specials = require('../controllers/specials')
+const topSellers = require('../controllers/topSellers')
+const newReleases = require('../controllers/newReleases')
 const router = Router();
 
 router.get("/back/", (req, res) => {
@@ -42,8 +45,20 @@ router.get("/editorsGames", (req, res) => {
     editorsGames(req, res);
 })
 
-router.get('/pub/', (req, res) => {
-    getDevs(req, res)
+router.get('/coming', (req, res) => {
+    comingSoon(req, res)
+})
+
+router.get('/specials', (req,res) => {
+    specials(req, res)
+})
+
+router.get('/sellers', (req,res) => {
+    topSellers(req, res)
+})
+
+router.get('/releases', (req,res) => {
+    newReleases(req, res)
 })
 
 module.exports = router;
