@@ -80,6 +80,11 @@ module.exports = (sequelize) => {
       allowNull: false
     },
 
+    //  available: {
+    //   type: DataTypes.BOOLEAN,
+    //   allowNull: false
+    // }, *****************FALTA RELACION PARA available*************
+
   },
     {
       timestamps: false

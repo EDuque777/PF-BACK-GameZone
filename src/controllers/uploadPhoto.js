@@ -28,8 +28,8 @@ const uploadPhoto = async (req, res) => {
         folder: 'images',
         resource_type: 'auto'
     });
-
-    res.status(200).json(result);
+    
+    res.status(200).json(result.url);
   } catch (error) {
     console.log(error);
     res.status(400).send('Error al subir el archivo');
