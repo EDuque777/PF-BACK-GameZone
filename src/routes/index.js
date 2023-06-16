@@ -18,6 +18,7 @@ const { logIn } = require("../controllers/logIn.js")
 const { cerrarSesion } = require("../controllers/logout.js")
 const { profileUser } = require("../controllers/profile.js")
 const { validateToken } = require("../middlewares/validateToken.js")
+const { upload, uploadPhoto } = require('../controllers/uploadPhoto');
 //const {getRecipesId} = require("../controllers/getRecipesId")
 //const {getRecipesName} = require("../controllers/getRecipesName");
 //const {postRecipes} = require("../controllers/postRecipes")
@@ -85,6 +86,11 @@ router.get('/releases', (req,res) => {
 router.get("/mensaje", (req, res) => {
     res.send("hola mundo")
 })
+
+router.post('/upload', upload.single('file') ,(req, res) => {
+    uploadPhoto(req, res)
+})
+
 //
 //
 //router.get("/recipes/:idRecipe", (req, res) => {
@@ -114,5 +120,6 @@ router.post("/cerrarSesion", cerrarSesion)
 // Ruta del perfil del Usuario (esto es solo un ejemplo, se encarga Cristian)
 // esto sera como una ruta protegida
 router.get("/profile", validateToken, profileUser)
+
 
 module.exports = router;

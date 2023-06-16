@@ -41,7 +41,6 @@ let entries = Object.entries(sequelize.models);
 let capsEntries = entries.map((entry) => [entry[0][0].toUpperCase() + entry[0].slice(1), entry[1]]);
 sequelize.models = Object.fromEntries(capsEntries);
 
-
 const { Games, Users, Categories, Languages, Developers, Genres, Platforms, Publishers} = sequelize.models;
 
 Games.belongsToMany(Users, {through: "UserGame", foreignKey: 'gamesId', otherKey: 'usersId'});
@@ -68,5 +67,4 @@ Publishers.belongsToMany(Games, {through: "PublisherGame", foreignKey: 'publishe
 module.exports = {
   ...sequelize.models, 
   conn: sequelize,
-  Users
 };
