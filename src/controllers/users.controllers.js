@@ -1,4 +1,22 @@
 const { Users } = require('../db');
+const profileImage = 'https://res.cloudinary.com/dcebtiiih/image/upload/v1686950493/images/1686950487877.webp'
+const cloudinary = require('cloudinary').v2;
+const multer = require('multer');
+
+// Configurar multer
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/');
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname);
+  },
+});
+
+const upload = multer({
+  storage: storage,
+});
+
 
 // Ruta para traer todos los usuario creados (borrado lógico)
 const getAllUsers = async (req, res) => {
@@ -36,6 +54,7 @@ const createUser = async (req, res) => {
                 password:password,
                 user_name:user_name,
                 country: country,
+                profileImage: profileImage
                 role:role
             }
         })
@@ -61,6 +80,20 @@ const deleteUser = async (req, res) => {
 // Ruta para actuliazr un usuario por ID (borrado lógico)
 const updateUser = async (req, res) => {
     try {
+
+        if (!req.file) {
+            console.log(req.file);
+            return res.status(400).send('No se proporcionó ningún archivo');
+          }
+      
+          const file = req.file.path;
+      
+          const result = await cloudinary.uploader.upload(file, {
+              public_id: `${Date.now()}`,
+              folder: 'images',
+              resource_type: 'auto'
+          });
+
         const { id } = req.params;
         const { name, email, password, user_name, country } = req.body;
         const updatedUser = await Users.update(
@@ -69,7 +102,8 @@ const updateUser = async (req, res) => {
                 email: email,
                 password: password,
                 user_name: user_name,
-                country: country
+                country: country,
+                profileImage: result.url
             },
             { where: { id: id } }
         );
@@ -108,5 +142,6 @@ module.exports = {
     createUser,
     deleteUser,
     updateUser,
-    banUser
+    banUser,
+    upload
 };

@@ -9,9 +9,10 @@ const saveGames = async (req, res) => {
     const { data: appList } = await axios.get(URL);
     const idGames = appList.applist.apps.filter(app => app.name.length > 0);
 
-    for (let i = 0; i <= 20; i++) {
+    for (let i = 0; i <= 8; i++) {
       const { data } = await axios.get(`${gameUrl}${idGames[i].appid}`);
       const info = data[idGames[i].appid.toString()].data;
+      console.log(info);
       if (info) {
         const newGame = {
           name: info.name || 'Unknown',
@@ -29,6 +30,7 @@ const saveGames = async (req, res) => {
           capsule_image: info.capsule_image,
           header_image: info.header_image,
         };
+        console.log(info.about_the_game);
         const game = await Games.create(newGame);
         
         const platformsSet = new Set();
@@ -109,7 +111,8 @@ const saveGames = async (req, res) => {
         
       }
     }
-    return res.status(200).json("Games created successfully!!!");
+    const dbGames = await Games.findAll();
+    return res.status(200).json(dbGames);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
