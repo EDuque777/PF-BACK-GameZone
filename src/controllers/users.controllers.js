@@ -1,5 +1,6 @@
 const { Users } = require('../db');
 
+// Ruta para traer todos los usuario creados (borrado lógico)
 const getAllUsers = async (req, res) => {
     try {
         const users = await Users.findAll();
@@ -8,7 +9,7 @@ const getAllUsers = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 }
-
+// Ruta para buscar un usuario por ID creados (borrado lógico)
 const getUser = async (req, res) => {
     try {
         const { id } = req.params;
@@ -22,7 +23,7 @@ const getUser = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 }
-
+// Ruta para crear un usuario (borrado lógico)
 const createUser = async (req, res) => {
     try {
         const { name, email, password, user_name, country } = req.body
@@ -40,7 +41,7 @@ const createUser = async (req, res) => {
          res.status(500).json({ error: error.message });
     }
 }
-
+// Ruta para eliminar un usuario (borrado lógico)
 const deleteUser = async (req, res) => {
     try {
         const { id } = req.params;
@@ -54,7 +55,7 @@ const deleteUser = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 }
-
+// Ruta para actuliazr un usuario por ID (borrado lógico)
 const updateUser = async (req, res) => {
     try {
         const { id } = req.params;
