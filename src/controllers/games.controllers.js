@@ -11,17 +11,26 @@ const getAllGames = async (req, res) => {
 //Ruta para buscar un Game por ID creado (borrado lógico)
 const getGame = async (req, res) => {
     try {
-        const { id } = req.params;
-        const game = await Games.findByPk(id,);
-        if (game) {
-            res.status(200).json(game);
-        } else {
-            res.status(404).json({ message: 'Juego no encontrado' });
-        }
+      const { id } = req.params;
+      let game;
+      
+      if (!isNaN(id)) {
+        // Si el parámetro es un número, buscar por ID
+        game = await Games.findByPk(id);
+      } else {
+        // Si el parámetro no es un número, buscar por nombre
+        game = await Games.findOne({ where: { name: id } });
+      }
+      
+      if (game) {
+        res.status(200).json(game);
+      } else {
+        res.status(404).json({ message: 'Juego no encontrado' });
+      }
     } catch (error) {
-        res.status(500).json({ error: error.message });
+      res.status(500).json({ error: error.message });
     }
-}
+  };
 //Ruta para crear un Game (borrado lógico)
 const createGames = async (req, res) => {
     try {
@@ -54,17 +63,26 @@ const createGames = async (req, res) => {
 //Ruta para eliminar un Game (borrado lógico)
 const deleteGame = async (req, res) => {
     try {
-        const { id } = req.params;
-        const deletedGame = await Games.destroy({ where: { id: id } });
-        if (deletedGame) {
-            res.status(200).json({ message: 'Juego eliminado correctamente' });
-        } else {
-            res.status(404).json({ message: 'Juego no encontrado' });
-        }
+      const { id } = req.params;
+      let deletedGame;
+  
+      if (!isNaN(id)) {
+        // Si el parámetro es un número, eliminar por ID
+        deletedGame = await Games.destroy({ where: { id: id } });
+      } else {
+        // Si el parámetro no es un número, eliminar por nombre
+        deletedGame = await Games.destroy({ where: { name: id } });
+      }
+  
+      if (deletedGame > 0) {
+        res.status(200).json({ message: 'Juego eliminado correctamente' });
+      } else {
+        res.status(404).json({ message: 'Juego no encontrado' });
+      }
     } catch (error) {
-        res.status(500).json({ error: error.message });
+      res.status(500).json({ error: error.message });
     }
-}
+  }
 //Ruta para actuliazr un Game por ID (borrado lógico)
 const updateGame = async (req, res) => {
     try {

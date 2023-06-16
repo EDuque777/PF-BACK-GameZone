@@ -46,7 +46,7 @@ let capsEntries = entries.map((entry) => [entry[0][0].toUpperCase() + entry[0].s
 sequelize.models = Object.fromEntries(capsEntries);
 
 
-const { Games, Users, Categories, Languages, Developers, Genres, Platforms, Publishers} = sequelize.models;
+const { Games, Users, Categories, Languages, Developers, Genres, Platforms, Publishers, } = sequelize.models;
 
 Games.belongsToMany(Users, {through: "UserGame", foreignKey: 'gamesId', otherKey: 'usersId'});
 Users.belongsToMany(Games, {through: "UserGame", foreignKey: 'usersId', otherKey: 'gamesId'});

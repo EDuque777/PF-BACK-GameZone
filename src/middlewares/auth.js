@@ -1,12 +1,23 @@
-const { Users } = require('../db');
+const JWT = require('jsonwebtoken');
 // autentificacion para saber si el user es Admin o no (implementando proceso)
-const isAdmin = async (req, res) => {
-  try {
-    const users = await Users.findAll();
-    const isAdminUser = users.some(user => user.isAdmin === true);
-    res.status(200).json(isAdminUser);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+const isAdmin = (req, res, next) => {
+    if (req.user.role === 'admin') { // Corregido: req.users -> req.user
+        next(); // Permite el acceso a la ruta
+    } else {
+        res.status(403).json({ message: 'Acceso denegado' });
+    }
 };
-module.exports = {isAdmin}
+
+//Protected Routes token base
+const requireSignIn = async (req, res, next) => {
+    try {
+        const decode = JWT.verify(req.headers.authorization, process.env.JWT_SECRET);
+        req.user = decode;
+        next();
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+module.exports = { isAdmin, requireSignIn }

@@ -19,6 +19,7 @@ const { validateToken } = require("../middlewares/validateToken.js")
 //const {login} = require("../controllers/login")
 const { getAllGames, getGame, createGames, deleteGame, updateGame, banGame } = require('../controllers/games.controllers');
 const { getAllUsers, getUser, createUser, deleteUser, updateUser, banUser } = require('../controllers/users.controllers');
+const { isAdmin, requireSignIn } = require('../middlewares/auth');
 
 const router = Router();
 
@@ -94,7 +95,7 @@ router.get('/games', getAllGames);
 // Ruta para tarer un Game (borrado lógico)
 router.get('/games/:id', getGame);
 // Ruta para crear un Game (borrado lógico)
-router.post('/games', createGames);
+router.post('/games', requireSignIn, isAdmin, createGames);
 // Ruta para eliminar un Games por id (borrado lógico)
 router.delete('/games/:id', deleteGame);
 // Ruta para actualizar datos un Game (borrado lógico)
