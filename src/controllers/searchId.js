@@ -1,6 +1,4 @@
 const axios = require('axios');
-const {Games} = require("../db")
-const Sequelize = require('sequelize');
 
 const searchId = async(req, res) => {
 
