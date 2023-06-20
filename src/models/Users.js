@@ -12,24 +12,28 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        email:{
+        // role: {
+        //     type: DataTypes.ENUM("user", "admin"),
+        //     defaultValue: "user"
+        // },
+        email: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        password:{
+        password: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        user_name:{
+        user_name: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        country:{
+        country: {
             type: DataTypes.STRING,
             allowNull: false
         },
     },
-    {
-        timestamps: false
-    });
+        {
+            timestamps: false
+        });
 };
