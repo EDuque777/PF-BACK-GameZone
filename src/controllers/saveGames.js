@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { Games, Developers, Publishers, Languages, Platforms, Genres, Categories } = require('../db.js');
+const { Games, Developers, Publishers, Languages, Platforms, Genres, Categories, Videos, Images } = require('../db.js');
 require('dotenv').config();
 const { URL } = process.env;
 const gameUrl = 'https://store.steampowered.com/api/appdetails?appids=';
@@ -9,10 +9,9 @@ const saveGames = async (req, res) => {
     const { data: appList } = await axios.get(URL);
     const idGames = appList.applist.apps.filter(app => app.name.length > 0);
 
-    for (let i = 0; i <= 8; i++) {
+    for (let i = 0; i <= 6; i++) {
       const { data } = await axios.get(`${gameUrl}${idGames[i].appid}`);
       const info = data[idGames[i].appid.toString()].data;
-      console.log(info);
       if (info) {
         const newGame = {
           name: info.name || 'Unknown',
@@ -21,7 +20,7 @@ const saveGames = async (req, res) => {
           is_free: info.is_free,
           short_description: info.short_description || 'No description available',
           detailed_description: info.detailed_description || 'No description available',
-          about_the_game: info.about_the_game || 'No description available',
+          about_the_game: info.about_the_game? info.about_the_game :'No description available',
           release_date: info.release_date.date,
           metacritic: info.metacritic ? info.metacritic.score : 0,
           coming_soon: info.release_date.coming_soon,
@@ -30,7 +29,7 @@ const saveGames = async (req, res) => {
           capsule_image: info.capsule_image,
           header_image: info.header_image,
         };
-        console.log(info.about_the_game);
+
         const game = await Games.create(newGame);
         
         const platformsSet = new Set();
@@ -108,7 +107,31 @@ const saveGames = async (req, res) => {
           const relationCategory = await Categories.findOrCreate({ where: { category: category } });
           await game.addCategories(relationCategory[0]);
         }
+
+        const imagesSet = new Set()
+
+        if(info && info.screenshots) {
+          const images = info.screenshots;
+          images.map(images => imagesSet.add(images.path_full))
+        }
+
+        for(const image of imagesSet) {
+          const relationImage = await Images.findOrCreate({where: { image: image}})
+          await game.addImages(relationImage[0])
+        }
         
+        const videoSet = new Set()
+
+        if(info && info.movies) {
+          const videos = info.movies;
+          videos.map(video => imagesSet.add(video.mp4[480]))
+        }
+
+        for(const video of videoSet) {
+          const relationVideo = await Videos.findOrCreate({where: { video: video}})
+          await game.addVideos(relationVideo[0])
+        }
+
       }
     }
     const dbGames = await Games.findAll();

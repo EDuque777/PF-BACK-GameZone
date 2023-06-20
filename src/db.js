@@ -8,6 +8,7 @@ const { Sequelize } = require('sequelize');
 
 const fs = require('fs');
 const path = require('path');
+const gameScreenshots = require('./models/Images');
 const {
   DB_USER, 
   DB_PASSWORD, 
@@ -45,7 +46,7 @@ let entries = Object.entries(sequelize.models);
 let capsEntries = entries.map((entry) => [entry[0][0].toUpperCase() + entry[0].slice(1), entry[1]]);
 sequelize.models = Object.fromEntries(capsEntries);
 
-const { Games, Users, Categories, Languages, Developers, Genres, Platforms, Publishers} = sequelize.models;
+const { Games, Users, Categories, Languages, Developers, Genres, Platforms, Publishers, Videos, Images} = sequelize.models;
 
 Games.belongsToMany(Users, {through: "UserGame", foreignKey: 'gamesId', otherKey: 'usersId'});
 Users.belongsToMany(Games, {through: "UserGame", foreignKey: 'usersId', otherKey: 'gamesId'});
@@ -67,6 +68,12 @@ Developers.belongsToMany(Games, {through: "DeveloperGame", foreignKey: 'develope
 
 Games.belongsToMany(Publishers, {through: "PublisherGame", foreignKey: 'gamesId', otherKey: 'publishersId'})
 Publishers.belongsToMany(Games, {through: "PublisherGame", foreignKey: 'publishersId', otherKey: 'gamesId'})
+
+Games.belongsToMany(Images, {through: "ImagesGame", foreignKey: 'gamesId', otherKey: 'imagesId'})
+Images.belongsToMany(Games, {through: "ImagesGame", foreignKey: 'imagesId', otherKey: 'gamesId'})
+
+Games.belongsToMany(Videos, {through: "Videos_Game", foreignKey: 'gamesId', otherKey: 'videosId'})
+Videos.belongsToMany(Games, {through: "Videos_Game", foreignKey: 'videosId', otherKey: 'gamesId'})
 
 module.exports = {
   ...sequelize.models, 
