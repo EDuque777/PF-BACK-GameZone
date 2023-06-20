@@ -9,8 +9,8 @@ const saveGames = async (req, res) => {
     const { data: appList } = await axios.get(URL);
     const idGames = appList.applist.apps.filter(app => app.name.length > 0);
 
-    for (let i = 0; i <= 500; i++) {
-      await new Promise(resolve => setTimeout(resolve, 5000));
+    for (let i = 0; i <= 10; i++) {
+      //await new Promise(resolve => setTimeout(resolve, 5000));
       const { data } = await axios.get(`${gameUrl}${idGames[i].appid}`);
       const info = data[idGames[i].appid.toString()].data;
       if (info) {
@@ -135,8 +135,8 @@ const saveGames = async (req, res) => {
 
       }
     }
-    const dbGames = await Games.findAll();
-    return res.status(200).json(dbGames);
+    
+    return res.status(200).json("Games saved successfully!!!");
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

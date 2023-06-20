@@ -52,7 +52,7 @@
 
 
 
-const { Games, Developers, Publishers, Languages, Platforms, Genres, Categories } = require("../db");
+const { Games, Developers, Publishers, Languages, Platforms, Genres, Categories, Images, Videos } = require("../db");
 const axios = require('axios');
 require('dotenv').config();
 const { URL } = process.env;
@@ -71,6 +71,8 @@ const allGames = async (req, res) => {
         { model: Platforms, attributes: ['platform'], through: { attributes: [] } },
         { model: Genres, attributes: ['genre'], through: { attributes: [] } },
         { model: Categories, attributes: ['category'], through: { attributes: [] } },
+        { model: Images, attributes: ['image'], through: { attributes: [] } },
+        { model: Videos, attributes: ['video'], through: { attributes: [] } },
       ]
     });
 
