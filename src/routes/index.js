@@ -13,6 +13,7 @@ const { logIn } = require("../controllers/logIn.js")
 const { cerrarSesion } = require("../controllers/logout.js")
 const { profileUser } = require("../controllers/profile.js")
 const { validateToken } = require("../middlewares/validateToken.js")
+const { upload, uploadPhoto } = require('../controllers/uploadPhoto');
 //const {getRecipesId} = require("../controllers/getRecipesId")
 //const {getRecipesName} = require("../controllers/getRecipesName");
 //const {postRecipes} = require("../controllers/postRecipes")
@@ -62,6 +63,11 @@ router.get('/releases', (req,res) => {
 router.get("/mensaje", (req, res) => {
     res.send("hola mundo")
 })
+
+router.post('/upload', upload.single('file') ,(req, res) => {
+    uploadPhoto(req, res)
+})
+
 //
 //
 //router.get("/recipes/:idRecipe", (req, res) => {
@@ -118,9 +124,10 @@ router.post('/users', createUser);
 // Ruta para eliminar un usuario por id (borrado lógico)
 router.delete('/users/:id', deleteUser);
 // Ruta para actualizar datos un usuario (borrado lógico)
-router.put('/users/:id', updateUser);
+router.put('/users/:id', upload.single('file'), updateUser);
 // Ruta para banear un usuario (borrado lógico)
 router.put('/users/:userId/ban', banUser);
+
 
 
 
