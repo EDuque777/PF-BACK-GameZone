@@ -3,6 +3,7 @@ const  saveGames = require("../controllers/saveGames")
 const {nameGames} = require("../controllers/nameGames")
 const {allGames} = require("../controllers/allGames")
 const {searchId} = require("../controllers/searchId")
+const {platformGames} = require("../controllers/platformGames")
 const comingSoon = require('../controllers/comingSoon')
 const specials = require('../controllers/specials')
 const topSellers = require('../controllers/topSellers')
@@ -36,6 +37,10 @@ router.get("/nameGames", (req, res) => {
 
 router.get("/search/:id", (req, res) => {
     searchId(req, res);
+})
+
+router.get("/platformGames", (req, res) => {
+    platformGames(req, res);
 })
 
 router.get('/coming', (req, res) => {

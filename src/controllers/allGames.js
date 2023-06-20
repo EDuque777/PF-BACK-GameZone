@@ -92,7 +92,7 @@ const allGames = async (req, res) => {
         game.price_overview = 0;
       } else {
         const price = game.price_overview.replace(/[^0-9]/g, '');
-        game.price_overview = parseFloat(price) * 0.00024;
+        game.price_overview = (parseInt(price) * 0.00024).toFixed(2);
     }
       return game;
     });
@@ -108,3 +108,26 @@ module.exports = {
 };
 
 
+
+
+// const { Games, Developers, Publishers, Languages, Platforms, Genres, Categories } = require("../db");
+// const axios = require('axios');
+// require('dotenv').config();
+// const { URL } = process.env;
+// const gameUrl = 'https://store.steampowered.com/api/appdetails?appids=';
+
+// const allGames = async (req, res) => {
+//   try {
+    
+//     const {data} = await axios.get(URL)
+
+//     return res.status(200).json(data); 
+    
+//   } catch (error) {
+//     res.status(404).send(error.message);
+//   }
+// };
+
+// module.exports = {
+//   allGames
+// };
