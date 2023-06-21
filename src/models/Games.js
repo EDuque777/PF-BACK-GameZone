@@ -65,6 +65,11 @@ module.exports = (sequelize) => {
       allowNull: true
     },
 
+    currency: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+
     price_overview: {
       type: DataTypes.STRING,
       allowNull: true
