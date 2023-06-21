@@ -197,13 +197,34 @@ const allGames = async (req, res) => {
         game.price_overview = 0;
       } 
       else {
-        const currencyPrice = game.price_overview.replace(/[^0-9]/g, '');
-        console.log(currencyPrice)
+        // const currencyPrice = game.price_overview.replace(/[^0-9]/g, '');//.replace(/[^0-9]/g, '');
+        // console.log(currencyPrice)
+        // const currency01 = game.currency;
+        // const convertedPrice = (currencyPrice / conversionRates[currency01]).toFixed(2);
+        // console.log(convertedPrice)
+        // game.price_overview = convertedPrice;
         const currency01 = game.currency;
-        const convertedPrice = (currencyPrice / conversionRates[currency01]).toFixed(2);
-        console.log(convertedPrice)
-        game.price_overview = convertedPrice;
+        console.log(currency01)
+        if(currency01 !== "USD"){
+        const currency01 = game.currency;
+        if(currency01 === "COP"){
+          const currencyPrice = game.price_overview.replace(/[^0-9]/g, '');
+          console.log(currencyPrice)
+          const convertedPrice = (currencyPrice / conversionRates[currency01]).toFixed(2);
+          console.log(convertedPrice)
+          game.price_overview = convertedPrice;
+        }
+        else{
+          const currencyPrice = game.price_overview.replace(/\.(?=.*\.)/g, '');
+          //(/\.(?=.*\.)/g, '')
+          //(/(\d)(?=(\d{3})+(?!\d))/g, '1.')
+          console.log(currencyPrice)
+          const convertedPrice = (currencyPrice / conversionRates[currency01]).toFixed(2);
+          console.log(convertedPrice)
+          game.price_overview = convertedPrice;
+        }
       }
+    }
       return game;
     });
 
