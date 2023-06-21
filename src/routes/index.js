@@ -116,6 +116,7 @@ router.delete('/users/:id', deleteUser);
 router.put('/users/:id', updateUser);
 // Ruta para banear un usuario (borrado lógico)
 router.put('/users/:userId/ban', banUser);
+//
 
 
 

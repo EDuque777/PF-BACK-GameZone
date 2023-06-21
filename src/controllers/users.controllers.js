@@ -26,14 +26,13 @@ const getUser = async (req, res) => {
 // Ruta para crear un usuario (borrado lógico)
 const createUser = async (req, res) => {
     try {
-        const { name, email, password, user_name, country } = req.body
+        const { name, email, password, role } = req.body
         result = await Users.findOrCreate({
             where: {
                 name: name,
                 email: email,
                 password:password,
-                user_name:user_name,
-                country: country,
+                role : role,
             }
         })
         res.status(200).json("Usuario creado");
