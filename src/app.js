@@ -1,4 +1,6 @@
 const express = require('express');
+const cloudinary = require('cloudinary').v2
+const fileUpload = require('express-fileupload') 
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
@@ -43,6 +45,19 @@ server.use((err, req, res, next) => {
   const message = err.message || err;
   console.error(err);
   res.status(status).send(message);
+});
+
+//middleware
+server.use(express.json())
+server.use(fileUpload({
+  useTempFiles: true,
+  limits: {fileSize: 50 * 2024 *1024}
+}))
+
+cloudinary.config({ 
+cloud_name: 'dcebtiiih', 
+api_key: '324181695454949', 
+api_secret: '6ll-08fqsoIWQKiunEvRmU9aGl8' 
 });
 
 module.exports = server;
