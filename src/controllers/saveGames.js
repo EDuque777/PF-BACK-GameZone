@@ -10,7 +10,7 @@ const saveGames = async (req, res) => {
     const idGames = appList.applist.apps.filter(app => app.name.length > 0);
 
     for (let i = 0; i <= 20; i++) {
-      //await new Promise(resolve => setTimeout(resolve, 5000));
+      //await new Promise(resolve => setTimeout(resolve, 500));
       const { data } = await axios.get(`${gameUrl}${idGames[i].appid}`);
       const info = data[idGames[i].appid.toString()].data;
       if (info) {
