@@ -1,4 +1,5 @@
-const { Games } = require('../db');
+const { Games, Developers } = require('../db');
+const imageDefault = "http://res.cloudinary.com/dcebtiiih/image/upload/v1687189921/images/1687189899005.png"
 // Ruta para traer todos los Games creados (borrado lógico)
 const getAllGames = async (req, res) => {
     try {
@@ -24,11 +25,12 @@ const getGame = async (req, res) => {
 }
 //Ruta para crear un Game (borrado lógico)
 const createGames = async (req, res) => {
+    
     try {
         const { name, type, required_age, is_free, detailed_description, abouth_the_game, short_description, release_date, coming_soon,
-            support_info, metacritic, price_overview, header_image, capsule_image, available } = req.body
-        result = await Games.findOrCreate({
-            where: {
+            support_info, metacritic, price_overview, header_image, capsule_image, available, developers } = req.body
+        
+        const result = await Games.create({
                 name: name,
                 type: type,
                 required_age: required_age,
@@ -44,8 +46,18 @@ const createGames = async (req, res) => {
                 header_image: header_image,
                 capsule_image: capsule_image,
                 // available:available   *******
-            }
         })
+
+        const developersSet = new Set();
+        if (developers.length > 0) {
+          developers.map(developer => developersSet.add(developer));
+        }
+        
+        for (const developer of developersSet) {
+          const relationDeveloper = await Developers.findOrCreate({ where: { developer: developer } });
+          await result.addDevelopers(relationDeveloper[0]);
+        }
+
         res.status(200).json("Juego creado");
     } catch (error) {
         res.status(500).json({ error: error.message });

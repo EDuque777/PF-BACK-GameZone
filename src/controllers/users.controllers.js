@@ -1,4 +1,22 @@
 const { Users } = require('../db');
+const profileImage = 'https://res.cloudinary.com/dcebtiiih/image/upload/v1686950493/images/1686950487877.webp'
+const cloudinary = require('cloudinary').v2;
+const multer = require('multer');
+
+// Configuracion de multer para la subida de imgenes
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/');
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname);
+  },
+});
+
+const upload = multer({
+  storage: storage,
+});
+
 
 // Ruta para traer todos los usuario creados (borrado lógico)
 const getAllUsers = async (req, res) => {
@@ -26,6 +44,7 @@ const getUser = async (req, res) => {
 // Ruta para crear un usuario (borrado lógico)
 const createUser = async (req, res) => {
     try {
+
         const { name, email, password, user_name, country } = req.body
         result = await Users.findOrCreate({
             where: {
@@ -34,6 +53,7 @@ const createUser = async (req, res) => {
                 password:password,
                 user_name:user_name,
                 country: country,
+                profileImage: profileImage
             }
         })
         res.status(200).json("Usuario creado");
@@ -58,27 +78,44 @@ const deleteUser = async (req, res) => {
 // Ruta para actuliazr un usuario por ID (borrado lógico)
 const updateUser = async (req, res) => {
     try {
-        const { id } = req.params;
-        const { name, email, password, user_name, country } = req.body;
-        const updatedUser = await Users.update(
-            {
-                name: name,
-                email: email,
-                password: password,
-                user_name: user_name,
-                country: country
-            },
-            { where: { id: id } }
-        );
-        if (updatedUser[0] === 1) {
-            res.status(200).json({ message: 'Usuario actualizado correctamente' });
-        } else {
-            res.status(404).json({ message: 'Usuario no encontrado' });
-        }
+      const { id } = req.params;
+      const { name, email, password, user_name, country } = req.body;
+  
+      let imageUrl;
+  
+      if (req.file) {
+        const file = req.file.path;
+  
+        const result = await cloudinary.uploader.upload(file, {
+          public_id: `${Date.now()}`,
+          folder: 'images',
+          resource_type: 'auto'
+        });
+  
+        imageUrl = result.url;
+      }
+  
+      const [updatedCount] = await Users.update(
+        {
+          name,
+          email,
+          password,
+          user_name,
+          country,
+          profileImage: imageUrl
+        },
+        { where: { id } }
+      );
+  
+      if (updatedCount === 1) {
+        res.status(200).json({ message: 'Usuario actualizado correctamente' });
+      } else {
+        res.status(404).json({ message: 'Usuario no encontrado' });
+      }
     } catch (error) {
-        res.status(500).json({ message: 'Usuario no existe' });
+      res.status(500).json({ message: 'Error al actualizar el usuario' });
     }
-}
+  }
 
 // Ruta para banear un usuario (borrado lógico)
 const banUser = async (req, res) => {
@@ -105,5 +142,6 @@ module.exports = {
     createUser,
     deleteUser,
     updateUser,
-    banUser
+    banUser,
+    upload
 };
