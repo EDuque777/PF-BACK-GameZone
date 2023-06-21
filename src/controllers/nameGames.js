@@ -4,11 +4,18 @@ const axios = require('axios');
 require('dotenv').config();
 const { URL } = process.env;
 
-const nameGames = async(req, res) => {
+const nameGames = async (req, res) => {
+const { name } = req.query;
+const justname = name;
+console.log(name)
+console.log(justname)
 
-    try {
+try {
+    const { data } = await axios.get(URL);
+    const alldata = data.applist.apps;
 
-        const {name} = req.query;
+    // Filtrar las coincidencias en base al nombre
+    const filteredData = alldata.filter(game => game.name.toLowerCase().includes(justname.toLowerCase()));
 
         const { data: appList } = await axios.get(URL);
         const idGames = appList.applist.apps.filter(app => app.name.length > 0);
@@ -29,15 +36,17 @@ const nameGames = async(req, res) => {
                 { model: Images, attributes: ['image'], through: { attributes: [] } },
                 { model: Videos, attributes: ['video'], through: { attributes: [] } },
             ]
-        })
+        }
+    );
 
         const gamesWithId = dbGames.map(dbGame => {
             const matchingGame = idGames.find(app => app.name === dbGame.name);
         
               if (matchingGame) {
                 return {
+                  id: matchingGame.appid,
                   ...dbGame.toJSON(),
-                  id: matchingGame.appid
+                  
                 };
               }
               return dbGame.toJSON();
@@ -48,25 +57,43 @@ const nameGames = async(req, res) => {
                 game.price_overview = 0;
               } 
               else {
-                const currencyPrice = game.price_overview.replace(/[^0-9]/g, '');
-                console.log(currencyPrice)
+                // const currencyPrice = game.price_overview.replace(/[^0-9]/g, '');//.replace(/[^0-9]/g, '');
+                // console.log(currencyPrice)
+                // const currency01 = game.currency;
+                // const convertedPrice = (currencyPrice / conversionRates[currency01]).toFixed(2);
+                // console.log(convertedPrice)
+                // game.price_overview = convertedPrice;
                 const currency01 = game.currency;
-                const convertedPrice = (currencyPrice / conversionRates[currency01]).toFixed(2);
-                console.log(convertedPrice)
-                game.price_overview = convertedPrice;
+                console.log(currency01)
+                if(currency01 !== "USD"){
+                const currency01 = game.currency;
+                if(currency01 === "COP"){
+                  const currencyPrice = game.price_overview.replace(/[^0-9]/g, '');
+                  // console.log(currencyPrice)
+                  const convertedPrice = (currencyPrice / conversionRates[currency01]).toFixed(2);
+                  // console.log(convertedPrice)
+                  game.price_overview = convertedPrice;
+                }
+                else{
+                  const currencyPrice = game.price_overview.replace(/(\d)(?=(\d{3})+(?!\d))/g, '1.').replace(/.\d+$/, '').replace(/[^0-9]/g, '');
+                  //(/\.(?=.*\.)/g, '')
+                  //(/(\d)(?=(\d{3})+(?!\d))/g, '1.')
+                  console.log(currencyPrice)
+                  const convertedPrice = (currencyPrice / conversionRates[currency01]).toFixed(2);
+                  console.log(convertedPrice)
+                  game.price_overview = convertedPrice;
+                }
               }
+            }
               return game;
             });
         
             return res.status(200).json(gamesWithModifiedPrice);
 
     } catch (error) {
-
-        res.status(404).send(error.message);
-    
+    res.status(404).send(error.message);
     }
-
-}
+};
 
 module.exports = {
     nameGames

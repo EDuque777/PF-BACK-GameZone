@@ -209,13 +209,13 @@ const allGames = async (req, res) => {
         const currency01 = game.currency;
         if(currency01 === "COP"){
           const currencyPrice = game.price_overview.replace(/[^0-9]/g, '');
-          console.log(currencyPrice)
+          // console.log(currencyPrice)
           const convertedPrice = (currencyPrice / conversionRates[currency01]).toFixed(2);
-          console.log(convertedPrice)
+          // console.log(convertedPrice)
           game.price_overview = convertedPrice;
         }
         else{
-          const currencyPrice = game.price_overview.replace(/\.(?=.*\.)/g, '');
+          const currencyPrice = game.price_overview.replace(/(\d)(?=(\d{3})+(?!\d))/g, '1.').replace(/.\d+$/, '').replace(/[^0-9]/g, '');
           //(/\.(?=.*\.)/g, '')
           //(/(\d)(?=(\d{3})+(?!\d))/g, '1.')
           console.log(currencyPrice)
