@@ -1,14 +1,29 @@
-const JWT = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
+require("dotenv").config()
+const { JWT_SECRET } = process.env
 // autentificacion para saber si el user es Admin o no (implementando proceso)
 const isAdmin = (req, res, next) => {
-    if (req.user.role === 'admin') { // Corregido: req.users -> req.user
-        next(); // Permite el acceso a la ruta
+    const token = req.cookies.token
+    console.log(token);
+    if (!token) {
+        res.status(401).json({ message: "autorizacion denegada, no existe un token valido" })
     } else {
-        res.status(403).json({ message: 'Acceso denegado' });
-    }
-};
+        jwt.verify(token, JWT_SECRET, (err, user) => {
+            if (err) {
+                res.status(403).json({ message: "token invalido" })
+            } else {
+                if (user.role === 'admin') {
 
-//Protected Routes token base
+                    next();
+                }else {
+                    res.status(403).json({ message: 'Acceso denegado' });
+                }
+            }
+        })
+    }
+}
+
+// Protected Routes token base
 const requireSignIn = async (req, res, next) => {
     try {
         const decode = JWT.verify(req.headers.authorization, process.env.JWT_SECRET);
