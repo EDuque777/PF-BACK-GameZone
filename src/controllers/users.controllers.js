@@ -2,6 +2,8 @@ const { Users } = require('../db');
 const profileImage = 'https://res.cloudinary.com/dcebtiiih/image/upload/v1686950493/images/1686950487877.webp'
 const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
+const bcrypt = require("bcryptjs")
+const { createAccessToken } = require("../middlewares/jwt.js")
 
 // Configuracion de multer para la subida de imgenes
 const storage = multer.diskStorage({
@@ -42,22 +44,64 @@ const getUser = async (req, res) => {
     }
 }
 // Ruta para crear un usuario (borrado lógico)
+//const createUser = async (req, res) => {
+//    try {
+//        const { name, email, password, role } = req.body
+//        result = await Users.findOrCreate({
+//            where: {
+//                name: name,
+//                email: email,
+//                password:password,
+//                role : role,
+//            }
+//        })
+//        res.status(200).json("Usuario creado");
+//    } catch (error) {
+//         res.status(500).json({ error: error.message });
+//    }
+//}
+
 const createUser = async (req, res) => {
     try {
-        const { name, email, password, role } = req.body
-        result = await Users.findOrCreate({
-            where: {
-                name: name,
-                email: email,
-                password:password,
-                role : role,
-            }
+      const { name, email, password, role } = req.body;
+      if (!email || password.length < 8 || !password || !name) {
+  
+        res.status(400).json({ message: "datos invalidos" })
+      } else {
+        // Verificacion del correo 
+        const existingUser = await Users.findOne({
+          where: {
+            email: email
+          }
+        });
+  
+        if (existingUser) {
+          return res.status(400).json({ error: "El correo electrónico ya está registrado" });
+        }
+        const salt = await bcrypt.genSalt(12)
+  
+        const cripto = await bcrypt.hash(password, salt)
+        const createUserAdmin = await Users.create({
+  
+          name: name,
+          email: email,
+          password: cripto,
+          profileImage: profileImage,
+          role: role
+        });
+        const token = await createAccessToken({id : createUserAdmin.id, role : createUserAdmin.role})
+        res.cookie("token", token)
+        res.status(200).json({
+          message: "Usuario Creado,",
+          createUserAdmin
         })
-        res.status(200).json("Usuario creado");
+      }
+  
     } catch (error) {
-         res.status(500).json({ error: error.message });
-    }
-}
+      res.status(500).json({ error: error.message });
+    }
+ };
+
 // Ruta para eliminar un usuario (borrado lógico)
 const deleteUser = async (req, res) => {
     try {

@@ -19,6 +19,7 @@ const { upload, uploadPhoto } = require('../controllers/uploadPhoto');
 //const {postRecipes} = require("../controllers/postRecipes")
 //const {getDiets} = require("../controllers/getDiets")
 //const {login} = require("../controllers/login")
+const { isAdmin } = require("../middlewares/auth.js")
 const { getAllGames, getGame, createGames, deleteGame, updateGame, banGame } = require('../controllers/games.controllers');
 const { getAllUsers, getUser, createUser, deleteUser, updateUser, banUser } = require('../controllers/users.controllers');
 
@@ -105,7 +106,8 @@ router.get('/games', getAllGames);
 // Ruta para tarer un Game (borrado lógico)
 router.get('/games/:id', getGame);
 // Ruta para crear un Game (borrado lógico)
-router.post('/games', createGames);
+//router.post('/games', createGames);
+router.post('/games',isAdmin, createGames);
 // Ruta para eliminar un Games por id (borrado lógico)
 router.delete('/games/:id', deleteGame);
 // Ruta para actualizar datos un Game (borrado lógico)
