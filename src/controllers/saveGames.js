@@ -9,8 +9,8 @@ const saveGames = async (req, res) => {
     const { data: appList } = await axios.get(URL);
     const idGames = appList.applist.apps.filter(app => app.name.length > 0);
 
-    for (let i = 0; i <= 20; i++) {
-      //await new Promise(resolve => setTimeout(resolve, 5000));
+    for (let i = 0; i <= 100; i++) {
+      //await new Promise(resolve => setTimeout(resolve, 1500));
       const { data } = await axios.get(`${gameUrl}${idGames[i].appid}`);
       const info = data[idGames[i].appid.toString()].data;
       if (info) {
@@ -68,8 +68,10 @@ const saveGames = async (req, res) => {
         }
         
         for (const publisher of publishersSet) {
+          if(publisher !== ""){
           const relationPublisher = await Publishers.findOrCreate({ where: { publisher: publisher } });
           await game.addPublishers(relationPublisher[0]);
+          }
         }
         
         const developersSet = new Set();
@@ -87,7 +89,7 @@ const saveGames = async (req, res) => {
         const languagesSet = new Set();
         
         if (info && info.supported_languages) {
-          const languages = info.supported_languages.split(',');
+          const languages = info.supported_languages.split(', ');
           languages.map(language => { if (/^[a-zA-Z\s-]+$/.test(language)) { languagesSet.add(language);
             }
           });

@@ -179,8 +179,8 @@ const allGames = async (req, res) => {
       ]
     });
 
-    const gamesWithId = dbGames.map(dbGame => {
-      const matchingGame = idGames.find(app => app.name === dbGame.name);
+      const gamesWithId = dbGames.map(dbGame => {
+      const matchingGame = idGames.find(app => app.name == dbGame.name);
 
       if (matchingGame) {
         return {
@@ -188,39 +188,28 @@ const allGames = async (req, res) => {
           ...dbGame.toJSON(),
         };
       }
-
-      return dbGame.toJSON();
+      return null;
+      //return dbGame.toJSON();
     });
 
-    const gamesWithModifiedPrice = gamesWithId.map(game => {
+    const filteredGames = gamesWithId.filter(game => game !== null);
+
+    const gamesWithModifiedPrice = filteredGames.map(game => {
       if (game.price_overview === "Free") {
         game.price_overview = 0;
       } 
       else {
-        // const currencyPrice = game.price_overview.replace(/[^0-9]/g, '');//.replace(/[^0-9]/g, '');
-        // console.log(currencyPrice)
-        // const currency01 = game.currency;
-        // const convertedPrice = (currencyPrice / conversionRates[currency01]).toFixed(2);
-        // console.log(convertedPrice)
-        // game.price_overview = convertedPrice;
         const currency01 = game.currency;
-        console.log(currency01)
         if(currency01 !== "USD"){
         const currency01 = game.currency;
         if(currency01 === "COP"){
           const currencyPrice = game.price_overview.replace(/[^0-9]/g, '');
-          // console.log(currencyPrice)
           const convertedPrice = (currencyPrice / conversionRates[currency01]).toFixed(2);
-          // console.log(convertedPrice)
           game.price_overview = convertedPrice;
         }
         else{
           const currencyPrice = game.price_overview.replace(/(\d)(?=(\d{3})+(?!\d))/g, '1.').replace(/.\d+$/, '').replace(/[^0-9]/g, '');
-          //(/\.(?=.*\.)/g, '')
-          //(/(\d)(?=(\d{3})+(?!\d))/g, '1.')
-          console.log(currencyPrice)
           const convertedPrice = (currencyPrice / conversionRates[currency01]).toFixed(2);
-          console.log(convertedPrice)
           game.price_overview = convertedPrice;
         }
       }
