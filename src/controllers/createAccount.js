@@ -2,6 +2,7 @@ const { Users } = require("../db")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const { createAccessToken } = require("../middlewares/jwt.js")
+const profileImage = 'https://res.cloudinary.com/dcebtiiih/image/upload/v1686950493/images/1686950487877.webp'
 const express = require('express');
 const router = express.Router();
 
@@ -12,11 +13,15 @@ const { JWT_SECRET, URL_INICIO } = process.env
 const createAccount = async (req, res) => {
     try {
 
-        const { email, password, name, user_name, country} = req.body
+        const { email, password, name, user_name, country, confirmPassword} = req.body
 
-        if (!email || password.length < 8 || !password || !name || !country || !user_name ) {
+        if (!email || password.length < 8 || !password || !name || !country || !user_name || user_name.length < 3 || user_name.length > 16) {
             
             res.status(400).json({message : "datos invalidos"})
+
+        }else if (password !== confirmPassword) {
+
+            res.status(400).json({ message: "Las contraseñas no coinciden" });
 
         }else{
 
@@ -41,7 +46,9 @@ const createAccount = async (req, res) => {
                     email,
                     password : cripto,
                     user_name,
-                    country
+                    country,
+                    profileImage,
+                    confirmPassword
                 })
     
                 // esto se convierte en un middlewares
