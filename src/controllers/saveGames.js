@@ -9,7 +9,8 @@ const saveGames = async (req, res) => {
     const { data: appList } = await axios.get(URL);
     const idGames = appList.applist.apps.filter(app => app.name.length > 0);
 
-    for (let i = 0; i <= 6; i++) {
+    for (let i = 0; i <= 20; i++) {
+      //await new Promise(resolve => setTimeout(resolve, 5000));
       const { data } = await axios.get(`${gameUrl}${idGames[i].appid}`);
       const info = data[idGames[i].appid.toString()].data;
       if (info) {
@@ -24,7 +25,8 @@ const saveGames = async (req, res) => {
           release_date: info.release_date.date,
           metacritic: info.metacritic ? info.metacritic.score : 0,
           coming_soon: info.release_date.coming_soon,
-          price_overview: info.price_overview ? info.price_overview.final_formatted : 'Free',
+          currency: info.price_overview ? info.price_overview.currency : 'the currency does not exist',
+          price_overview: info.price_overview ? info.price_overview.final_formatted : "Free",
           support_info: info.support_info || 'No support information available',
           capsule_image: info.capsule_image,
           header_image: info.header_image,
