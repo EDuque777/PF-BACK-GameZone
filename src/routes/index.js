@@ -66,7 +66,7 @@ router.post('/upload', upload.single('file') ,(req, res) => {
 
 //Paypal
 //Crea una 'orden de pago'
-router.get('/createOrder', (req, res) => {
+router.post('/createOrder', (req, res) => {
     createOrder(req, res)
 })
 //El usuario acepta realizar el pago
