@@ -100,6 +100,9 @@ router.post("/cerrarSesion", cerrarSesion)
 router.get("/profile", validateToken, profileUser);
 
 // RUTAS USUARIOS admin*
+
+
+
 // Ruta para tarer todos los usuario admin (borrado lógico)
 router.get('/users', getAllUsers);
 // Ruta para tarer un usuario por ID admin (borrado lógico)
