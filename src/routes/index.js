@@ -4,6 +4,11 @@ const {nameGames} = require("../controllers/nameGames")
 const {allGames} = require("../controllers/allGames")
 const {searchId} = require("../controllers/searchId")
 const {platformGames} = require("../controllers/platformGames")
+const {languagesGames} = require("../controllers/languagueGames")
+const {categoriesGames} = require("../controllers/categoriesGames")
+const {developersGames} = require("../controllers/developersGames")
+const {publishersGames} = require("../controllers/publishersGames")
+const {genresGames} = require("../controllers/genresGames")
 const comingSoon = require('../controllers/comingSoon')
 const specials = require('../controllers/specials')
 const topSellers = require('../controllers/topSellers')
@@ -43,6 +48,26 @@ router.get("/search/:id", (req, res) => {
 
 router.get("/platformGames", (req, res) => {
     platformGames(req, res);
+})
+
+router.get("/languagesGames", (req, res) => {
+    languagesGames(req, res);
+})
+
+router.get("/categoriesGames", (req, res) => {
+    categoriesGames(req, res);
+})
+
+router.get("/developersGames", (req, res) => {
+    developersGames(req, res);
+})
+
+router.get("/publishersGames", (req, res) => {
+    publishersGames(req, res);
+})
+
+router.get("/genresGames", (req, res) => {
+    genresGames(req, res);
 })
 
 router.get('/coming', (req, res) => {

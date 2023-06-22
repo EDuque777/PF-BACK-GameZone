@@ -4,9 +4,7 @@ const {Platforms} = require("../db");
 const platformGames = async (req, res) => {
   try {
 
-    const dbGames = await Platforms.findAll({
-        attributes: { exclude: ['id'] }
-    });
+    const dbGames = await Platforms.findAll({});
 
     return res.status(200).json(dbGames);
 
