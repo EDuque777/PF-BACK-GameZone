@@ -21,7 +21,7 @@ const saveGames = async (req, res) => {
           is_free: info.is_free,
           short_description: info.short_description || 'No description available',
           detailed_description: info.detailed_description || 'No description available',
-          abouth_the_game: info.about_the_game || 'No description available',
+          abouth_the_game: info.about_the_game? info.about_the_game :'No description available',
           release_date: info.release_date.date,
           metacritic: info.metacritic ? info.metacritic.score : 0,
           coming_soon: info.release_date.coming_soon,
@@ -138,7 +138,6 @@ const saveGames = async (req, res) => {
 
       }
     }
-    
     return res.status(200).json("Games saved successfully!!!");
   } catch (error) {
     res.status(500).json({ error: error.message });

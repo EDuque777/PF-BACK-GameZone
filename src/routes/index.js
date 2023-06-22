@@ -17,16 +17,11 @@ const { createAccount } = require("../controllers/createAccount.js")
 const { logIn } = require("../controllers/logIn.js")
 const { cerrarSesion } = require("../controllers/logout.js")
 const { profileUser } = require("../controllers/profile.js")
-const { validateToken } = require("../middlewares/validateToken.js")
+const { validateToken, isAdmin } = require("../middlewares/validateToken.js")
 const { upload, uploadPhoto } = require('../controllers/uploadPhoto');
-//const {getRecipesId} = require("../controllers/getRecipesId")
-//const {getRecipesName} = require("../controllers/getRecipesName");
-//const {postRecipes} = require("../controllers/postRecipes")
-//const {getDiets} = require("../controllers/getDiets")
-//const {login} = require("../controllers/login")
-const { isAdmin } = require("../middlewares/auth.js")
 const { getAllGames, getGame, createGames, deleteGame, updateGame, banGame } = require('../controllers/games.controllers');
 const { getAllUsers, getUser, createUser, deleteUser, updateUser, banUser } = require('../controllers/users.controllers');
+const {cancelOrder, createOrder, captureOrder} = require('../controllers/paypalControllers')
 
 
 const router = Router();
@@ -93,6 +88,20 @@ router.get("/mensaje", (req, res) => {
 
 router.post('/upload', upload.single('file') ,(req, res) => {
     uploadPhoto(req, res)
+})
+
+//Paypal
+//Crea una 'orden de pago'
+router.post('/createOrder', (req, res) => {
+    createOrder(req, res)
+})
+//El usuario acepta realizar el pago
+router.get('/captureOrder', (req, res) => {
+    captureOrder(req, res)
+})
+//Cancelar orden
+router.get('/cancelOrder', (req, res) => {
+    cancelOrder(req, res)
 })
 
 //
