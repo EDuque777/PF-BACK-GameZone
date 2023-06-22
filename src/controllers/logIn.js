@@ -7,9 +7,9 @@ const { createAccessToken } = require("../middlewares/jwt.js")
 const logIn = async (req, res) => {
     try {
 
-        const {email, password} = req.body
+        const {emailLogin, passwordLogin} = req.body
 
-        if (!email || !password) {
+        if (!emailLogin || !passwordLogin) {
 
             return res.status(400).json("validacion fallida!!")
             
@@ -17,7 +17,7 @@ const logIn = async (req, res) => {
 
             const existingUser = await Users.findOne({
                 where : {
-                    email : email
+                    email : emailLogin
                 }
             })
             
@@ -26,7 +26,7 @@ const logIn = async (req, res) => {
                 res.status(400).json({message : "El usuario no existe!!!"})
             }else{
 
-                const comparePassword = bcrypt.compare(password, existingUser.password)
+                const comparePassword = await bcrypt.compare(passwordLogin, existingUser.password)
 
                 if (!comparePassword) {
                     
@@ -46,7 +46,8 @@ const logIn = async (req, res) => {
                         name : existingUser.name,
                         email : existingUser.email,
                         user_name : existingUser.user_name,
-                        country : existingUser.country
+                        country : existingUser.country,
+                        profileImage : existingUser.profileImage
                     })
                 }
             }
