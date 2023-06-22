@@ -136,8 +136,7 @@ const saveGames = async (req, res) => {
 
       }
     }
-    const dbGames = await Games.findAll();
-    return res.status(200).json(dbGames);
+    return res.status(200).json("Games saved successfully!!!");
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
