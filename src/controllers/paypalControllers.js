@@ -5,13 +5,14 @@ const URL = `${PAYPAL_URL}/v2/checkout/orders`
 
 const createOrder = async (req, res) => {
     try {
+        const {totalPrice} = req.body
         const order = {
             intent: "CAPTURE",
             purchase_units: [
                 {   
                     amount: {
                         currency_code: "USD",
-                        value: totalPrice
+                        value: totalPrice,
                     },
                 },
             ],
@@ -40,7 +41,7 @@ const createOrder = async (req, res) => {
         });
         res.send(response.data);
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         res.status(400).send('Error');
     }
 };
