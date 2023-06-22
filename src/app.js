@@ -6,10 +6,17 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const routes = require('./routes/index.js');
 const session = require("express-session")
+const cors = require("cors")
 
+require('dotenv').config();
+const { CLOUD_NAME, CLOUD_API_KEY, CLOUD_API_SECRET } = process.env;
 require('./db.js');
 
+
 const server = express();
+server.use(cors())
+server.use(express.json())
+server.use(morgan('dev'));
 
 server.name = 'API';
 
@@ -23,7 +30,6 @@ server.use(session(
     saveUninitialized:false, 
   }
 ))
-server.use(morgan('dev'));
 server.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*'); 
   res.header('Access-Control-Allow-Credentials', 'true');
@@ -52,9 +58,9 @@ server.use(fileUpload({
 }))
 
 cloudinary.config({ 
-cloud_name: 'dcebtiiih', 
-api_key: '324181695454949', 
-api_secret: '6ll-08fqsoIWQKiunEvRmU9aGl8' 
+cloud_name: CLOUD_NAME, 
+api_key: CLOUD_API_KEY, 
+api_secret: CLOUD_API_SECRET
 });
 
 module.exports = server;
