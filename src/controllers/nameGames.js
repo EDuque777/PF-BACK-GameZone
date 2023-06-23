@@ -1,4 +1,4 @@
-const {Games, Developers, Publishers, Languages, Platforms, Genres, Categories, Images, Videos} = require("../db")
+/* const {Games, Developers, Publishers, Languages, Platforms, Genres, Categories, Images, Videos} = require("../db")
 const Sequelize = require('sequelize');
 const axios = require('axios');
 require('dotenv').config();
@@ -77,55 +77,47 @@ try {
 
 module.exports = {
     nameGames
-}
+} */
 
 
 
-// const axios = require('axios');
-// require('dotenv').config();
-// const { URL } = process.env;
-
-// const nameGames = async (req, res) => {
-// const { name } = req.query;
-// const justname = name;
-// console.log(name);
-// console.log(justname);
-
-// try {
-//     const { data } = await axios.get(URL);
-//     const alldata = data.applist.apps;
-
-//     // Filtrar las coincidencias en base al nombre
-//     const filteredData = alldata.filter(game =>
-//         game.name.toLowerCase().includes(justname.toLowerCase())
-//     );
-
-//     // Obtener los datos adicionales de cada juego
-//     const gamesWithData = await Promise.all(
-//         filteredData.slice(0, 14).map(async game => {
-//         const { appid } = game;
-//         const response = await axios.get(
-//             https://store.steampowered.com/api/appdetails?appids=${appid}
-//         );
-//         const gameData = response.data[appid].data;
-
-//         // Verificar si gameData no está vacío
-//         if (gameData) {
-//             console.log(gameData);
-//             return { ...game, id: appid, ...gameData };
-//         }
-//         })
-//     );
-
-//     // Filtrar los objetos vacíos
-//     const filteredGames = gamesWithData.filter(game => game);
-
-//     return res.status(200).json(filteredGames);
-//     } catch (error) {
-//     res.status(404).send(error.message);
-//     }
-// };
-
-// module.exports = {
-//     nameGames
-// };
+ const axios = require('axios');
+ require('dotenv').config();
+ const { URL } = process.env;
+ const nameGames = async (req, res) => {
+ const { name } = req.query;
+ const justname = name;
+ console.log(name);
+ console.log(justname);
+ try {
+     const { data } = await axios.get(URL);
+     const alldata = data.applist.apps;
+     // Filtrar las coincidencias en base al nombre
+     const filteredData = alldata.filter(game =>
+         game.name.toLowerCase().includes(justname.toLowerCase())
+     );
+     // Obtener los datos adicionales de cada juego
+     const gamesWithData = await Promise.all(
+         filteredData.slice(0, 14).map(async game => {
+         const { appid } = game;
+         const response = await axios.get(
+             https://store.steampowered.com/api/appdetails?appids=${appid}
+         );
+         const gameData = response.data[appid].data;
+         // Verificar si gameData no está vacío
+         if (gameData) {
+             console.log(gameData);
+             return { ...game, id: appid, ...gameData };
+         }
+         })
+     );
+     // Filtrar los objetos vacíos
+     const filteredGames = gamesWithData.filter(game => game);
+     return res.status(200).json(filteredGames);
+     } catch (error) {
+     res.status(404).send(error.message);
+     }
+ };
+ module.exports = {
+     nameGames
+ };
