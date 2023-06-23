@@ -75,9 +75,6 @@ Images.belongsToMany(Games, {through: "ImagesGame", foreignKey: 'imagesId', othe
 Games.belongsToMany(Videos, {through: "Videos_Game", foreignKey: 'gamesId', otherKey: 'videosId'})
 Videos.belongsToMany(Games, {through: "Videos_Game", foreignKey: 'videosId', otherKey: 'gamesId'})
 
-Users.belongsToMany(Reviews, {through: "UsersReviews", foreignKey: 'usersId', otherKey: 'reviewsId'})
-Reviews.belongsToMany(Users, {through: "UsersReviews", foreignKey: 'reviewsId', otherKey: 'usersId'})
-
 module.exports = {
   ...sequelize.models, 
   conn: sequelize,
