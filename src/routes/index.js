@@ -7,7 +7,6 @@ const {platformGames} = require("../controllers/platformGames")
 const {languagesGames} = require("../controllers/languagueGames")
 const {categoriesGames} = require("../controllers/categoriesGames")
 const {developersGames} = require("../controllers/developersGames")
-const {publishersGames} = require("../controllers/publishersGames")
 const {genresGames} = require("../controllers/genresGames")
 const comingSoon = require('../controllers/comingSoon')
 const specials = require('../controllers/specials')
@@ -19,17 +18,10 @@ const { cerrarSesion } = require("../controllers/logout.js")
 const { profileUser } = require("../controllers/profile.js")
 const { validateToken } = require("../middlewares/validateToken.js")
 const { upload, uploadPhoto } = require('../controllers/uploadPhoto');
-//const {getRecipesId} = require("../controllers/getRecipesId")
-//const {getRecipesName} = require("../controllers/getRecipesName");
-//const {postRecipes} = require("../controllers/postRecipes")
-//const {getDiets} = require("../controllers/getDiets")
-//const {login} = require("../controllers/login")
+const { isAdmin } = require("../middlewares/auth.js")
 const { getAllGames, getGame, createGames, deleteGame, updateGame, banGame } = require('../controllers/games.controllers');
 const { getAllUsers, getUser, createUser, deleteUser, updateUser, banUser } = require('../controllers/users.controllers');
-const { isAdmin, requireSignIn } = require('../middlewares/auth');
-
-
-
+const {cancelOrder, createOrder, captureOrder} = require('../controllers/paypalControllers')
 const router = Router();
 
 router.get("/back/", (req, res) => {
@@ -64,10 +56,6 @@ router.get("/developersGames", (req, res) => {
     developersGames(req, res);
 })
 
-router.get("/publishersGames", (req, res) => {
-    publishersGames(req, res);
-})
-
 router.get("/genresGames", (req, res) => {
     genresGames(req, res);
 })
@@ -94,6 +82,20 @@ router.get("/mensaje", (req, res) => {
 
 router.post('/upload', upload.single('file') ,(req, res) => {
     uploadPhoto(req, res)
+})
+
+//Paypal
+//Crea una 'orden de pago'
+router.post('/createOrder', (req, res) => {
+    createOrder(req, res)
+})
+//El usuario acepta realizar el pago
+router.get('/captureOrder', (req, res) => {
+    captureOrder(req, res)
+})
+//Cancelar orden
+router.get('/cancelOrder', (req, res) => {
+    cancelOrder(req, res)
 })
 
 //
@@ -147,6 +149,39 @@ router.put('/users/:userId/ban', banUser);
 router.get('/games', getAllGames);
 // Ruta para tarer un Game admin (borrado lógico)
 router.get('/games/:id', getGame);
+// Ruta para crear un Game (borrado lógico)
+//router.post('/games', createGames);
+router.post('/games',isAdmin, createGames);
+// Ruta para eliminar un Games por id (borrado lógico)
+router.delete('/games/:id', deleteGame);
+// Ruta para actualizar datos un Game admin (borrado lógico)
+router.put('/games/:id', updateGame);
+// Ruta para banear un Game admin (borrado lógico)
+router.put('/games/:gamesId/ban', banGame);
+
+
+
+// Ruta para tarer todos los usuario (borrado lógico)
+router.get('/users', getAllUsers);
+// Ruta para tarer un usuario por ID admin (borrado lógico)
+router.get('/users/id/:id', getUser);
+// Ruta para tarer un usuario por name admin (borrado lógico)
+router.get('/users/name', getUser);
+// Ruta para crear un usuario (borrado lógico)
+router.post('/users', createUser);
+// Ruta para eliminar un usuario por id o name admin (borrado lógico)
+router.delete('/users/:id', deleteUser);
+// Ruta para actualizar datos de un usuario por ID admin (borrado lógico)
+router.put('/users/:id', upload.single('file'), updateUser);
+// Ruta para banear un usuario por ID admin (borrado lógico)
+router.put('/users/:userId/ban', banUser);
+//
+
+// RUTA GAMES admin*
+// Ruta para tarer todos los Games admin(borrado lógico)
+router.get('/games', getAllGames);
+// Ruta para tarer un Game admin (borrado lógico)
+router.get('/games/:id', getGame);
 // Ruta para crear un Game admin (borrado lógico)
 router.post('/games',isAdmin,   createGames); //requireSignIn, ,
 // Ruta para eliminar un Games por id admin(borrado lógico)
@@ -155,7 +190,5 @@ router.delete('/games/:id', deleteGame);
 router.put('/games/:id', updateGame);
 // Ruta para banear un Game admin (borrado lógico)
 router.put('/games/:gamesId/ban', banGame);
-
-
 
 module.exports = router;
