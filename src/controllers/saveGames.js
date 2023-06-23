@@ -14,6 +14,12 @@ const saveGames = async (req, res) => {
       const { data } = await axios.get(`${gameUrl}${idGames[i].appid}`);
       const info = data[idGames[i].appid.toString()].data;
       if (info) {
+        const existingGame = await Games.findOne({ where: { name: info.name } });
+        if (existingGame) {
+          //console.log(`El juego "${info.name}" ya existe en la base de datos. No se creará nuevamente.`);
+          continue;
+        }
+
         const newGame = {
           name: info.name || 'Unknown',
           type: info.type || 'Unknown',
@@ -128,7 +134,7 @@ const saveGames = async (req, res) => {
 
         if(info && info.movies) {
           const videos = info.movies;
-          videos.map(video => imagesSet.add(video.mp4[480]))
+          videos.map(video => videoSet.add(video.mp4["480"]))
         }
 
         for(const video of videoSet) {
