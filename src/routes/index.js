@@ -22,7 +22,7 @@ const { isAdmin } = require("../middlewares/auth.js")
 const { getAllGames, getGame, createGames, deleteGame, updateGame, banGame } = require('../controllers/games.controllers');
 const { getAllUsers, getUser, createUser, deleteUser, updateUser, banUser } = require('../controllers/users.controllers');
 const {cancelOrder, createOrder, captureOrder} = require('../controllers/paypalControllers')
-const { createReview } = require("../controllers/reviews");
+const { createReview, updateReview } = require("../controllers/reviews");
 
 
 const router = Router();
@@ -184,5 +184,6 @@ router.put('/games/:gamesId/ban', banGame);
 // Ruta para crear una review
 router.post('/user/review', createReview );
 
+router.put('/user/review', updateReview );
 
 module.exports = router;

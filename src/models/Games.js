@@ -100,4 +100,3 @@ module.exports = (sequelize) => {
 //coming_soon
 //top_selers
 //new_realeases
-

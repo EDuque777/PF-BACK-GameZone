@@ -110,7 +110,6 @@ const allGames = async (req, res) => {
     });
 
     const gameNames = dbGames.map(dbGame => dbGame.name);
-    console.log(gameNames);
 
       const gamesWithId = dbGames.map(dbGame => {
       const matchingGame = idGames.find(app => app.name == dbGame.name);
