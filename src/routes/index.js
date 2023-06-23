@@ -7,7 +7,6 @@ const {platformGames} = require("../controllers/platformGames")
 const {languagesGames} = require("../controllers/languagueGames")
 const {categoriesGames} = require("../controllers/categoriesGames")
 const {developersGames} = require("../controllers/developersGames")
-const {publishersGames} = require("../controllers/publishersGames")
 const {genresGames} = require("../controllers/genresGames")
 const comingSoon = require('../controllers/comingSoon')
 const specials = require('../controllers/specials')
@@ -57,10 +56,6 @@ router.get("/categoriesGames", (req, res) => {
 
 router.get("/developersGames", (req, res) => {
     developersGames(req, res);
-})
-
-router.get("/publishersGames", (req, res) => {
-    publishersGames(req, res);
 })
 
 router.get("/genresGames", (req, res) => {
