@@ -101,7 +101,7 @@ module.exports = {
          filteredData.slice(0, 14).map(async game => {
          const { appid } = game;
          const response = await axios.get(
-             https://store.steampowered.com/api/appdetails?appids=${appid}
+             `https://store.steampowered.com/api/appdetails?appids=${appid}`
          );
          const gameData = response.data[appid].data;
          // Verificar si gameData no está vacío
