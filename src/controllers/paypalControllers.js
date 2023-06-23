@@ -1,11 +1,13 @@
 require('dotenv').config();
 const { PAYPAL_ID, PAYPAL_SECRET_KEY, PAYPAL_URL } = process.env;
+const { Users, Games } = require('../db');
 const axios = require('axios');
 const URL = `${PAYPAL_URL}/v2/checkout/orders`
 
 const createOrder = async (req, res) => {
     try {
-        const {totalPrice} = req.body
+        const idUser = req.params
+        const {totalPrice, gameCart} = req.body
         const order = {
             intent: "CAPTURE",
             purchase_units: [
@@ -39,6 +41,10 @@ const createOrder = async (req, res) => {
                 Authorization: `Bearer ${access_token}`
             }
         });
+
+        //const user = await Users.findByPk(idUser)
+        //const relation = gameCart.map(game => user.addGames(Games.findByPk(game.id)))
+
         res.send(response.data);
     } catch (error) {
         //console.log(error);
@@ -59,7 +65,7 @@ const captureOrder = async (req, res) => {
         })
         console.log(response.data);
         
-        res.redirect('http://localhost:3000/cart')
+        res.redirect('http://localhost:3000/dashboard')
     } catch (error) {
         res.status(400).send('Error')
     }

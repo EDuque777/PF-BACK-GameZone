@@ -4,8 +4,6 @@ const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
 const bcrypt = require("bcryptjs")
 const { createAccessToken } = require("../middlewares/jwt.js")
-const bcrypt = require('bcryptjs');
-const { createAccessToken } = require('../middlewares/jwt');
 
 
 // Configuracion de multer para la subida de imgenes
@@ -107,8 +105,8 @@ const createUser = async (req, res) => {
       }
   
     } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
+      res.status(500).json({ error: error.message });
+    }
  };
 
 // Ruta para eliminar un usuario (borrado lógico)
