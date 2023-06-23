@@ -84,6 +84,7 @@
 const axios = require('axios');
 require('dotenv').config();
 const { URL } = process.env;
+<<<<<<< HEAD
 
 const nameGames = async (req, res) => {
 const { name } = req.query;
@@ -93,11 +94,24 @@ try {
     const { data } = await axios.get(URL);
     const alldata = data.applist.apps;
 
+=======
+const nameGames = async (req, res) => {
+const { name } = req.query;
+const justname = name;
+console.log(name);
+console.log(justname);
+try {
+    const { data } = await axios.get(URL);
+    const alldata = data.applist.apps;
+>>>>>>> 42cde6daa156802aa168268d4fe8adf3342d678b
     // Filtrar las coincidencias en base al nombre
     const filteredData = alldata.filter(game =>
         game.name.toLowerCase().includes(justname.toLowerCase())
     );
+<<<<<<< HEAD
 
+=======
+>>>>>>> 42cde6daa156802aa168268d4fe8adf3342d678b
     // Obtener los datos adicionales de cada juego
     const gamesWithData = await Promise.all(
         filteredData.slice(0, 14).map(async game => {
@@ -106,23 +120,37 @@ try {
             `https://store.steampowered.com/api/appdetails?appids=${appid}`
         );
         const gameData = response.data[appid].data;
+<<<<<<< HEAD
 
         // Verificar si gameData no está vacío
         if (gameData) {
+=======
+        // Verificar si gameData no está vacío
+        if (gameData) {
+            console.log(gameData);
+>>>>>>> 42cde6daa156802aa168268d4fe8adf3342d678b
             return { ...game, id: appid, ...gameData };
         }
         })
     );
+<<<<<<< HEAD
 
     // Filtrar los objetos vacíos
     const filteredGames = gamesWithData.filter(game => game);
 
+=======
+    // Filtrar los objetos vacíos
+    const filteredGames = gamesWithData.filter(game => game);
+>>>>>>> 42cde6daa156802aa168268d4fe8adf3342d678b
     return res.status(200).json(filteredGames);
     } catch (error) {
     res.status(404).send(error.message);
     }
 };
+<<<<<<< HEAD
 
+=======
+>>>>>>> 42cde6daa156802aa168268d4fe8adf3342d678b
 module.exports = {
     nameGames
 };

@@ -4,6 +4,9 @@ const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
 const bcrypt = require("bcryptjs")
 const { createAccessToken } = require("../middlewares/jwt.js")
+const bcrypt = require('bcryptjs');
+const { createAccessToken } = require('../middlewares/jwt');
+
 
 // Configuracion de multer para la subida de imgenes
 const storage = multer.diskStorage({

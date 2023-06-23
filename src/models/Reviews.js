@@ -9,10 +9,19 @@ module.exports = (sequelize) => {
             allowNull: false,
             primaryKey: true,
         },
-        review: {
+        reviews: {
             type: DataTypes.TEXT,
             allowNull: false,
         },
+        rating:{
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        date: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        
     },
     {
         timestamps: false
