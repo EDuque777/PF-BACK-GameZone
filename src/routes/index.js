@@ -182,4 +182,6 @@ router.put('/games/:id', updateGame);
 // Ruta para banear un Game admin (borrado lógico)
 router.put('/games/:gamesId/ban', banGame);
 
+
+
 module.exports = router;
