@@ -134,7 +134,7 @@ const saveGames = async (req, res) => {
 
         if(info && info.movies) {
           const videos = info.movies;
-          videos.map(video => imagesSet.add(video.mp4[480]))
+          videos.map(video => videoSet.add(video.mp4["480"]))
         }
 
         for(const video of videoSet) {

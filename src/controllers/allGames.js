@@ -76,6 +76,7 @@
 
 
 
+
 const { Games, Developers, Languages, Platforms, Genres, Categories, Images, Videos } = require("../db");
 const axios = require('axios');
 require('dotenv').config();
@@ -84,15 +85,14 @@ const { URL } = process.env;
 const allGames = async (req, res) => {
   try {
 
-    const page = parseInt(req.query.page) || 1; // Número de página, valor predeterminado: 1
-    const limit = parseInt(req.query.limit) || 10; // Cantidad de juegos por página, valor predeterminado: 10
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 15;
 
     const { data: appList } = await axios.get(URL);
     const idGames = appList.applist.apps.filter(app => app.name.length > 0);
-    const transformPrice = "https://v6.exchangerate-api.com/v6/17a32b390da20882cc9f437f/latest/USD";
+    const transformPrice = "https://v6.exchangerate-api.com/v6/d4fa1b58267ebef392077018/latest/USD";
     const { data: priceData } = await axios.get(transformPrice);
     const conversionRates = priceData.conversion_rates;
-
 
     const dbGames = await Games.findAll({
       attributes: { exclude: ['id'] },
@@ -105,14 +105,13 @@ const allGames = async (req, res) => {
         { model: Images, attributes: ['image'], through: { attributes: [] } },
         { model: Videos, attributes: ['video'], through: { attributes: [] } },
       ],
-      offset: (page - 1) * limit, // Calcula el desplazamiento en función de la página actual
-      limit: limit // Establece el límite de juegos por página
+      offset: (page - 1) * limit,
+      limit: limit
     });
 
-    const prueba = await Games.findAll({})
-    const gameNames = prueba.map(dbGame => dbGame.name);
-    console.log(gameNames)
-    
+    const gameNames = dbGames.map(dbGame => dbGame.name);
+    console.log(gameNames);
+
       const gamesWithId = dbGames.map(dbGame => {
       const matchingGame = idGames.find(app => app.name == dbGame.name);
 
@@ -123,7 +122,6 @@ const allGames = async (req, res) => {
         };
       }
       return null;
-      //return dbGame.toJSON();
     });
 
     const filteredGames = gamesWithId.filter(game => game !== null);
@@ -131,27 +129,25 @@ const allGames = async (req, res) => {
     const gamesWithModifiedPrice = filteredGames.map(game => {
       if (game.price_overview === "Free") {
         game.price_overview = 0;
-      } 
-      else {
+      } else {
         const currency01 = game.currency;
-        if(currency01 !== "USD"){
-        const currency01 = game.currency;
-        if(currency01 === "COP"){
-          const currencyPrice = game.price_overview.replace(/[^0-9]/g, '');
-          const convertedPrice = (currencyPrice / conversionRates[currency01]).toFixed(2);
-          game.price_overview = convertedPrice;
-        }
-        else{
-          const currencyPrice = game.price_overview.replace(/(\d)(?=(\d{3})+(?!\d))/g, '1.').replace(/.\d+$/, '').replace(/[^0-9]/g, '');
-          const convertedPrice = (currencyPrice / conversionRates[currency01]).toFixed(2);
-          game.price_overview = convertedPrice;
+        if (currency01 !== "USD") {
+          if (currency01 === "COP") {
+            const currencyPrice = game.price_overview.replace(/[^0-9]/g, '');
+            const convertedPrice = (currencyPrice / conversionRates[currency01]).toFixed(2);
+            game.price_overview = convertedPrice;
+          } else {
+            const currencyPrice = game.price_overview.replace(/(\d)(?=(\d{3})+(?!\d))/g, '1.').replace(/.\d+$/, '').replace(/[^0-9]/g, '');
+            const convertedPrice = (currencyPrice / conversionRates[currency01]).toFixed(2);
+            game.price_overview = convertedPrice;
+          }
         }
       }
-    }
       return game;
     });
 
     return res.status(200).json(gamesWithModifiedPrice);
+  
   } catch (error) {
     res.status(404).send(error.message);
   }
@@ -160,3 +156,5 @@ const allGames = async (req, res) => {
 module.exports = {
   allGames
 };
+
+

@@ -8,9 +8,13 @@ const nameGames = async (req, res) => {
 const { name } = req.query;
 
 try {
+
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 100;
+
         const { data: appList } = await axios.get(URL);
         const idGames = appList.applist.apps.filter(app => app.name.length > 0);
-        const transformPrice = "https://v6.exchangerate-api.com/v6/17a32b390da20882cc9f437f/latest/USD";
+        const transformPrice = "https://v6.exchangerate-api.com/v6/d4fa1b58267ebef392077018/latest/USD";
         const { data: priceData } = await axios.get(transformPrice);
         const conversionRates = priceData.conversion_rates;
 
@@ -25,7 +29,9 @@ try {
                 { model: Categories, attributes: ['category'], through: { attributes: [] } },
                 { model: Images, attributes: ['image'], through: { attributes: [] } },
                 { model: Videos, attributes: ['video'], through: { attributes: [] } },
-            ]
+            ],
+            offset: (page - 1) * limit,
+            limit: limit
         }
     );
 

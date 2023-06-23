@@ -10,7 +10,7 @@ module.exports = (sequelize) => {
         },
         video: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
     },
     {
