@@ -1,12 +1,38 @@
-const { Users } = require('../db');
+const jwt = require('jsonwebtoken');
+require("dotenv").config()
+const { JWT_SECRET } = process.env
 // autentificacion para saber si el user es Admin o no (implementando proceso)
-const isAdmin = async (req, res) => {
-  try {
-    const users = await Users.findAll();
-    const isAdminUser = users.some(user => user.isAdmin === true);
-    res.status(200).json(isAdminUser);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-module.exports = {isAdmin}
+const isAdmin = (req, res, next) => {
+    const token = req.cookies.token
+    console.log(token);
+    if (!token) {
+        res.status(401).json({ message: "autorizacion denegada, no existe un token valido" })
+    } else {
+        jwt.verify(token, JWT_SECRET, (err, user) => {
+            if (err) {
+                res.status(403).json({ message: "token invalido" })
+            } else {
+                if (user.role === 'admin') {
+
+                    next();
+                }else {
+                    res.status(403).json({ message: 'Acceso denegado' });
+                }
+            }
+        })
+    }
+}
+
+// Protected Routes token base
+const requireSignIn = async (req, res, next) => {
+    try {
+        const decode = JWT.verify(req.headers.authorization, process.env.JWT_SECRET);
+        req.user = decode;
+        next();
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+module.exports = { isAdmin, requireSignIn }

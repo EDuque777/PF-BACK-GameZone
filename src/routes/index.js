@@ -4,6 +4,11 @@ const {nameGames} = require("../controllers/nameGames")
 const {allGames} = require("../controllers/allGames")
 const {searchId} = require("../controllers/searchId")
 const {platformGames} = require("../controllers/platformGames")
+const {languagesGames} = require("../controllers/languagueGames")
+const {categoriesGames} = require("../controllers/categoriesGames")
+const {developersGames} = require("../controllers/developersGames")
+const {publishersGames} = require("../controllers/publishersGames")
+const {genresGames} = require("../controllers/genresGames")
 const comingSoon = require('../controllers/comingSoon')
 const specials = require('../controllers/specials')
 const topSellers = require('../controllers/topSellers')
@@ -21,6 +26,9 @@ const { upload, uploadPhoto } = require('../controllers/uploadPhoto');
 //const {login} = require("../controllers/login")
 const { getAllGames, getGame, createGames, deleteGame, updateGame, banGame } = require('../controllers/games.controllers');
 const { getAllUsers, getUser, createUser, deleteUser, updateUser, banUser } = require('../controllers/users.controllers');
+const { isAdmin, requireSignIn } = require('../middlewares/auth');
+const { createReview } = require("../controllers/reviews");
+
 
 const router = Router();
 
@@ -42,6 +50,26 @@ router.get("/search/:id", (req, res) => {
 
 router.get("/platformGames", (req, res) => {
     platformGames(req, res);
+})
+
+router.get("/languagesGames", (req, res) => {
+    languagesGames(req, res);
+})
+
+router.get("/categoriesGames", (req, res) => {
+    categoriesGames(req, res);
+})
+
+router.get("/developersGames", (req, res) => {
+    developersGames(req, res);
+})
+
+router.get("/publishersGames", (req, res) => {
+    publishersGames(req, res);
+})
+
+router.get("/genresGames", (req, res) => {
+    genresGames(req, res);
 })
 
 router.get('/coming', (req, res) => {
@@ -98,37 +126,38 @@ router.post("/cerrarSesion", cerrarSesion)
 // esto sera como una ruta protegida
 router.get("/profile", validateToken, profileUser);
 
-
-
-// Ruta para tarer todos los Games (borrado lógico)
-router.get('/games', getAllGames);
-// Ruta para tarer un Game (borrado lógico)
-router.get('/games/:id', getGame);
-// Ruta para crear un Game (borrado lógico)
-router.post('/games', createGames);
-// Ruta para eliminar un Games por id (borrado lógico)
-router.delete('/games/:id', deleteGame);
-// Ruta para actualizar datos un Game (borrado lógico)
-router.put('/games/:id', updateGame);
-// Ruta para banear un Game (borrado lógico)
-router.put('/games/:gamesId/ban', banGame);
-
-
-
-// Ruta para tarer todos los usuario (borrado lógico)
+// RUTAS USUARIOS admin*
+// Ruta para tarer todos los usuario admin (borrado lógico)
 router.get('/users', getAllUsers);
-// Ruta para tarer un usuario (borrado lógico)
-router.get('/users/:id', getUser);
+// Ruta para tarer un usuario por ID admin (borrado lógico)
+router.get('/users/id/:id', getUser);
+// Ruta para tarer un usuario por name admin (borrado lógico)
+router.get('/users/name', getUser);
 // Ruta para crear un usuario (borrado lógico)
 router.post('/users', createUser);
-// Ruta para eliminar un usuario por id (borrado lógico)
+// Ruta para eliminar un usuario por id o name admin (borrado lógico)
 router.delete('/users/:id', deleteUser);
-// Ruta para actualizar datos un usuario (borrado lógico)
+// Ruta para actualizar datos de un usuario por ID admin (borrado lógico)
 router.put('/users/:id', upload.single('file'), updateUser);
-// Ruta para banear un usuario (borrado lógico)
+// Ruta para banear un usuario por ID admin (borrado lógico)
 router.put('/users/:userId/ban', banUser);
 
+// RUTA GAMES admin*
+// Ruta para tarer todos los Games admin(borrado lógico)
+router.get('/games', getAllGames);
+// Ruta para tarer un Game admin (borrado lógico)
+router.get('/games/:id', getGame);
+// Ruta para crear un Game admin (borrado lógico)
+router.post('/games',isAdmin,   createGames); //requireSignIn, ,
+// Ruta para eliminar un Games por id admin(borrado lógico)
+router.delete('/games/:id', deleteGame);
+// Ruta para actualizar datos un Game admin (borrado lógico)
+router.put('/games/:id', updateGame);
+// Ruta para banear un Game admin (borrado lógico)
+router.put('/games/:gamesId/ban', banGame);
 
+// Ruta para crear una review
+router.post('/user/review', createReview );
 
 
 module.exports = router;
