@@ -24,16 +24,16 @@ const createReview = async (req, res) => {
 
 const updateReview = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.query;
     const { review, rating } = req.body
     
     await Reviews.update(
       {
-        review: review,
+        reviews: review,
         rating: rating,
         date: Date.now()
       }, 
-      {where:{id}}
+      {where:{ id }}
     )
 
     res.status(200).send('Updated Review')
