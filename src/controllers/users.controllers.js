@@ -23,7 +23,11 @@ const upload = multer({
 // Ruta para traer todos los usuario creados (borrado lógico)
 const getAllUsers = async (req, res) => {
   try {
-    const users = await Users.findAll();
+    const users = await Users.findAll({
+      attributes: { exclude: ['id'] },
+      include: [
+        { model: Reviews, attributes: ['reviews'], through: { attributes: [] } },
+        { model: Languages, attributes: ['language'], through: { attributes: [] } }]});
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ error: error.message });
