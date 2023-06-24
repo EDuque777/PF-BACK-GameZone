@@ -5,6 +5,7 @@ const multer = require('multer');
 const bcrypt = require("bcryptjs")
 const { createAccessToken } = require("../middlewares/jwt.js")
 
+
 // Configuracion de multer para la subida de imgenes
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -108,8 +109,8 @@ const createUser = async (req, res) => {
       }
   
     } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
+      res.status(500).json({ error: error.message });
+    }
  };
 
 // Ruta para eliminar un usuario (borrado lógico)
