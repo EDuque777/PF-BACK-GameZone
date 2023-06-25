@@ -129,7 +129,7 @@ router.post("/cerrarSesion", cerrarSesion)
 
 // Ruta del perfil del Usuario (esto es solo un ejemplo, se encarga Cristian)
 // esto sera como una ruta protegida
-router.get("/profile", validateToken, profileUser);
+router.get("/profile/:id", profileUser);
 
 
 
