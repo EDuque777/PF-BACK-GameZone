@@ -204,10 +204,11 @@ const gamesUser = async (req, res) => {
   try {
     //se debe recibir el id para que traiga los juegos del usuario
     const { id } = req.body
+    
     const userGames = await Users.findByPk(id, {
       attributes: { exclude: ['id', 'role', 'email', 'password', 'country', 'confirmPassword'] },
       include: [
-        { model: Games, attributes: ['name'], through: { attributes: [] } }
+        { model: Games, attributes: ['name', 'header_image'], through: { attributes: [] } }
       ],
     })
 
