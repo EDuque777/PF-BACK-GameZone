@@ -22,6 +22,9 @@ const { isAdmin } = require("../middlewares/auth.js")
 const { getAllGames, getGame, createGames, deleteGame, updateGame, banGame } = require('../controllers/games.controllers');
 const { getAllUsers, getUser, createUser, deleteUser, updateUser, banUser } = require('../controllers/users.controllers');
 const {cancelOrder, createOrder, captureOrder} = require('../controllers/paypalControllers')
+const { createReview, updateReview } = require("../controllers/reviews");
+
+
 const router = Router();
 
 router.get("/back/", (req, res) => {
@@ -126,7 +129,7 @@ router.post("/cerrarSesion", cerrarSesion)
 
 // Ruta del perfil del Usuario (esto es solo un ejemplo, se encarga Cristian)
 // esto sera como una ruta protegida
-router.get("/profile", validateToken, profileUser);
+router.get("/profile/:id", profileUser);
 
 // RUTAS USUARIOS admin*
 // Ruta para tarer todos los usuario admin (borrado lógico)
@@ -162,6 +165,8 @@ router.put('/games/:gamesId/ban', banGame);
 
 
 // Ruta para tarer todos los usuario (borrado lógico)
+// RUTAS USUARIOS admin*
+// Ruta para tarer todos los usuario admin (borrado lógico)
 router.get('/users', getAllUsers);
 // Ruta para tarer un usuario por ID admin (borrado lógico)
 router.get('/users/id/:id', getUser);
@@ -190,5 +195,10 @@ router.delete('/games/:id', deleteGame);
 router.put('/games/:id', updateGame);
 // Ruta para banear un Game admin (borrado lógico)
 router.put('/games/:gamesId/ban', banGame);
+
+// Ruta para crear una review
+router.post('/user/review', createReview );
+
+router.put('/user/review', updateReview );
 
 module.exports = router;

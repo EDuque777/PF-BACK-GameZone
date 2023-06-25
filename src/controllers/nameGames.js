@@ -3,7 +3,6 @@ const Sequelize = require('sequelize');
 const axios = require('axios');
 require('dotenv').config();
 const { URL } = process.env;
-
 const nameGames = async (req, res) => {
 const { name } = req.query;
 
@@ -79,7 +78,6 @@ try {
     res.status(404).send(error.message);
     }
 };
-
 module.exports = {
     nameGames
 }
@@ -92,13 +90,11 @@ module.exports = {
 
 // const nameGames = async (req, res) => {
 // const { name } = req.query;
+// const justname = name;
 
 // try {
-//         const { data: appList } = await axios.get(URL);
-//         const idGames = appList.applist.apps.filter(app => app.name.length > 0);
-//         const transformPrice = "https://v6.exchangerate-api.com/v6/17a32b390da20882cc9f437f/latest/USD";
-//         const { data: priceData } = await axios.get(transformPrice);
-//         const conversionRates = priceData.conversion_rates;
+//     const { data } = await axios.get(URL);
+//     const alldata = data.applist.apps;
 
 //     // Filtrar las coincidencias en base al nombre
 //     const filteredData = alldata.filter(game =>
