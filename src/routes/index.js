@@ -20,7 +20,7 @@ const { validateToken } = require("../middlewares/validateToken.js")
 const { upload, uploadPhoto } = require('../controllers/uploadPhoto');
 const { isAdmin } = require("../middlewares/auth.js")
 const { getAllGames, getGame, createGames, deleteGame, updateGame, banGame } = require('../controllers/games.controllers');
-const { getAllUsers, getUser, createUser, deleteUser, updateUser, banUser } = require('../controllers/users.controllers');
+const { getAllUsers, getUser, createUser, deleteUser, updateUser, banUser, gamesUser } = require('../controllers/users.controllers');
 const {cancelOrder, createOrder, captureOrder} = require('../controllers/paypalControllers')
 const { createReview, updateReview } = require("../controllers/reviews");
 
@@ -183,7 +183,9 @@ router.put('/games/:gamesId/ban', banGame);
 
 // Ruta para crear una review
 router.post('/user/review', createReview );
-
+//Ruta para editar una review
 router.put('/user/review', updateReview );
+//Ruta para traer los juegos que ha comprado un usuario
+router.get('/user/games', gamesUser)
 
 module.exports = router;
