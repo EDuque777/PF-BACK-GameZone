@@ -3,7 +3,6 @@ const Sequelize = require('sequelize');
 const axios = require('axios');
 require('dotenv').config();
 const { URL } = process.env;
-
 const nameGames = async (req, res) => {
 const { name } = req.query;
 
@@ -79,7 +78,6 @@ try {
     res.status(404).send(error.message);
     }
 };
-
 module.exports = {
     nameGames
 } 
