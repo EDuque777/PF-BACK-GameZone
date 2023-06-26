@@ -10,10 +10,10 @@ module.exports = (sequelize) => {
       primaryKey: true,
     },
 
-    appid: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
+    // appid: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: false
+    // },
 
     name: {
       type: DataTypes.STRING,
