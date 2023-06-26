@@ -5,7 +5,6 @@ const multer = require('multer');
 const bcrypt = require("bcryptjs")
 const { createAccessToken } = require("../middlewares/jwt.js")
 
-
 // Configuracion de multer para la subida de imgenes
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -20,15 +19,14 @@ const upload = multer({
   storage: storage,
 });
 
-
+// include: [
+  // { model: Reviews, attributes: ['reviews', 'rating', 'date'], through: { attributes: [] } },
+  // { model: Games, attributes: ['name'], through: { attributes: [] } }]});
 // Ruta para traer todos los usuario creados (borrado lógico)
 const getAllUsers = async (req, res) => {
   try {
-    const users = await Users.findAll({
-      attributes: { exclude: ['id'] },
-      include: [
-        { model: Reviews, attributes: ['reviews'], through: { attributes: [] } },
-        { model: Languages, attributes: ['language'], through: { attributes: [] } }]});
+    const users = await Users.findAll()
+     
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -100,8 +98,8 @@ const createUser = async (req, res) => {
           profileImage: profileImage,
           role: role
         });
-        const token = await createAccessToken({id : createUserAdmin.id, role : createUserAdmin.role})
-        res.cookie("token", token)
+        // const token = await createAccessToken({id : createUserAdmin.id, role : createUserAdmin.role})
+        // res.cookie("token", token)
         res.status(200).json({
           message: "Usuario Creado,",
           createUserAdmin
@@ -109,8 +107,8 @@ const createUser = async (req, res) => {
       }
   
     } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
+      res.status(500).json({ error: error.message });
+    }
  };
 
 // Ruta para eliminar un usuario (borrado lógico)

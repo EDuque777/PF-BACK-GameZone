@@ -85,8 +85,8 @@ const { URL } = process.env;
 const allGames = async (req, res) => {
   try {
 
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 15;
+    // const page = parseInt(req.query.page) || 1;
+    // const limit = parseInt(req.query.limit) || 15;
 
     const { data: appList } = await axios.get(URL);
     const idGames = appList.applist.apps.filter(app => app.name.length > 0);
@@ -105,8 +105,8 @@ const allGames = async (req, res) => {
         { model: Images, attributes: ['image'], through: { attributes: [] } },
         { model: Videos, attributes: ['video'], through: { attributes: [] } },
       ],
-      offset: (page - 1) * limit,
-      limit: limit
+      // offset: (page - 1) * limit,
+      // limit: limit
     });
 
     // const gameNames = dbGames.map(dbGame => dbGame.name);

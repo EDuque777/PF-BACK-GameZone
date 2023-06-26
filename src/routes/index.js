@@ -18,7 +18,7 @@ const { cerrarSesion } = require("../controllers/logout.js")
 const { profileUser } = require("../controllers/profile.js")
 const { validateToken } = require("../middlewares/validateToken.js")
 const { upload, uploadPhoto } = require('../controllers/uploadPhoto');
-const { isAdmin } = require("../middlewares/auth.js")
+// const { isAdmin } = require("../middlewares/auth.js")
 const { getAllGames, getGame, createGames, deleteGame, updateGame, banGame } = require('../controllers/games.controllers');
 const { getAllUsers, getUser, createUser, deleteUser, updateUser, banUser } = require('../controllers/users.controllers');
 const {cancelOrder, createOrder, captureOrder} = require('../controllers/paypalControllers')
@@ -139,7 +139,7 @@ router.get('/games', getAllGames);
 router.get('/games/:id', getGame);
 // Ruta para crear un Game (borrado lógico)
 //router.post('/games', createGames);
-router.post('/games',isAdmin, createGames);
+router.post('/games', createGames); //isAdmin
 // Ruta para eliminar un Games por id (borrado lógico)
 router.delete('/games/:id', deleteGame);
 // Ruta para actualizar datos un Game (borrado lógico)
@@ -173,7 +173,7 @@ router.get('/games', getAllGames);
 // Ruta para tarer un Game admin (borrado lógico)
 router.get('/games/:id', getGame);
 // Ruta para crear un Game admin (borrado lógico)
-router.post('/games',isAdmin,   createGames); //requireSignIn, ,
+router.post('/games',   createGames); //requireSignIn, ,isAdmin,
 // Ruta para eliminar un Games por id admin(borrado lógico)
 router.delete('/games/:id', deleteGame);
 // Ruta para actualizar datos un Game admin (borrado lógico)
