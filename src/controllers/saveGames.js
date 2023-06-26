@@ -21,6 +21,7 @@ const saveGames = async (req, res) => {
         }
 
         const newGame = {
+          appid: info.steam_appid,
           name: info.name || 'Unknown',
           type: info.type || 'Unknown',
           required_age: info.required_age || 0,

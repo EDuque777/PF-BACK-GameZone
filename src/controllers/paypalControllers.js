@@ -3,19 +3,18 @@ const { PAYPAL_ID, PAYPAL_SECRET_KEY, PAYPAL_URL } = process.env;
 const { Users, Games } = require('../db');
 const axios = require('axios');
 const URL = `${PAYPAL_URL}/v2/checkout/orders`
+let info;
 
 const createOrder = async (req, res) => {
     try {
-        //Aqui se debe recibir el id del usuario para hacer la relacion de los juegos comprados
-        const idUser = 'a702830c-688c-49b2-8d10-ac99e96c67cd'
-        const {totalPrice, cartGames} = req.body
+        info = req.body
         const order = {
             intent: "CAPTURE",
             purchase_units: [
                 {   
                     amount: {
                         currency_code: "USD",
-                        value: totalPrice,
+                        value: info.totalPrice,
                     },
                 },
             ],
@@ -43,13 +42,6 @@ const createOrder = async (req, res) => {
             }
         });
 
-        const user = await Users.findByPk(idUser)
-
-        for (let i = 0; i < cartGames.length; i++) {
-            let game = await Games.findOne({where: {name: cartGames[i].name}})
-            await game.addUsers(user);
-        }
-
         res.send(response.data);
     } catch (error) {
         //console.log(error);
@@ -69,6 +61,13 @@ const captureOrder = async (req, res) => {
             }
         })
         //console.log(response.data);
+
+        const user = await Users.findByPk(info.dataUser.id)
+
+        for (let i = 0; i < info.cartGames.length; i++) {
+            let game = await Games.findOne({where: {name: info.cartGames[i].name}})
+            await game.addUsers(user);
+        }
         
         res.redirect('http://localhost:3000/dashboard')
     } catch (error) {

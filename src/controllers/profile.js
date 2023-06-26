@@ -5,7 +5,9 @@ const profileUser = async (req, res) => {
 
         //res.send("este es el perfil del usuario")
 
-        const dataProfile = await Users.findByPk(req.user.id)
+        const {id} = req.params
+
+        const dataProfile = await Users.findByPk(id)
         
         if (!dataProfile) {
             
