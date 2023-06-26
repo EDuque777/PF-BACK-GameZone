@@ -9,7 +9,7 @@ const saveGames = async (req, res) => {
     const { data: appList } = await axios.get(URL);
     const idGames = appList.applist.apps.filter(app => app.name.length > 0);
 
-    for (let i = 0; i <= 1; i++) {
+    for (let i = 0; i <= 20; i++) {
       //await new Promise(resolve => setTimeout(resolve, 2000));
       const { data } = await axios.get(`${gameUrl}${idGames[i].appid}`);
       const info = data[idGames[i].appid.toString()].data;
@@ -21,6 +21,7 @@ const saveGames = async (req, res) => {
         }
 
         const newGame = {
+          appid: info.steam_appid,
           name: info.name || 'Unknown',
           type: info.type || 'Unknown',
           required_age: info.required_age || 0,
