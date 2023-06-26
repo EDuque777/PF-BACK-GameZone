@@ -20,7 +20,7 @@ const { profileUser } = require("../controllers/profile.js")
 const { validateToken } = require("../middlewares/validateToken.js")
 const { upload, uploadPhoto } = require('../controllers/uploadPhoto');
 const { isAdmin } = require("../middlewares/auth.js")
-const { getAllGames, getGame, createGames, deleteGame, updateGame, banGame } = require('../controllers/games.controllers');
+const { getAllGames, getGame, createGames, deleteGame, updateGame, banGame, reviewGames } = require('../controllers/games.controllers');
 const { getAllUsers, getUser, createUser, deleteUser, updateUser, banUser, gamesUser } = require('../controllers/users.controllers');
 const {cancelOrder, createOrder, captureOrder} = require('../controllers/paypalControllers')
 const { createReview, updateReview } = require("../controllers/reviews");
@@ -192,5 +192,7 @@ router.post('/user/review', createReview );
 router.put('/user/review', updateReview );
 //Ruta para traer los juegos que ha comprado un usuario
 router.get('/user/games', gamesUser)
+//traer los reviews de un juego
+router.get('/game/reviews', reviewGames)
 
 module.exports = router;
