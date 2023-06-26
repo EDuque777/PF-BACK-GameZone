@@ -14,7 +14,8 @@ const {
   DB_PASSWORD, 
   DB_HOST,
   DB_NAME,
-  DB_DEPLOY 
+  DB_RAILWAY,
+  DB_RENDER
 } = process.env;
 
  const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`, {
@@ -22,10 +23,25 @@ const {
    native: false, // lets Sequelize know we can use pg-native for ~30% more speed
  });
 
-// const sequelize = new Sequelize(DB_DEPLOY , {
+
+
+// const sequelize = new Sequelize(DB_RAILWAY, {
 //  logging: false, // set to console.log to see the raw SQL queries
 //  native: false, // lets Sequelize know we can use pg-native for ~30% more speed
 // });
+
+
+// const sequelize = new Sequelize(DB_RENDER , {
+//   logging: false, // set to console.log to see the raw SQL queries
+//   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
+//   dialectOptions: {
+//     ssl: {
+//       require: true,
+//     }
+//   }
+// });
+
+
 
 const basename = path.basename(__filename);
 
@@ -46,7 +62,7 @@ let entries = Object.entries(sequelize.models);
 let capsEntries = entries.map((entry) => [entry[0][0].toUpperCase() + entry[0].slice(1), entry[1]]);
 sequelize.models = Object.fromEntries(capsEntries);
 
-const { Games, Users, Categories, Languages, Developers, Genres, Platforms, Publishers, Videos, Images} = sequelize.models;
+const { Games, Users, Categories, Languages, Developers, Genres, Platforms, Publishers, Videos, Images, Reviews} = sequelize.models;
 
 Games.belongsToMany(Users, {through: "UserGame", foreignKey: 'gamesId', otherKey: 'usersId'});
 Users.belongsToMany(Games, {through: "UserGame", foreignKey: 'usersId', otherKey: 'gamesId'});
@@ -74,6 +90,12 @@ Images.belongsToMany(Games, {through: "ImagesGame", foreignKey: 'imagesId', othe
 
 Games.belongsToMany(Videos, {through: "Videos_Game", foreignKey: 'gamesId', otherKey: 'videosId'})
 Videos.belongsToMany(Games, {through: "Videos_Game", foreignKey: 'videosId', otherKey: 'gamesId'})
+
+Users.belongsToMany(Reviews, {through: "UsersReviews", foreignKey: 'usersId', otherKey: 'reviewsId'})
+Reviews.belongsToMany(Users, {through: "UsersReviews", foreignKey: 'reviewsId', otherKey: 'usersId'})
+
+Games.belongsToMany(Reviews, {through: "GameReviews", foreignKey: 'gamesId', otherKey: 'reviewsId'})
+Reviews.belongsToMany(Games, {through: "GameReviews", foreignKey: 'reviewsId', otherKey: 'gamesId'})
 
 module.exports = {
   ...sequelize.models, 

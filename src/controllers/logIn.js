@@ -20,6 +20,7 @@ const logIn = async (req, res) => {
                     email : emailLogin
                 }
             })
+            console.log("QQQQQQ", existingUser );
             
             if (!existingUser) {
                 
@@ -38,9 +39,9 @@ const logIn = async (req, res) => {
 
                     //falta crear tokens y cookies y tambien validar
                     // esto es solo de prueba
-                    res.cookie("token", token)
+                    // res.cookie("token", token)*
                     
-                    res.status(200).json({
+                    const login = res.status(200).json({
                         message : "Sesion Iniciada",
                         id : existingUser.id,
                         name : existingUser.name,
