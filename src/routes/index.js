@@ -136,20 +136,35 @@ router.post("/cerrarSesion", cerrarSesion)
 // esto sera como una ruta protegida
 router.get("/profile/:id", profileUser);//validateToken
 
+// RUTAS USUARIOS admin*
+// Ruta para tarer todos los usuario admin (borrado lógico)
+router.get('/users', getAllUsers);
+// Ruta para tarer un usuario por ID admin (borrado lógico)
+router.get('/users/id/:id', getUser);
+// Ruta para tarer un usuario por name admin (borrado lógico)
+router.get('/users/name', getUser);
+// Ruta para crear un usuario (borrado lógico)
+router.post('/users', createUser);
+// Ruta para eliminar un usuario por id o name admin (borrado lógico)
+router.delete('/users/:id', deleteUser);
+// Ruta para actualizar datos de un usuario por ID admin (borrado lógico)
+router.put('/users/:id', upload.single('file'), updateUser);
+// Ruta para banear un usuario por ID admin (borrado lógico)
+router.put('/users/:userId/ban', banUser);
 
-
-// Ruta para tarer todos los Games (borrado lógico)
+// RUTA GAMES admin*
+// Ruta para tarer todos los Games admin(borrado lógico)
 router.get('/games', getAllGames);
-// Ruta para tarer un Game (borrado lógico)
+// Ruta para tarer un Game admin (borrado lógico)
 router.get('/games/:id', getGame);
 // Ruta para crear un Game (borrado lógico)
 //router.post('/games', createGames);
 router.post('/games',isAdmin, createGames);
 // Ruta para eliminar un Games por id (borrado lógico)
 router.delete('/games/:id', deleteGame);
-// Ruta para actualizar datos un Game (borrado lógico)
+// Ruta para actualizar datos un Game admin (borrado lógico)
 router.put('/games/:id', updateGame);
-// Ruta para banear un Game (borrado lógico)
+// Ruta para banear un Game admin (borrado lógico)
 router.put('/games/:gamesId/ban', banGame);
 
 

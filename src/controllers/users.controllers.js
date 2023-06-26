@@ -5,7 +5,6 @@ const multer = require('multer');
 const bcrypt = require("bcryptjs")
 const { createAccessToken } = require("../middlewares/jwt.js")
 
-
 // Configuracion de multer para la subida de imgenes
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -209,7 +208,7 @@ const gamesUser = async (req, res) => {
     const userGames = await Users.findByPk(id, {
       attributes: { exclude: ['id', 'role', 'email', 'password', 'country', 'confirmPassword'] },
       include: [
-        { model: Games, attributes: ['name', 'header_image'], through: { attributes: [] } }
+        { model: Games, attributes: ['id', 'name', 'header_image'], through: { attributes: [] } }
       ],
     })
 
