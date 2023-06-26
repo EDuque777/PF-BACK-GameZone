@@ -9,7 +9,7 @@
 // try {
 
 //   const page = parseInt(req.query.page) || 1;
-//   const limit = parseInt(req.query.limit) || 10;
+//   const limit = parseInt(req.query.limit) || 100;
 
 //         const { data: appList } = await axios.get(URL);
 //         const idGames = appList.applist.apps.filter(app => app.name.length > 0);
