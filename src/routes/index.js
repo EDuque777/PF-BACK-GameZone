@@ -17,7 +17,7 @@ const { createAccount } = require("../controllers/createAccount.js")
 const { logIn } = require("../controllers/logIn.js")
 const { cerrarSesion } = require("../controllers/logout.js")
 const { profileUser } = require("../controllers/profile.js")
-const { validateToken } = require("../middlewares/validateToken.js")
+//const { validateToken } = require("../middlewares/validateToken.js")
 const { upload, uploadPhoto } = require('../controllers/uploadPhoto');
 const { isAdmin } = require("../middlewares/auth.js")
 const { getAllGames, getGame, createGames, deleteGame, updateGame, banGame } = require('../controllers/games.controllers');
@@ -134,7 +134,7 @@ router.post("/cerrarSesion", cerrarSesion)
 
 // Ruta del perfil del Usuario (esto es solo un ejemplo, se encarga Cristian)
 // esto sera como una ruta protegida
-router.get("/profile/:id", profileUser);
+router.get("/profile/:id", profileUser);//validateToken
 
 
 
