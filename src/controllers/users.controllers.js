@@ -204,7 +204,7 @@ const banUser = async (req, res) => {
 const gamesUser = async (req, res) => {
   try {
     //se debe recibir el id para que traiga los juegos del usuario
-    const { id } = req.body
+    const { id } = req.query
     
     const userGames = await Users.findByPk(id, {
       attributes: { exclude: ['id', 'role', 'email', 'password', 'country', 'confirmPassword'] },
