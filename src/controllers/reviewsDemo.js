@@ -5,7 +5,7 @@ const reviewsDemo = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const { data } = await axios(`https://store.steampowered.com/appreviews/${id}?json=1&num_per_page=3`);
+    const { data } = await axios(`https://store.steampowered.com/appreviews/${id}?json=1`);
 
     const reviews = data.reviews
       .filter(review => review)

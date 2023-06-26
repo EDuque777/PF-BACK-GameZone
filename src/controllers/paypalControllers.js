@@ -69,7 +69,7 @@ const captureOrder = async (req, res) => {
             await game.addUsers(user);
         }
         
-        res.redirect('http://localhost:3000/dashboard')
+        res.redirect('http://localhost:3000/user')
     } catch (error) {
         res.status(400).send('Error')
     }
