@@ -140,6 +140,7 @@ const updateUser = async (req, res) => {
     let imageUrl;
 
     if (req.file) {
+      console.log(req.file);
       const file = req.file.path;
 
       const result = await cloudinary.uploader.upload(file, {
