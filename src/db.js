@@ -94,6 +94,9 @@ Videos.belongsToMany(Games, {through: "Videos_Game", foreignKey: 'videosId', oth
 Users.belongsToMany(Reviews, {through: "UsersReviews", foreignKey: 'usersId', otherKey: 'reviewsId'})
 Reviews.belongsToMany(Users, {through: "UsersReviews", foreignKey: 'reviewsId', otherKey: 'usersId'})
 
+Games.belongsToMany(Reviews, {through: "GameReviews", foreignKey: 'gamesId', otherKey: 'reviewsId'})
+Reviews.belongsToMany(Games, {through: "GameReviews", foreignKey: 'reviewsId', otherKey: 'gamesId'})
+
 module.exports = {
   ...sequelize.models, 
   conn: sequelize,

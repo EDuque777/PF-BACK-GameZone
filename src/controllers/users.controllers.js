@@ -1,4 +1,4 @@
-const { Users } = require('../db');
+const { Users, Games } = require('../db');
 const profileImage = 'https://res.cloudinary.com/dcebtiiih/image/upload/v1686950493/images/1686950487877.webp'
 const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
@@ -140,6 +140,7 @@ const updateUser = async (req, res) => {
     let imageUrl;
 
     if (req.file) {
+      console.log(req.file);
       const file = req.file.path;
 
       const result = await cloudinary.uploader.upload(file, {
@@ -200,6 +201,23 @@ const banUser = async (req, res) => {
   }
 };
 
+const gamesUser = async (req, res) => {
+  try {
+    //se debe recibir el id para que traiga los juegos del usuario
+    const { id } = req.query
+    
+    const userGames = await Users.findByPk(id, {
+      attributes: { exclude: ['id', 'role', 'email', 'password', 'country', 'confirmPassword'] },
+      include: [
+        { model: Games, attributes: ['name', 'header_image'], through: { attributes: [] } }
+      ],
+    })
+
+      res.status(200).json(userGames)
+  } catch (error) {
+      res.status(400).send( { error: error.message } )
+  }
+}
 
 
 
@@ -210,5 +228,6 @@ module.exports = {
   deleteUser,
   updateUser,
   banUser,
+  gamesUser,
   upload
 };
