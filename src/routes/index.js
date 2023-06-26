@@ -8,6 +8,7 @@ const {languagesGames} = require("../controllers/languagueGames")
 const {categoriesGames} = require("../controllers/categoriesGames")
 const {developersGames} = require("../controllers/developersGames")
 const {genresGames} = require("../controllers/genresGames")
+const {reviewsDemo} = require("../controllers/reviewsDemo")
 const comingSoon = require('../controllers/comingSoon')
 const specials = require('../controllers/specials')
 const topSellers = require('../controllers/topSellers')
@@ -26,6 +27,10 @@ const { createReview, updateReview } = require("../controllers/reviews");
 
 
 const router = Router();
+
+router.get("/reviewsDemo/:id", (req, res) => {
+    reviewsDemo(req,res);
+});
 
 router.get("/back/", (req, res) => {
     saveGames(req, res);
