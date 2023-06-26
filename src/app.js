@@ -7,6 +7,8 @@ const morgan = require('morgan');
 const routes = require('./routes/index.js');
 const session = require("express-session")
 const cors = require("cors")
+const passport = require("passport")
+const authRouter = require("./routes/routesGoogle.js")
 
 require('dotenv').config();
 const { CLOUD_NAME, CLOUD_API_KEY, CLOUD_API_SECRET } = process.env;
@@ -14,9 +16,16 @@ require('./db.js');
 
 
 const server = express();
-server.use(cors())
+
 server.use(express.json())
 server.use(morgan('dev'));
+
+server.use(cors({
+  origin : "http://localhost:3000",
+  methods : ["POST", "GET", "PUT", "DELETE"],
+  credentials : true
+}))
+
 
 server.name = 'API';
 
@@ -26,10 +35,17 @@ server.use(cookieParser());
 server.use(session(
   {
     secret:'secret', // Debería estar en un archivo de environment
-    resave:false,
-    saveUninitialized:false, 
+    resave: false,
+    saveUninitialized: false,
   }
 ))
+passport.authenticate('session')
+server.use(passport.initialize())
+server.use(passport.session())
+
+server.use('/', routes);
+server.use("/auth", authRouter)
+
 server.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*'); 
   res.header('Access-Control-Allow-Credentials', 'true');
@@ -38,7 +54,6 @@ server.use((req, res, next) => {
   next();
 });
 
-server.use('/', routes);
 
 // Hola esto es una Prueba
 
@@ -56,6 +71,7 @@ server.use(fileUpload({
   useTempFiles: true,
   limits: {fileSize: 50 * 2024 *1024}
 }))
+
 
 cloudinary.config({ 
 cloud_name: CLOUD_NAME, 
