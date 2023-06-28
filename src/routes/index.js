@@ -2,6 +2,7 @@ const { Router } = require('express');
 const  saveGames = require("../controllers/saveGames")
 const {nameGames} = require("../controllers/nameGames")
 const {allGames} = require("../controllers/allGames")
+const {allGamesAdmin} = require("../controllers/allGamesAdmin")
 const {searchId} = require("../controllers/searchId")
 const {platformGames} = require("../controllers/platformGames")
 const {languagesGames} = require("../controllers/languagueGames")
@@ -20,11 +21,10 @@ const { profileUser } = require("../controllers/profile.js")
 //const { validateToken } = require("../middlewares/validateToken.js")
 const { upload, uploadPhoto } = require('../controllers/uploadPhoto');
 const { isAdmin } = require("../middlewares/auth.js")
-const { getAllGames, getGame, createGames, deleteGame, updateGame, banGame } = require('../controllers/games.controllers');
+const { getAllGames, getGame, createGames, deleteGame, updateGame, banGame, reviewGames } = require('../controllers/games.controllers');
 const { getAllUsers, getUser, createUser, deleteUser, updateUser, banUser, gamesUser } = require('../controllers/users.controllers');
 const {cancelOrder, createOrder, captureOrder} = require('../controllers/paypalControllers')
 const { createReview, updateReview } = require("../controllers/reviews");
-
 
 const router = Router();
 
@@ -38,6 +38,10 @@ router.get("/back/", (req, res) => {
 
 router.get("/allGames", (req, res) => {
     allGames(req, res);
+})
+
+router.get("/allGamesAdmin", (req, res) => {
+    allGamesAdmin(req, res)
 })
 
 router.get("/nameGames", (req, res) => {
@@ -207,5 +211,8 @@ router.post('/user/review', createReview );
 router.put('/user/review', updateReview );
 //Ruta para traer los juegos que ha comprado un usuario
 router.get('/user/games', gamesUser)
+//traer los reviews de un juego
+router.get('/game/reviews', reviewGames)
+
 
 module.exports = router;

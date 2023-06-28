@@ -38,7 +38,11 @@ module.exports = (sequelize) => {
         profileImage: {
             type: DataTypes.STRING,
             allowNull: true
-        }
+        },
+        ban: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false
+         }, 
     },
         {
             timestamps: false
