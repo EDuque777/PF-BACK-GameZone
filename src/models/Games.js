@@ -1,13 +1,13 @@
-const { DataTypes } = require('sequelize');
+const DataTypes = require('sequelize');
 
 module.exports = (sequelize) => {
 
   sequelize.define('Games', {
     id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
+      unique: true
     },
 
     appid: {
@@ -40,14 +40,9 @@ module.exports = (sequelize) => {
       allowNull: false
     },
 
-    abouth_the_game: {
+    controller_support: {
       type: DataTypes.TEXT,
-      allowNull: true,
-    },
-
-    short_description: {
-      type: DataTypes.TEXT,
-      allowNull: false
+      allowNull: true
     },
 
     release_date: {
@@ -58,16 +53,6 @@ module.exports = (sequelize) => {
     coming_soon: {
       type: DataTypes.BOOLEAN,
       allowNull: false
-    },
-
-    support_info: {
-      type: DataTypes.JSON,
-      allowNull: true
-    },
-
-    metacritic: {
-      type: DataTypes.INTEGER,
-      allowNull: true
     },
 
     currency: {
@@ -89,11 +74,14 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-
-    //  available: {
-    //   type: DataTypes.BOOLEAN,
-    //   allowNull: false
-    // }, *****************FALTA RELACION PARA available*************
+    ban: {
+       type: DataTypes.BOOLEAN,
+       allowNull: false
+    },
+    pc_requirements: {
+      type: DataTypes.JSON,
+      allowNull: false
+    },  
 
   },
     {
