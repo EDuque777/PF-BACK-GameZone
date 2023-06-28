@@ -208,4 +208,5 @@ router.put('/user/review', updateReview );
 //Ruta para traer los juegos que ha comprado un usuario
 router.get('/user/games', gamesUser)
 
+
 module.exports = router;
