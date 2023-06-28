@@ -362,39 +362,44 @@ const allGames = async (req, res) => {
             else if(gameCurrency === "COL"){
               const currencyPrice = parseFloat(gamePrice).toFixed(3)
               const currencyPrice01 = currencyPrice.replace('.', ''); 
-              game.price_overview = (currencyPrice01 * 0.00024).toFixed(2)
+              const number = (currencyPrice01 * 0.00024).toFixed(2)
+              game.price_overview = Number(number)
               console.log(game.price_overview)
             }
             else if(gameCurrency === "CDN"){
               const currencyPrice = parseFloat(gamePrice).toFixed(2)
-              game.price_overview = (currencyPrice * 0.76).toFixed(2)
+              const number = (currencyPrice * 0.76).toFixed(2)
+              game.price_overview = Number(number)
               console.log(game.price_overview)
             }
             else if(gameCurrency01 === "¥"){
               const currencyPrice = parseFloat(gamePrice01).toFixed(2)
-              game.price_overview = (currencyPrice * 0.0069).toFixed(2)
+              const number = (currencyPrice * 0.0069).toFixed(2)
+              game.price_overview = Number(number)
               console.log(game.price_overview)
             }
             else if(gameCurrency02 === true){
-              game.price_overview = (gamePrice02 * 0.000042).toFixed(2)
+              const number = (gamePrice02 * 0.000042).toFixed(2)
+              game.price_overview = Number(number)
               console.log(game.price_overview)
             }
             else if(gameCurrency03 === "₹"){
-              game.price_overview = (gamePrice03 * 0.012).toFixed(2)
+              const number = (gamePrice03 * 0.012).toFixed(2)
+              game.price_overview = Number(number)
               console.log(game.price_overview)
             }
             else if(gameCurrency === "ARS"){
-              const currencyPrice = gamePrice04.replace(/[,.]/g, '');
-              game.price_overview = (currencyPrice * 0.0039).toFixed(2);
+              const currencyPrice = gamePrice04.replace(/,.$/g, '').replace('.', '');
+              console.log(currencyPrice)
+              const number = (currencyPrice * 0.0039).toFixed(2);
+              game.price_overview = Number(number)
               console.log(game.price_overview);
             }
             else if(gameCurrency === "Mex"){
               const currencyPrice = parseFloat(gamePrice).toFixed(3)
-              game.price_overview = (currencyPrice * 0.059).toFixed(2)
+              const number = (currencyPrice * 0.059).toFixed(2)
+              game.price_overview = Number(number)
               console.log(game.price_overview)
-            }
-            else if(gameCurrency === "PEN"){
-
             }
             return game;
           });
