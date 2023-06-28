@@ -2,6 +2,7 @@ const { Router } = require('express');
 const  saveGames = require("../controllers/saveGames")
 const {nameGames} = require("../controllers/nameGames")
 const {allGames} = require("../controllers/allGames")
+const {allGamesAdmin} = require("../controllers/allGamesAdmin")
 const {searchId} = require("../controllers/searchId")
 const {platformGames} = require("../controllers/platformGames")
 const {languagesGames} = require("../controllers/languagueGames")
@@ -25,7 +26,6 @@ const { getAllUsers, getUser, createUser, deleteUser, updateUser, banUser, games
 const {cancelOrder, createOrder, captureOrder} = require('../controllers/paypalControllers')
 const { createReview, updateReview } = require("../controllers/reviews");
 
-
 const router = Router();
 
 router.get("/reviewsDemo/:id", (req, res) => {
@@ -38,6 +38,10 @@ router.get("/back/", (req, res) => {
 
 router.get("/allGames", (req, res) => {
     allGames(req, res);
+})
+
+router.get("/allGamesAdmin", (req, res) => {
+    allGamesAdmin(req, res)
 })
 
 router.get("/nameGames", (req, res) => {

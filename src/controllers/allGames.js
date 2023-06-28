@@ -316,7 +316,7 @@
 // };
 
 
-const { Games, Developers, Languages, Platforms, Genres, Categories, Images, Videos } = require("../db");
+const { Games, Developers, Languages, Platforms, Genres, Categories, Images, Videos, Reviews } = require("../db");
 require('dotenv').config();
 
 const allGames = async (req, res) => {
@@ -325,7 +325,7 @@ const allGames = async (req, res) => {
     const limit = parseInt(req.query.limit) || 7;
 
     const dbGames = await Games.findAll({
-      attributes: { exclude: ["id", "metacritic", "currency", "support_info", "is_free", "type", "abouth_the_game", "short_description"] },
+      attributes: { exclude: ["metacritic", "currency", "support_info", "is_free", "type", "abouth_the_game", "short_description"] },
       include: [
         { model: Developers, attributes: ['developer'], through: { attributes: [] } },
         { model: Languages, attributes: ['language'], through: { attributes: [] } },
@@ -334,23 +334,16 @@ const allGames = async (req, res) => {
         { model: Categories, attributes: ['category'], through: { attributes: [] } },
         { model: Images, attributes: ['image'], through: { attributes: [] } },
         { model: Videos, attributes: ['video'], through: { attributes: [] } },
+        { model: Reviews, attributes: ['reviews', 'rating', 'date'], through: { attributes: [] } },
       ],
       offset: (page - 1) * limit,
       limit: limit
     });
 
-    const gamesWithId = dbGames.map(dbGame => {
-      const { appid, ...gameData } = dbGame.toJSON();
-      return {
-        id: appid,
-        ...gameData,
-      };
-    });
-
     const gameNames = dbGames.map(dbGame => dbGame.name);
     console.log(gameNames);
 
-    const gamesWithModifiedPrice = gamesWithId.map(game => {
+    const gamesWithModifiedPrice = dbGames.map(game => {
             const gameCurrency = game.price_overview.slice(0, 3);
             const gameCurrency01 = game.price_overview.slice(0, 1);
             const gameCurrency02 = game.price_overview.includes("₫");
@@ -413,6 +406,4 @@ const allGames = async (req, res) => {
   }
 };
 
-module.exports = {
-  allGames
-};
+module.exports = {allGames}
