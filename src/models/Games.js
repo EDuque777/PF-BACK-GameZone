@@ -76,7 +76,17 @@ module.exports = (sequelize) => {
     pc_requirements: {
       type: DataTypes.JSON,
       allowNull: false
-    },  
+    },
+    
+    discounted: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false
+    },
+
+    discount_percent: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    }
 
   },
     {

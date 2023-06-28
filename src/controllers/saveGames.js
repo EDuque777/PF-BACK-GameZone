@@ -170,7 +170,7 @@ const saveGames = async (req, res) => {
     let gamesSaved = 0;
 
     do {
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      //await new Promise(resolve => setTimeout(resolve, 2000));
       const { data } = await axios.get(`${gameUrl}${idGames[i].appid}`);
       const info = data[idGames[i].appid.toString()].data;
       //info && info.metacritic?.score >= 30 && info.steam_appid !== 244210
@@ -196,6 +196,8 @@ const saveGames = async (req, res) => {
           controller_support: info.controller_support? info.controller_support: null,
           ban: false,
           pc_requirements: info.pc_requirements || 'No requirements available',
+          discounted: false,
+          discount_percent: 0
         };
 
         const game = await Games.create(newGame);
@@ -307,7 +309,7 @@ const saveGames = async (req, res) => {
 
       // Incrementar el contador
       i++;
-    } while (gamesSaved <= 100);
+    } while (gamesSaved <= 20);
 
     return res.status(200).json("¡Juegos guardados exitosamente!");
   } catch (error) {
