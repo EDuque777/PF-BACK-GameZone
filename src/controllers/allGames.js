@@ -381,7 +381,7 @@
 //     const limit = parseInt(req.query.limit) || 7;
 
 //     const dbGames = await Games.findAll({
-//       attributes: { exclude: ["id", "metacritic", "currency", "support_info", "is_free", "type", "abouth_the_game", "short_description"] },
+//       // attributes: { exclude: [ "metacritic", "currency", "support_info", "is_free", "type", "abouth_the_game", "short_description"] },
 //       include: [
 //         { model: Developers, attributes: ['developer'], through: { attributes: [] } },
 //         { model: Languages, attributes: ['language'], through: { attributes: [] } },
@@ -395,18 +395,18 @@
 //       limit: limit
 //     });
 
-//     const gamesWithId = dbGames.map(dbGame => {
-//       const { appid, ...gameData } = dbGame.toJSON();
-//       return {
-//         id: appid,
-//         ...gameData,
-//       };
-//     });
+//     // const gamesWithId = dbGames.map(dbGame => {
+//     //   const { appid, ...gameData } = dbGame.toJSON();
+//     //   return {
+//     //     id: appid,
+//     //     ...gameData,
+//     //   };
+//     // });
 
 //     const gameNames = dbGames.map(dbGame => dbGame.name);
 //     console.log(gameNames);
 
-//     const gamesWithModifiedPrice = gamesWithId.map(game => {
+//     const gamesWithModifiedPrice = dbGames.map(game => {
 //             const gameCurrency = game.price_overview.slice(0, 3);
 //             const gameCurrency01 = game.price_overview.slice(0, 1);
 //             const gameCurrency02 = game.price_overview.includes("₫");
@@ -447,10 +447,9 @@
 //               console.log(game.price_overview)
 //             }
 //             else if(gameCurrency === "ARS"){
-//               const currencyPrice = parseFloat(gamePrice04).toFixed(3)
-//               const currencyPrice01 = currencyPrice.replace(/(\d)(?=(\d{3})+(?!\d))/g, '1.').replace(/.\d+$/, '').replace(/[^0-9]/g, '');
-//               game.price_overview = (currencyPrice01 * 0.0039).toFixed(2)
-//               console.log(game.price_overview)
+//               const currencyPrice = gamePrice04.replace(/[,.]/g, '');
+//   game.price_overview = (currencyPrice * 0.0039).toFixed(2);
+//   console.log(game.price_overview);
 //             }
 //             // else if(gameCurrency === "MXN"){
 
