@@ -1,4 +1,4 @@
-const { Games, Categories, Developers, Genres, Languages, Platforms, Publishers, } = require('../db');
+const { Games, Categories, Developers, Genres, Languages, Platforms, Publishers, Reviews } = require('../db');
 // Ruta para traer todos los Games creados (borrado lógico)
 const getAllGames = async (req, res) => {
   try {
@@ -287,6 +287,22 @@ const banGame = async (req, res) => {
   }
 };
 
+const reviewGames = async (req, res) => {
+  try {
+    const { id } = req.body
+
+    const game = await Games.findByPk(id, {
+      attributes: { exclude: ['id'] },
+      include: [
+        { model: Reviews, attributes: ['reviews', 'rating', 'date'], through: { attributes: [] } }
+      ]
+    })
+    res.status(200).json(game)
+  } catch (error) {
+    res.status(400).send(error.message)
+  }
+}
+
 
 module.exports = {
   getAllGames,
@@ -294,5 +310,6 @@ module.exports = {
   createGames,
   deleteGame,
   updateGame,
-  banGame
+  banGame,
+  reviewGames
 };

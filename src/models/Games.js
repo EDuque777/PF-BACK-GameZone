@@ -72,7 +72,11 @@ module.exports = (sequelize) => {
     ban: {
        type: DataTypes.BOOLEAN,
        allowNull: false
-    }, 
+    },
+    pc_requirements: {
+      type: DataTypes.JSON,
+      allowNull: false
+    },  
 
   },
     {
