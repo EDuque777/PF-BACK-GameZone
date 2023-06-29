@@ -77,7 +77,7 @@ const captureOrder = async (req, res) => {
             text: "Correo de prueba", // plain text body
           });
         
-        res.redirect('http://localhost:3000/dashboard')
+        res.redirect('http://localhost:3000/user')
     } catch (error) {
         res.status(400).send('Error')
     }
