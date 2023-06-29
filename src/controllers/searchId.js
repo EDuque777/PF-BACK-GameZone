@@ -1,4 +1,4 @@
-const { Games, Developers, Languages, Platforms, Genres, Categories, Images, Videos, Reviews } = require("../db");
+const { Games, Developers, Languages, Platforms, Genres, Categories, Images, Videos, Reviews, Users } = require("../db");
 
 const searchId = async(req, res) => {
 
@@ -15,7 +15,7 @@ const searchId = async(req, res) => {
             { model: Categories, attributes: ['category'], through: { attributes: [] } },
             { model: Images, attributes: ['image'], through: { attributes: [] } },
             { model: Videos, attributes: ['video'], through: { attributes: [] } },
-            { model: Reviews, attributes: ['rating', 'date', 'reviews'], through: {attributes:[]}}
+            { model: Reviews, include: [{ model: Users, attributes: ['name', 'profileImage'], through: { attributes: [] } } ] }
         ],
     })
 
