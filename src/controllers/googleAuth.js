@@ -17,7 +17,8 @@ passport.use(new GoogleStrategy({
         name : profile.name.givenName,
         user_name : profile.displayName,
         email : profile.emails[0].value,
-        profileImage : profile.photos[0].value
+        profileImage : profile.photos[0].value,
+        ban: false
       }
 
       //Users.findOrCreate({

@@ -389,7 +389,7 @@ const allGames = async (req, res) => {
               console.log(game.price_overview)
             }
             else if(gameCurrency === "ARS"){
-              const currencyPrice = gamePrice04.replace(/,.$/g, '').replace('.', '');
+              const currencyPrice = gamePrice04.replace(/,.*$/g, '').replace('.', '');
               console.log(currencyPrice)
               const number = (currencyPrice * 0.0039).toFixed(2);
               game.price_overview = Number(number)
