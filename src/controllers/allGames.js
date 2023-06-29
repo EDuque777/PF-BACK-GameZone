@@ -169,7 +169,7 @@ const allGames = async (req, res) => {
     // const page = parseInt(req.query.page) || 1;
     // const limit = parseInt(req.query.limit) || 15;
 
-    const transformPrice = "https://v6.exchangerate-api.com/v6/d4fa1b58267ebef392077018/latest/USD";
+    const transformPrice = "https://v6.exchangerate-api.com/v6/48607dc5313e842c2268f92c/latest/USD";
     const { data: priceData } = await axios.get(transformPrice);
     const conversionRates = priceData.conversion_rates;
 

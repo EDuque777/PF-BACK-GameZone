@@ -5,6 +5,7 @@ const multer = require('multer');
 const bcrypt = require("bcryptjs")
 const { createAccessToken } = require("../middlewares/jwt.js")
 
+
 // Configuracion de multer para la subida de imgenes
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -76,19 +77,19 @@ const createUser = async (req, res) => {
       if (!email || password.length < 8 || !password || !name) {
   
         res.status(400).json({ message: "datos invalidos" })
-      } else {
-        // Verificacion del correo 
-        const existingUser = await Users.findOne({
-          where: {
-            email: email
-          }
-        });
+      // } else {
+      //   // Verificacion del correo 
+      //   const existingUser = await Users.findOne({
+      //     where: {
+      //       email: email
+      //     }
+      //   });
   
-        if (existingUser) {
-          return res.status(400).json({ error: "El correo electrónico ya está registrado" });
-        }
+      //   if (existingUser) {
+      //     return res.status(400).json({ error: "El correo electrónico ya está registrado" });
+      //   }
+
         const salt = await bcrypt.genSalt(12)
-  
         const cripto = await bcrypt.hash(password, salt)
         const createUserAdmin = await Users.create({
   
