@@ -2,12 +2,14 @@ const { Router } = require('express');
 const  saveGames = require("../controllers/saveGames")
 const {nameGames} = require("../controllers/nameGames")
 const {allGames} = require("../controllers/allGames")
+const {allGamesAdmin} = require("../controllers/allGamesAdmin")
 const {searchId} = require("../controllers/searchId")
 const {platformGames} = require("../controllers/platformGames")
 const {languagesGames} = require("../controllers/languagueGames")
 const {categoriesGames} = require("../controllers/categoriesGames")
 const {developersGames} = require("../controllers/developersGames")
 const {genresGames} = require("../controllers/genresGames")
+const {reviewsDemo} = require("../controllers/reviewsDemo")
 const comingSoon = require('../controllers/comingSoon')
 const specials = require('../controllers/specials')
 const topSellers = require('../controllers/topSellers')
@@ -16,16 +18,19 @@ const { createAccount } = require("../controllers/createAccount.js")
 const { logIn } = require("../controllers/logIn.js")
 const { cerrarSesion } = require("../controllers/logout.js")
 const { profileUser } = require("../controllers/profile.js")
-const { validateToken } = require("../middlewares/validateToken.js")
+//const { validateToken } = require("../middlewares/validateToken.js")
 const { upload, uploadPhoto } = require('../controllers/uploadPhoto');
 const { isAdmin } = require("../middlewares/auth.js")
-const { getAllGames, getGame, createGames, deleteGame, updateGame, banGame } = require('../controllers/games.controllers');
-const { getAllUsers, getUser, createUser, deleteUser, updateUser, banUser } = require('../controllers/users.controllers');
+const { getAllGames, getGame, createGames, deleteGame, updateGame, banGame, reviewGames } = require('../controllers/games.controllers');
+const { getAllUsers, getUser, createUser, deleteUser, updateUser, banUser, gamesUser } = require('../controllers/users.controllers');
 const {cancelOrder, createOrder, captureOrder} = require('../controllers/paypalControllers')
-const { createReview, updateReview } = require("../controllers/reviews");
-
+const { createReview, updateReview, deleteReview } = require("../controllers/reviews");
 
 const router = Router();
+
+router.get("/reviewsDemo/:id", (req, res) => {
+    reviewsDemo(req,res);
+});
 
 router.get("/back/", (req, res) => {
     saveGames(req, res);
@@ -33,6 +38,10 @@ router.get("/back/", (req, res) => {
 
 router.get("/allGames", (req, res) => {
     allGames(req, res);
+})
+
+router.get("/allGamesAdmin", (req, res) => {
+    allGamesAdmin(req, res)
 })
 
 router.get("/nameGames", (req, res) => {
@@ -129,7 +138,7 @@ router.post("/cerrarSesion", cerrarSesion)
 
 // Ruta del perfil del Usuario (esto es solo un ejemplo, se encarga Cristian)
 // esto sera como una ruta protegida
-router.get("/profile/:id", profileUser);
+router.get("/profile/:id", profileUser);//validateToken
 
 
 
@@ -183,7 +192,13 @@ router.put('/games/:gamesId/ban', banGame);
 
 // Ruta para crear una review
 router.post('/user/review', createReview );
-
+//Ruta para editar una review
 router.put('/user/review', updateReview );
+//Ruta para traer los juegos que ha comprado un usuario
+router.get('/user/games', gamesUser)
+//traer los reviews de un juego
+router.get('/game/reviews', reviewGames)
+//Borrar review
+router.delete('/user/deleteReview/:id', deleteReview)
 
 module.exports = router;

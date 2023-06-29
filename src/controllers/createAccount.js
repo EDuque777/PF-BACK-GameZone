@@ -48,7 +48,8 @@ const createAccount = async (req, res) => {
                     user_name,
                     country,
                     profileImage,
-                    confirmPassword
+                    confirmPassword, 
+                    ban: false
                 })
     
                 // esto se convierte en un middlewares

@@ -22,7 +22,7 @@ module.exports = (sequelize) => {
         },
         password: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         confirmPassword : {
             type : DataTypes.STRING
@@ -38,7 +38,11 @@ module.exports = (sequelize) => {
         profileImage: {
             type: DataTypes.STRING,
             allowNull: true
-        }
+        },
+        ban: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false
+         }, 
     },
         {
             timestamps: false

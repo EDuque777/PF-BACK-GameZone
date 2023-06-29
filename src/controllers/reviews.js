@@ -1,39 +1,44 @@
-const { Users, Reviews } = require('../db');
+const moment = require('moment');
+const { Users, Reviews, Games } = require('../db');
 
 const createReview = async (req, res) => {
-    try {
-      //se debe de recibir el id del usuario para hacer la relacion con la review
-      const { review, rating, id } = req.body;
-      if (!review || !rating ) res.status(400).json({ message: "campos imcompletos" })
+  try {
+    //se debe de recibir el id del usuario para hacer la relacion con la review
+    const { review, rating, id, name } = req.body;
+    console.log(req.body);
+    if (!review || !rating ) res.status(400).json({ message: "campos incompletos" })
 
-      const user = await Users.findByPk(id)
-      
-      const createReview = await Reviews.create({ 
-          reviews: review,
-          rating: rating,
-          date: Date.now()
-        });
-      
-      await createReview.addUsers(user);
-      
-        res.status(200).send('Review Creada')
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+    const user = await Users.findByPk(id)
+    const game = await Games.findOne({ where : { name: name } })
+
+    const createReview = await Reviews.create({ 
+        reviews: review,
+        rating: rating,
+        date: moment().format('DD/ MM/ YYYY') 
+      });
+
+    await createReview.addUsers(user)
+    await createReview.addGames(game);
+
+      res.status(200).send('Review Creada')
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
 }
 
 const updateReview = async (req, res) => {
   try {
-    const { id } = req.query;
-    const { review, rating } = req.body
     
+  
+    const { review, rating, id } = req.body
+
     await Reviews.update(
       {
         reviews: review,
         rating: rating,
-        date: Date.now()
+        date: moment().format('DD/ MM/ YYYY')
       }, 
-      {where:{id}}
+      { where:{ id } }
     )
 
     res.status(200).send('Updated Review')
@@ -43,8 +48,27 @@ const updateReview = async (req, res) => {
   }
 }
 
+const deleteReview = async (req, res) =>{
+
+  try {
+   const { id } = req.params
+
+   await Reviews.destroy({ where: 
+     { id: id }
+   })
+
+   res.status(200).json('Deleted review')
+
+  } catch (error) {
+   res.status(404).send(error.message)
+  }
+}
+
+
+
 
   module.exports = {
     createReview,
-    updateReview
+    updateReview,
+    deleteReview
 };
