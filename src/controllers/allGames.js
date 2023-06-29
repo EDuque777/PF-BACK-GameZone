@@ -46,7 +46,6 @@ const allGames = async (req, res) => {
         game.price_overview = Number(number);
       } else if (gameCurrency === "ARS") {
         const number = NP.times(gamePrice / 266.5).toFixed(2);
-        console.log(number)
         game.price_overview = Number(number);
       } else if (gameCurrency === "Mex") {
         const number = NP.times(gamePrice / 17.12).toFixed(2);
