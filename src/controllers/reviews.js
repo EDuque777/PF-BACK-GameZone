@@ -16,7 +16,7 @@ const createReview = async (req, res) => {
     const createReview = await Reviews.create({ 
         reviews: review,
         rating: rating,
-        date: moment().format('DD, MM, YYYY') 
+        date: moment().format('DD/ MM/ YYYY') 
       });
 
     await createReview.addUsers(user)
@@ -30,14 +30,19 @@ const createReview = async (req, res) => {
 
 const updateReview = async (req, res) => {
   try {
-    const { id } = req.query;
-    const { review, rating } = req.body
+    
+  
+    const { review, rating, id } = req.body
+
+    console.log(req.body);
+
+   
     
     await Reviews.update(
       {
         reviews: review,
         rating: rating,
-        date: Date.now()
+        date: moment().format('DD/ MM/ YYYY')
       }, 
       { where:{ id } }
     )
@@ -49,25 +54,22 @@ const updateReview = async (req, res) => {
   }
 }
 
-const getReview = async (req, res) => {
-  try {
-    const { id } = req.query;
-    const { review, rating } = req.body
-    
-    await Reviews.update(
-      {
-        reviews: review,
-        rating: rating,
-        date: Date.now()
-      }, 
-      { where:{ id } }
-    )
 
-    res.status(200).send('Updated Review')
+const deleteReview = async (req, res) =>{
 
-  } catch (error) {
-    res.status(400).send({error: error.message})
-  }
+   try {
+    const { id } = req.params
+    console.log("log de body",req.params);
+
+    await Reviews.destroy({ where: 
+      { id: id }
+    })
+
+    res.status(200).json('Deleted review')
+
+   } catch (error) {
+    res.status(404).send(error.message)
+   }
 }
 
 
@@ -76,5 +78,5 @@ const getReview = async (req, res) => {
   module.exports = {
     createReview,
     updateReview,
-    getReview
+    deleteReview
 };
