@@ -4,6 +4,7 @@ const { PAYPAL_ID, PAYPAL_SECRET_KEY, PAYPAL_URL } = process.env;
 const { Users, Games } = require('../db');
 const axios = require('axios');
 const URL = `${PAYPAL_URL}/v2/checkout/orders`
+const {main} = require("../middlewares/nodemailer")
 let info;
 
 const createOrder = async (req, res) => {
@@ -70,12 +71,14 @@ const captureOrder = async (req, res) => {
             await game.addUsers(user);
         }
 
-        await transporter.sendMail({
-            from: '"THANK YOU for your purchase with us" <carrizosamayito@gmail.com>', // sender address
-            to: "mytcarrizosaland@gmail.com", // list of receivers
-            subject: "THANK YOU for your purchase with us", // Subject line
-            text: "Correo de prueba", // plain text body
-          });
+        await main()
+
+        // await transporter.sendMail({
+        //     from: 'esteban.duque911@gmail.com', // sender address
+        //     to: "esteban.duque911@gmail.com", // list of receivers
+        //     subject: "THANK YOU for your purchase with us", // Subject line
+        //     text: "Correo de prueba", // plain text body
+        //   });
         
         res.redirect('http://localhost:3000/user')
     } catch (error) {
