@@ -1,4 +1,5 @@
 require('dotenv').config();
+const transporter = require('../middlewares/nodemailer')
 const { PAYPAL_ID, PAYPAL_SECRET_KEY, PAYPAL_URL } = process.env;
 const { Users, Games } = require('../db');
 const axios = require('axios');
@@ -68,6 +69,13 @@ const captureOrder = async (req, res) => {
             let game = await Games.findOne({where: {name: info.cartGames[i].name}})
             await game.addUsers(user);
         }
+
+        await transporter.sendMail({
+            from: '"THANK YOU for your purchase with us" <carrizosamayito@gmail.com>', // sender address
+            to: "mytcarrizosaland@gmail.com", // list of receivers
+            subject: "THANK YOU for your purchase with us", // Subject line
+            text: "Correo de prueba", // plain text body
+          });
         
         res.redirect('http://localhost:3000/user')
     } catch (error) {
