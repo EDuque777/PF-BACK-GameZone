@@ -22,8 +22,8 @@ const createOrder = async (req, res) => {
                 brand_name: "Gamezone",
                 landing_page: "NO_PREFERENCE",
                 user_action: "PAY_NOW",
-                return_url: "http://localhost:3001/captureOrder",
-                cancel_url: "http://localhost:3001/cancelOrder",
+                return_url: "https://back-gamezone-y96h.onrender.com/captureOrder",
+                cancel_url: "https://back-gamezone-y96h.onrender.com/cancelOrder",
             }
         };
 
@@ -69,14 +69,14 @@ const captureOrder = async (req, res) => {
             await game.addUsers(user);
         }
         
-        res.redirect('http://localhost:3000/user')
+        res.redirect('https://front-gamezone-f8fu.vercel.app/user')
     } catch (error) {
         res.status(400).send('Error')
     }
 }
 
 const cancelOrder = (req, res) => {
-    return res.redirect('http://localhost:3000/cart')
+    return res.redirect('https://front-gamezone-f8fu.vercel.app/cart')
 }
 
 module.exports = {
