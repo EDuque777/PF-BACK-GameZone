@@ -70,7 +70,7 @@ const getUser = async (req, res) => {
 
 const createUser = async (req, res) => {
     try {
-      const { name, email, password, role } = req.body;
+      const { name, email, password, role, ban } = req.body;
       if (!email || password.length < 8 || !password || !name) {
   
         res.status(400).json({ message: "datos invalidos" })
@@ -94,7 +94,8 @@ const createUser = async (req, res) => {
           email: email,
           password: cripto,
           profileImage: profileImage,
-          role: role
+          role: role,
+          ban: false
         });
         const token = await createAccessToken({id : createUserAdmin.id, role : createUserAdmin.role})
         res.cookie("token", token)
@@ -203,26 +204,21 @@ const banUser = async (req, res) => {
 
 const gamesUser = async (req, res) => {
   try {
-    const { id } = req.body;
-
+    //se debe recibir el id para que traiga los juegos del usuario
+    const { id } = req.query
+    //corregir
     const userGames = await Users.findByPk(id, {
       attributes: { exclude: ['id', 'role', 'email', 'password', 'country', 'confirmPassword'] },
       include: [
-        { model: Games, attributes: ['name', 'header_image'], through: { attributes: [] },
-          include: [
-            {
-              model: Reviews, include: [{ model: Users, attributes: ['name'], through: { attributes: [] } }]
-            }
-          ]
-        }
+        { model: Games, attributes: ['id', 'name', 'header_image'], through: { attributes: [] } },
       ],
-    });
+    })
 
-    res.status(200).json(userGames);
+      res.status(200).json(userGames)
   } catch (error) {
-    res.status(400).send({ error: error.message });
+      res.status(400).send( { error: error.message } )
   }
-};
+}
 
 
 

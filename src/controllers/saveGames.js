@@ -170,7 +170,7 @@ const saveGames = async (req, res) => {
     let gamesSaved = 0;
 
     do {
-      //await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 2000));
       const { data } = await axios.get(`${gameUrl}${idGames[i].appid}`);
       const info = data[idGames[i].appid.toString()].data;
       //info && info.metacritic?.score >= 30 && info.steam_appid !== 244210
