@@ -489,7 +489,7 @@ require('dotenv').config();
 const allGames = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 7;
+    const limit = parseInt(req.query.limit) || 14;
 
     // const { data: appList } = await axios.get(URL);
     // const idGames = appList.applist.apps.filter(app => app.name.length > 0);
