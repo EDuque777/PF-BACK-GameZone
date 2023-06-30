@@ -23,7 +23,7 @@ const nameGames = async (req, res) => {
       offset: (page - 1) * limit,
       limit: limit
     });
-
+console.log(dbGames)
     return res.status(200).json(dbGames);
   } catch (error) {
     res.status(404).send(error.message);
