@@ -21,7 +21,8 @@ server.use(express.json())
 server.use(morgan('dev'));
 
 server.use(cors({
-  origin : "http://localhost:3000",
+  // origin : "http://localhost:3000",
+  origin : "*",
   methods : ["POST", "GET", "PUT", "DELETE"],
   credentials : true
 }))

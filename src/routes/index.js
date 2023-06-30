@@ -216,4 +216,6 @@ router.get('/game/reviews', reviewGames)
 //Borrar review
 router.delete('/user/deleteReview/:id', deleteReview)
 
+
+
 module.exports = router;
