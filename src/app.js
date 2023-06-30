@@ -21,10 +21,11 @@ server.use(express.json())
 server.use(morgan('dev'));
 
 server.use(cors({
-  origin : "*",
-  methods : ["POST", "GET", "PUT", "DELETE"],
-  credentials : true
-}))
+  origin: "*",
+  methods: ["POST", "GET", "PUT", "DELETE"],
+  credentials: true
+}));
+
 
 
 server.name = 'API';

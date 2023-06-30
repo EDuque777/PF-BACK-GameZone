@@ -9,13 +9,13 @@ const { name } = req.query;
 try {
 
   const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 100;
+  const limit = parseInt(req.query.limit) || 5;
 
-        const { data: appList } = await axios.get(URL);
-        const idGames = appList.applist.apps.filter(app => app.name.length > 0);
-        const transformPrice = "https://v6.exchangerate-api.com/v6/27580267bfc72f9a7ad8b625/latest/USD";
-        const { data: priceData } = await axios.get(transformPrice);
-        const conversionRates = priceData.conversion_rates;
+        // const { data: appList } = await axios.get(URL);
+        // const idGames = appList.applist.apps.filter(app => app.name.length > 0);
+        // const transformPrice = "https://v6.exchangerate-api.com/v6/27580267bfc72f9a7ad8b625/latest/USD";
+        // const { data: priceData } = await axios.get(transformPrice);
+        // const conversionRates = priceData.conversion_rates;
 
         const dbGames = await Games.findAll({
             where: {name: {[Sequelize.Op.iLike]: `%${name}%`}},
