@@ -166,8 +166,10 @@ const saveGames = async (req, res) => {
     const { data: appList } = await axios.get(URL);
     const idGames = appList.applist.apps.filter(app => app.name.length > 0); 
 
-    let i = idGames.length - 1;;
-    let gamesSaved = 0;
+    // let i = idGames.length - 1;;
+    // let gamesSaved = 0;
+let i = 0
+let gamesSaved = 0
 
     do {
       await new Promise(resolve => setTimeout(resolve, 1000));
@@ -305,7 +307,7 @@ const saveGames = async (req, res) => {
       }
 
       // Incrementar el contador
-      i--;
+      i++;
     } while (gamesSaved <= 10);
 
     return res.status(200).json("¡Juegos guardados exitosamente!");
