@@ -13,11 +13,12 @@ passport.use(new GoogleStrategy({
       //console.log(req.user)
       console.log(profile, "estos datos son del logueo");
 
-      const newUser = {
+      let newUser = {
         name : profile.name.givenName,
         user_name : profile.displayName,
         email : profile.emails[0].value,
-        profileImage : profile.photos[0].value
+        profileImage : profile.photos[0].value,
+        //ban : false
       }
 
       //Users.findOrCreate({
@@ -31,7 +32,7 @@ passport.use(new GoogleStrategy({
 
       try {
 
-        const user = await Users.findOne({where : {email: profile.emails[0].value}})
+        let user = await Users.findOne({where : {email: profile.emails[0].value}})
         if (user) {
 
           console.log(user, "estos son de la base de datos")

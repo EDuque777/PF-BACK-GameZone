@@ -24,7 +24,9 @@ const { getAllGames, getGame, createGames, deleteGame, updateGame, banGame } = r
 const { getAllUsers, getUser, createUser, deleteUser, updateUser, banUser, gamesUser } = require('../controllers/users.controllers');
 const {cancelOrder, createOrder, captureOrder} = require('../controllers/paypalControllers')
 const { createReview, updateReview } = require("../controllers/reviews");
-
+const { updatePassword } = require("../controllers/updatePassword")
+//const { main } = require("../controllers/exampleMailer.js")
+const { forgotPassword, resetPassword } = require("../controllers/forgotPassword")
 
 const router = Router();
 
@@ -136,7 +138,15 @@ router.post("/cerrarSesion", cerrarSesion)
 // esto sera como una ruta protegida
 router.get("/profile/:id", profileUser);
 
+router.put("/updatePassword/:id", updatePassword)// esta es para actualizar contraseñas
 
+// Recuperar cuenta del usuario
+
+router.post("/forgot-password", forgotPassword)
+router.get("/reset-password/:id/:token", resetPassword)
+
+// esto es de prueba
+//router.get("/enviarEmail", main)
 
 // Ruta para tarer todos los Games (borrado lógico)
 router.get('/games', getAllGames);

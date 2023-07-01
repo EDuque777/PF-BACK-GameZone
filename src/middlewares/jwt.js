@@ -6,7 +6,7 @@ const { JWT_SECRET } = process.env
 function createAccessToken(payload) {
 
     return new Promise((resolve, reject) => {
-        jwt.sign(payload, JWT_SECRET, {expiresIn : "7d"}, (err, token) => {
+        jwt.sign(payload, JWT_SECRET, {expiresIn : "5m"}, (err, token) => {
             if (err) reject(err)
             resolve(token) 
         })
