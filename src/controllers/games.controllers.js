@@ -263,29 +263,31 @@ const updateGame = async (req, res) => {
 // Ruta para banear un Game (borrado lógico)
 const banGame = async (req, res) => {
   try {
-    let bannedGame;
+    const gameId = req.params.gamesId;
 
-    if (req.query.name) {
-      // Bannear juego por nombre
-      bannedGame = await Games.findOne({ where: { name: req.query.name } });
-    } else if (req.params.gamesId) {
-      // Bannear juego por ID
-      bannedGame = await Games.findByPk(req.params.gamesId);
-    }
+    const bannedGame = await Games.findByPk(gameId);
 
     if (!bannedGame) {
       return res.status(404).json({ error: 'Juego no encontrado' });
     }
 
-    bannedGame.status = 'baneado';
-    bannedGame.bannedAt = new Date();
+    const currentBanStatus = bannedGame.ban || false;
+
+    // Actualizar el estado de baneo según el valor actual
+    const newBanStatus = !currentBanStatus;
+    bannedGame.ban = newBanStatus;
+    bannedGame.status = newBanStatus ? 'baneado' : 'activo';
+    bannedGame.bannedAt = newBanStatus ? new Date() : null;
+
     await bannedGame.save();
 
-    res.json({ message: 'Juego baneado exitosamente' });
+    res.json({ message: 'Estado de baneo del juego actualizado exitosamente', ban: newBanStatus });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
+
 
 const reviewGames = async (req, res) => {
   try {
