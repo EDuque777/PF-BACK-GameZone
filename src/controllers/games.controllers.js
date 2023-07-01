@@ -1,4 +1,6 @@
 const { Games, Categories, Developers, Genres, Languages, Platforms, Publishers, Reviews } = require('../db');
+const transporter = require('../middlewares/nodemailer')
+
 // Ruta para traer todos los Games creados (borrado lógico)
 const getAllGames = async (req, res) => {
   try {
@@ -280,6 +282,22 @@ const banGame = async (req, res) => {
     bannedGame.status = 'baneado';
     bannedGame.bannedAt = new Date();
     await bannedGame.save();
+
+    await transporter.sendMail({
+      from: '"Game Accessibility Notification" <carrizosamayito@gmail.com>', // sender address
+      to: `carrizosamayito@gmail.com`, // list of receivers
+      subject: "Game Accessibility Notification", // Subject line
+      html:  `<h1>Game Accessibility Notification</h1>
+              <p>Dear Admin,</p>
+              <p>We would like to inform you that a game in our platform has been banned and is no longer accessible. Below are the details:</p>
+              <p><strong>Game:</strong> ${bannedGame.name}</p>
+              <p>Please take the necessary steps to ensure that the game is removed from the platform and is no longer available for users.</p>
+              <p>If you require any additional information or have any questions regarding this ban, please don't hesitate to contact us.</p>
+              <p>Thank you for your prompt attention to this matter.</p>
+              <p>Best regards,</p>
+              <p>The Gamezone Team</p>`
+      }
+  )
 
     res.json({ message: 'Juego baneado exitosamente' });
   } catch (error) {

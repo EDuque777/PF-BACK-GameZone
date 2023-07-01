@@ -1,4 +1,5 @@
 const { Users } = require("../db")
+const transporter = require('../middlewares/nodemailer')
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const { createAccessToken } = require("../middlewares/jwt.js")
@@ -64,6 +65,23 @@ const createAccount = async (req, res) => {
                 })
             }
         }
+
+        
+    await transporter.sendMail({
+        from: '"Welcome to Our Platform" <carrizosamayito@gmail.com>', // sender address
+        to: `${email}`, // list of receivers
+        subject: "Welcome to Our Platform", // Subject line
+        html:  `<h1>Welcome to Gamezone</h1>
+                <p>Dear ${name},</p>
+                <p>Welcome to our platform! We are thrilled to have you as a new member of our community.</p>
+                <p>With our platform, you'll have access to a wide range of exciting features, games, and interactive experiences. Whether you're a casual player or a seasoned gamer, we have something for everyone.</p>
+                <p>We encourage you to explore our platform, discover new games and enjoy the immersive world of gaming.</p>
+                <p>If you have any questions, concerns, or need assistance, our support team is always ready to help. Feel free to reach out to us via mail at carrizosamayito@gmail.com</p>
+                <p>Thank you for joining us! We hope you have an incredible experience and make lasting memories on our platform.</p>
+                <p>Best regards,</p>
+                <p>The Gamezone Team</p>`
+        }
+    )
 
     } catch (error) {
         res.status(500).json({message : error.message})

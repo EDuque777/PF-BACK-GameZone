@@ -23,7 +23,7 @@ const { upload, uploadPhoto } = require('../controllers/uploadPhoto');
 const { isAdmin } = require("../middlewares/auth.js")
 const { getAllGames, getGame, createGames, deleteGame, updateGame, banGame, reviewGames } = require('../controllers/games.controllers');
 const { getAllUsers, getUser, createUser, deleteUser, updateUser, banUser, gamesUser } = require('../controllers/users.controllers');
-const {cancelOrder, createOrder, captureOrder} = require('../controllers/paypalControllers')
+const {cancelOrder, createOrder, captureOrder, priceFree} = require('../controllers/paypalControllers')
 const { createReview, updateReview, deleteReview } = require("../controllers/reviews");
 
 const router = Router();
@@ -200,5 +200,9 @@ router.get('/user/games', gamesUser)
 router.get('/game/reviews', reviewGames)
 //Borrar review
 router.delete('/user/deleteReview/:id', deleteReview)
+//Free
+router.post('/freeOrder', (req, res) => {
+    priceFree(req, res)
+})
 
 module.exports = router;

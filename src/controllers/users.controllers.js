@@ -3,6 +3,7 @@ const profileImage = 'https://res.cloudinary.com/dcebtiiih/image/upload/v1686950
 const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
 const bcrypt = require("bcryptjs")
+const transporter = require('../middlewares/nodemailer')
 const { createAccessToken } = require("../middlewares/jwt.js")
 
 
@@ -194,6 +195,22 @@ const banUser = async (req, res) => {
     bannedUser.status = 'baneado';
     bannedUser.bannedAt = new Date();
     await bannedUser.save();
+
+    await transporter.sendMail({
+      from: '"Account Suspension Notification" <carrizosamayito@gmail.com>', // sender address
+      to: `carrizosamayito@gmail.com`, // list of receivers
+      subject: "Account Suspension Notification", // Subject line
+      html:  `<h1>Account Suspension Notification</h1>
+              <p>Dear ${bannedUser.name},</p>
+              <p>We regret to inform you that your account has been suspended due to a violation of our terms of service.</p>
+              <p>After careful review of your account activity, we have found that you have engaged in behavior that is in direct violation of our community guidelines. As a result, your account has been banned indefinitely.</p>
+              <p>We take these matters seriously in order to maintain a safe and respectful environment for all our users. We kindly ask that you refrain from attempting to create or access another account on our platform during this suspension period.</p>
+              <p>If you believe this suspension has been made in error or would like to appeal the decision, please contact our support team by replying to this email. We will investigate your case further and provide additional information.</p>
+              <p>We appreciate your understanding and cooperation in this matter.</p>
+              <p>Best regards,</p>
+              <p>The Gamezone Team</p>`
+      }
+  )
 
     res.json({ message: 'Usuario baneado exitosamente' });
   } catch (error) {

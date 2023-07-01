@@ -6,6 +6,23 @@ const axios = require('axios');
 const URL = `${PAYPAL_URL}/v2/checkout/orders`
 let info;
 
+const priceFree = async (req, res) => {
+    try {
+        info = req.body
+        console.log(info);
+        if (info.totalPrice === "0.00") {
+            const user = await Users.findByPk(info.dataUser.id)
+            for (let i = 0; i < info.cartGames.length; i++) {
+                let game = await Games.findOne({where: {name: info.cartGames[i].name}})
+                await game.addUsers(user);
+            }
+        res.status(200).json('comprado master')
+        }
+    } catch (error) {
+        console.error(error.message);
+    }
+}
+
 const createOrder = async (req, res) => {
     try {
         info = req.body
@@ -23,8 +40,8 @@ const createOrder = async (req, res) => {
                 brand_name: "Gamezone",
                 landing_page: "NO_PREFERENCE",
                 user_action: "PAY_NOW",
-                return_url: "http://localhost:3001/captureOrder",
-                cancel_url: "http://localhost:3001/cancelOrder",
+                return_url: "https://back-gamezone-y96h.onrender.com/captureOrder",
+                cancel_url: "https://back-gamezone-y96h.onrender.com/cancelOrder",
             }
         };
 
@@ -64,31 +81,62 @@ const captureOrder = async (req, res) => {
         //console.log(response.data);
 
         const user = await Users.findByPk(info.dataUser.id)
+        let games = []
 
-        for (let i = 0; i < info.cartGames.length; i++) {
+        for (let i = 0; i < info.cartGames.length - 1; i++) {
             let game = await Games.findOne({where: {name: info.cartGames[i].name}})
+            i < info.cartGames.length - 1? games.push(info.cartGames[i].name): false
             await game.addUsers(user);
         }
-
+        
+        games = games.join(', ')
+        
+        if(!games.length) {
         await transporter.sendMail({
             from: '"THANK YOU for your purchase with us" <carrizosamayito@gmail.com>', // sender address
-            to: "mytcarrizosaland@gmail.com", // list of receivers
+            to: `${info.dataUser.email}`, // list of receivers
             subject: "THANK YOU for your purchase with us", // Subject line
-            text: "Correo de prueba", // plain text body
-          });
+            html:  `<h1>Thank You for Your Purchase</h1>
+                    <p>Dear ${user.dataValues.name},</p>
+                    <p>We want to express our sincere gratitude for your purchase of the ${info.cartGames[0].name}!</p>
+                    <p>We hope you enjoy many hours of fun and entertainment with this exciting title. Our team has worked hard to provide you with an exceptional gaming experience, and we are confident that you will love it.</p>
+                    <p>If you have any questions or need additional assistance, please don't hesitate to contact us. We are here to help you with anything you need.</p>
+                    <p>Once again, thank you for trusting us. Have great adventures and unforgettable moments in the virtual world of ${info.cartGames[0].name}!</p>
+                    <p>Best regards,</p>
+                    <p>The Gamezone Team</p>`
+            }
+        )
+    };
+
+    await transporter.sendMail({
+        from: '"THANK YOU for your purchase with us" <carrizosamayito@gmail.com>', // sender address
+        to: `${info.dataUser.email}`, // list of receivers
+        subject: "THANK YOU for your purchase with us", // Subject line
+        html:  `<h1>Thank You for Your Purchase</h1>
+                <p>Dear ${user.dataValues.name},</p>
+                <p>We want to express our sincere gratitude for your purchase of the following video games:</p>
+                <p>${games} & ${info.cartGames[info.cartGames.length - 1].name}</p>
+                <p>We hope you enjoy many hours of fun and entertainment with these exciting titles. Our team has worked hard to provide you with exceptional gaming experiences, and we are confident that you will love them.</p>
+                <p>If you have any questions or need additional assistance, please don't hesitate to contact us. We are here to help you with anything you need.</p>
+                <p>Once again, thank you for trusting us. Have great adventures and unforgettable moments in the virtual worlds of these games!</p>
+                <p>Best regards,</p>
+                <p>The Gamezone Team</p>`
+            }
+        )
         
-        res.redirect('http://localhost:3000/user')
+        res.redirect('https://front-gamezone-f8fu.vercel.app/user')
     } catch (error) {
         res.status(400).send('Error')
     }
 }
 
 const cancelOrder = (req, res) => {
-    return res.redirect('http://localhost:3000/cart')
+    return res.redirect('https://front-gamezone-f8fu.vercel.app/cart')
 }
 
 module.exports = {
     cancelOrder,
     captureOrder,
-    createOrder
+    createOrder,
+    priceFree
 }
