@@ -17,7 +17,6 @@ require('./db.js');
 
 const server = express();
 
-server.set('view engine', 'ejs') // ESTO ESTA EN PROCESO
 
 server.use(express.json())
 server.use(morgan('dev'));

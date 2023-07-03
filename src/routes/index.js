@@ -26,7 +26,7 @@ const {cancelOrder, createOrder, captureOrder} = require('../controllers/paypalC
 const { createReview, updateReview } = require("../controllers/reviews");
 const { updatePassword } = require("../controllers/updatePassword")
 //const { main } = require("../controllers/exampleMailer.js")
-const { forgotPassword, resetPassword } = require("../controllers/forgotPassword")
+const { forgotPassword, verifyUrl, resetPassword } = require("../controllers/forgotPassword")
 
 const router = Router();
 
@@ -142,8 +142,9 @@ router.put("/updatePassword/:id", updatePassword)// esta es para actualizar cont
 
 // Recuperar cuenta del usuario
 
-router.post("/forgot-password", forgotPassword)
-router.get("/reset-password/:id/:token", resetPassword)
+router.post("/forgot-password", forgotPassword)// primero envio un dato (email)
+router.get("/verify-url/:id/:token", verifyUrl)
+router.put("/reset-password/:id/:token", resetPassword)
 
 // esto es de prueba
 //router.get("/enviarEmail", main)
