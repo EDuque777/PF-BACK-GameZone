@@ -1,9 +1,10 @@
-const { Users, Games, GameReviews } = require('../db');
+const { Users, Games, GameReviews, Reviews } = require('../db');
 const profileImage = 'https://res.cloudinary.com/dcebtiiih/image/upload/v1686950493/images/1686950487877.webp'
 const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
 const bcrypt = require("bcryptjs")
 const { createAccessToken } = require("../middlewares/jwt.js")
+
 
 // Configuracion de multer para la subida de imgenes
 const storage = multer.diskStorage({
@@ -202,21 +203,26 @@ const banUser = async (req, res) => {
 
 const gamesUser = async (req, res) => {
   try {
-    //se debe recibir el id para que traiga los juegos del usuario
-    const { id } = req.query
-    
+    const { id } = req.query;
+console.log(id);
     const userGames = await Users.findByPk(id, {
       attributes: { exclude: ['id', 'role', 'email', 'password', 'country', 'confirmPassword'] },
       include: [
-        { model: Games, attributes: ['id', 'name', 'header_image'], through: { attributes: [] } }
+        { model: Games, attributes: ['id','name', 'header_image'], through: { attributes: [] },
+          include: [
+            {
+              model: Reviews, include: [{ model: Users, attributes: ['name'], through: { attributes: [] } }]
+            }
+          ]
+        }
       ],
-    })
+    });
 
-      res.status(200).json(userGames)
+    res.status(200).json(userGames);
   } catch (error) {
-      res.status(400).send( { error: error.message } )
+    res.status(400).send({ error: error.message });
   }
-}
+};
 
 
 

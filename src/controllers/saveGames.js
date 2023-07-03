@@ -306,7 +306,7 @@ const saveGames = async (req, res) => {
 
       // Incrementar el contador
       i--;
-    } while (gamesSaved <= 200);
+    } while (gamesSaved <= 20);
 
     return res.status(200).json("¡Juegos guardados exitosamente!");
   } catch (error) {
