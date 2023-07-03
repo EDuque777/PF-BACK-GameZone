@@ -16,3 +16,10 @@ transporter.verify().then(() => {
 })
 
 module.exports = transporter
+
+
+// transporter.verify().then(() => {
+//     console.log('Ready for send mails');
+// })
+
+// module.exports = transporter

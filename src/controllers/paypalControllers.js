@@ -9,13 +9,51 @@ let info;
 const priceFree = async (req, res) => {
     try {
         info = req.body
-        console.log(info);
+        const user = await Users.findByPk(info.dataUser.id)
+        let games = []
+        
         if (info.totalPrice === "0.00") {
-            const user = await Users.findByPk(info.dataUser.id)
-            for (let i = 0; i < info.cartGames.length; i++) {
+            for (let i = 0; i < info.cartGames.length - 1; i++) {
                 let game = await Games.findOne({where: {name: info.cartGames[i].name}})
+                i < info.cartGames.length - 1? games.push(info.cartGames[i].name): false
                 await game.addUsers(user);
             }
+            
+            games = games.join(', ')
+            
+            if(!games.length) {
+            await transporter.sendMail({
+                from: '"THANK YOU for your purchase with us" <carrizosamayito@gmail.com>', // sender address
+                to: `${info.dataUser.email}`, // list of receivers
+                subject: "THANK YOU for your purchase with us", // Subject line
+                html:  `<h1>Thank You for Your Purchase</h1>
+                        <p>Dear ${user.dataValues.name},</p>
+                        <p>We want to express our sincere gratitude for your purchase of the ${info.cartGames[0].name}!</p>
+                        <p>We hope you enjoy many hours of fun and entertainment with this exciting title. Our team has worked hard to provide you with an exceptional gaming experience, and we are confident that you will love it.</p>
+                        <p>If you have any questions or need additional assistance, please don't hesitate to contact us. We are here to help you with anything you need.</p>
+                        <p>Once again, thank you for trusting us. Have great adventures and unforgettable moments in the virtual world of ${info.cartGames[0].name}!</p>
+                        <p>Best regards,</p>
+                        <p>The Gamezone Team</p>`
+                }
+            )
+        };
+    
+        await transporter.sendMail({
+            from: '"THANK YOU for your purchase with us" <carrizosamayito@gmail.com>', // sender address
+            to: `${info.dataUser.email}`, // list of receivers
+            subject: "THANK YOU for your purchase with us", // Subject line
+            html:  `<h1>Thank You for Your Purchase</h1>
+                    <p>Dear ${user.dataValues.name},</p>
+                    <p>We want to express our sincere gratitude for your purchase of the following video games:</p>
+                    <p>${games} & ${info.cartGames[info.cartGames.length - 1].name}</p>
+                    <p>We hope you enjoy many hours of fun and entertainment with these exciting titles. Our team has worked hard to provide you with exceptional gaming experiences, and we are confident that you will love them.</p>
+                    <p>If you have any questions or need additional assistance, please don't hesitate to contact us. We are here to help you with anything you need.</p>
+                    <p>Once again, thank you for trusting us. Have great adventures and unforgettable moments in the virtual worlds of these games!</p>
+                    <p>Best regards,</p>
+                    <p>The Gamezone Team</p>`
+                }
+            )
+            
         res.status(200).json('comprado master')
         }
     } catch (error) {

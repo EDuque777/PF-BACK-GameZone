@@ -179,7 +179,6 @@ const saveGames = async (req, res) => {
         if (existingGame) {
           continue;
         }
-        
         const newGame = {
           id: info.steam_appid,
           name: info.name || 'Unknown',
@@ -204,60 +203,17 @@ const saveGames = async (req, res) => {
 
         const platformsSet = new Set();
 
-        if (info && info.platforms) {
+        if (info.platforms) {
           const platforms = info.platforms;
           if (platforms.windows) platformsSet.add('windows');
           if (platforms.mac) platformsSet.add('mac');
           if (platforms.linux) platformsSet.add('linux');
         }
-        
-        for (const platform of platformsSet) {
-          const relationPlatforms = await Platforms.findOrCreate({ where: { platform: platform } });
-          await game.addPlatforms(relationPlatforms[0]);
-        }
-        
-        const genresSet = new Set();
-        
-        if (info && info.genres) {
-          const genres = info.genres;
-          genres.map(genre => genresSet.add(genre.description));
-        }
-        
-        for (const genre of genresSet) {
-          const relationGenres = await Genres.findOrCreate({ where: { genre: genre } });
-          await game.addGenres(relationGenres[0]);
-        }
-        
-        const publishersSet = new Set();
-        
-        if (info && info.publishers) {
-          const publishers = info.publishers;
-          publishers.map(publisher => publishersSet.add(publisher));
-        }
-        
-        for (const publisher of publishersSet) {
-          if(publisher !== ""){
-          const relationPublisher = await Publishers.findOrCreate({ where: { publisher: publisher } });
-          await game.addPublishers(relationPublisher[0]);
-          }
-        }
-        
-        const developersSet = new Set();
-        
-        if (info && info.developers) {
-          const developers = info.developers;
-          developers.map(developer => developersSet.add(developer));
-        }
-        
-        for (const developer of developersSet) {
-          const relationDeveloper = await Developers.findOrCreate({ where: { developer: developer } });
-          await game.addDevelopers(relationDeveloper[0]);
-        }
-        
+
         const languagesSet = new Set();
         
         if (info && info.supported_languages) {
-          const languages = info.supported_languages.split(', ');
+          const languages = info?.supported_languages?.split(', ');
           languages.map(language => { if (/^[a-zA-Z\s-]+$/.test(language)) { languagesSet.add(language);
             }
           });
@@ -268,40 +224,39 @@ const saveGames = async (req, res) => {
           await game.addLanguages(relationLanguage[0]);
         }
         
-        const categoriesSet = new Set();
-        
-        if (info && info.categories) {
-          const categories = info.categories;
-          categories.map(category => categoriesSet.add(category.description));
-        }
-        
-        for (const category of categoriesSet) {
-          const relationCategory = await Categories.findOrCreate({ where: { category: category } });
-          await game.addCategories(relationCategory[0]);
+        for (const platform of platformsSet) {
+          const relationPlatforms = await Platforms.findOrCreate({ where: { platform: platform } });
+          await game.addPlatforms(relationPlatforms[0]);
         }
 
-        const imagesSet = new Set()
-
-        if(info && info.screenshots) {
-          const images = info.screenshots;
-          images.map(images => imagesSet.add(images.path_full))
+        for (let i = 0; i < info?.genres?.length; i++) {
+            const relation = await Genres.findOrCreate({ where: { genre: info.genres[i].description } } )
+            await game.addGenres(relation[0])
         }
 
-        for(const image of imagesSet) {
-          const relationImage = await Images.findOrCreate({where: { image: image}})
-          await game.addImages(relationImage[0])
-        }
-        
-        const videoSet = new Set()
-
-        if(info && info.movies) {
-          const videos = info.movies;
-          videos.map(video => videoSet.add(video.mp4["480"]))
+        for (let i = 0; i < info?.publishers?.length; i++) {
+            const relation = await Publishers.findOrCreate({ where: { publisher: info.publishers[i] } } )
+            await game.addPublishers(relation[0])
         }
 
-        for(const video of videoSet) {
-          const relationVideo = await Videos.findOrCreate({where: { video: video}})
-          await game.addVideos(relationVideo[0])
+        for (let i = 0; i < info?.developers?.length; i++) {
+            const relation = await Developers.findOrCreate({ where: { developer: info.developers[i] } });
+            await game.addDevelopers(relation[0])
+        }
+
+        for (let i = 0; i < info?.categories?.length; i++) {
+            const relation = await Categories.findOrCreate({ where: { category: info.categories[i].description } });
+            await game.addCategories(relation[0])
+        }
+
+        for (let i = 0; i < info?.screenshots?.length; i++) {
+            const relation = await Images.findOrCreate({ where: { image: info.screenshots[i].path_full } });
+            await game.addImages(relation[0])
+        }
+
+        for (let i = 0; i < info?.movies?.length; i++) {
+            const relation = await Videos.findOrCreate({ where: { video: info.movies[i].mp4['480'] } });
+            await game.addVideos(relation[0])
         }
 
         gamesSaved++;

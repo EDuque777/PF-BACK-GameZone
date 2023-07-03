@@ -19,7 +19,7 @@ const { logIn } = require("../controllers/logIn.js")
 const { cerrarSesion } = require("../controllers/logout.js")
 const { profileUser } = require("../controllers/profile.js")
 //const { validateToken } = require("../middlewares/validateToken.js")
-const { upload, uploadPhoto } = require('../controllers/uploadPhoto');
+const { upload, uploadPhoto, uploadCapsuleImage, uploadHeaderImage } = require('../controllers/uploadPhoto');
 const { isAdmin } = require("../middlewares/auth.js")
 const { getAllGames, getGame, createGames, deleteGame, updateGame, banGame, reviewGames } = require('../controllers/games.controllers');
 const { getAllUsers, getUser, createUser, deleteUser, updateUser, banUser, gamesUser } = require('../controllers/users.controllers');
@@ -96,6 +96,14 @@ router.post('/upload', upload.single('file') ,(req, res) => {
     uploadPhoto(req, res)
 })
 
+router.put('/uploadHeader/:id', upload.single('file') ,(req, res) => {
+    uploadHeaderImage(req, res)
+})
+
+router.put('/uploadCapsule/:id', upload.single('file') ,(req, res) => {
+    uploadCapsuleImage(req, res)
+})
+
 //Paypal
 //Crea una 'orden de pago'
 router.post('/createOrder', (req, res) => {
@@ -109,27 +117,6 @@ router.get('/captureOrder', (req, res) => {
 router.get('/cancelOrder', (req, res) => {
     cancelOrder(req, res)
 })
-
-//
-//
-//router.get("/recipes/:idRecipe", (req, res) => {
-//    getRecipesId(req, res)
-//})
-//
-//
-//router.get("/recipesName", (req, res) => {
-//    getRecipesName(req, res);
-//})
-//
-//
-//router.post("/recipes", (req, res) => {
-//    postRecipes(req, res);
-//})
-//
-//
-//router.get("/diets", (req, res) => {
-//    getDiets(req, res);
-//})
 
 // Rutas de Registro de Usuarios
 router.post("/crearCuenta", createAccount)

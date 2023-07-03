@@ -1,4 +1,4 @@
-const { Users } = require('../db');
+const { Users, Games } = require('../db');
 const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
 
@@ -46,6 +46,66 @@ const uploadPhoto = async (req, res) => {
   }
 };
 
-module.exports = { upload, uploadPhoto };
+const uploadHeaderImage = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!req.file) {
+      return res.status(500).send('No se proporcionó ningún archivo');
+    }
+
+    const file = req.file.path;
+
+    const result = await cloudinary.uploader.upload(file, {
+        public_id: `${Date.now()}`,
+        folder: 'images',
+        resource_type: 'auto'
+    });
+
+    await Games.update(
+      {
+        header_image: result.url
+      },
+      { where: { id: id } }
+    );
+    
+    res.status(200).json('Imagen actulizada');
+  } catch (error) {
+    console.log(error);
+    res.status(400).send('Error al subir el archivo');
+  }
+};
+
+const uploadCapsuleImage = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!req.file) {
+      return res.status(500).send('No se proporcionó ningún archivo');
+    }
+
+    const file = req.file.path;
+
+    const result = await cloudinary.uploader.upload(file, {
+        public_id: `${Date.now()}`,
+        folder: 'images',
+        resource_type: 'auto'
+    });
+
+    await Games.update(
+      {
+        capsule_image: result.url
+      },
+      { where: { id: id } }
+    );
+    
+    res.status(200).json('Imagen actulizada');
+  } catch (error) {
+    console.log(error);
+    res.status(400).send('Error al subir el archivo');
+  }
+};
+
+module.exports = { upload, uploadPhoto, uploadHeaderImage, uploadCapsuleImage };
 
 
