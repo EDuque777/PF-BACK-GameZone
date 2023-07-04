@@ -48,7 +48,7 @@ const updatePassword = async (req, res) => {
                 const isMatch = await bcrypt.compare(currentPassword, user.password)
 
                 if (!isMatch) {
-                    return res.status(400).json({ message: "La contraseña actual es incorrecta" });
+                    return res.status(400).json("La contraseña actual es incorrecta");
                 }else{
 
                     const salt = await bcrypt.genSalt(12);

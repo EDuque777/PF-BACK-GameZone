@@ -17,11 +17,11 @@ const createAccount = async (req, res) => {
 
         if (!email || password.length < 8 || !password || !name || !country || !user_name || user_name.length < 3 || user_name.length > 16) {
             
-            res.status(400).json({message : "datos invalidos"})
+            res.status(400).json({message : "Invalid data"})
 
         }else if (password !== confirmPassword) {
 
-            res.status(400).json({ message: "Las contraseñas no coinciden" });
+            res.status(400).json("Passwords do not match");
 
         }else{
 
@@ -33,7 +33,7 @@ const createAccount = async (req, res) => {
 
             if (existUer) {
 
-                res.status(400).json({message : "el usuario ya existe!!!"})
+                res.status(400).json("User already exists!!!")// este es el importante
 
             }else{
 

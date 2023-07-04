@@ -11,7 +11,7 @@ const logIn = async (req, res) => {
 
         if (!emailLogin || !passwordLogin) {
 
-            return res.status(400).json("validacion fallida!!")
+            return res.status(400).json("failed validation!!")
             
         } else {
 
@@ -24,14 +24,14 @@ const logIn = async (req, res) => {
             
             if (!existingUser) {
                 
-                res.status(400).json({message : "El usuario no existe!!!"})
+                res.status(400).json("Username does not exist!!!")
             }else{
 
                 const comparePassword = await bcrypt.compare(passwordLogin, existingUser.password)
 
                 if (!comparePassword) {
                     
-                    res.status(401).json({message : "Contraseña Invalida"})
+                    res.status(401).json("Password Invalid")
 
                 } else {
 
