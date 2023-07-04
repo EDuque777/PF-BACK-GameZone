@@ -26,6 +26,9 @@ const allGames = async (req, res) => {
     const gamesWithModifiedPrice = dbGames.map(game => {
       const gameCurrency = game.price_overview.slice(0, 3);
       const gamePrice = game.price_overview.slice(5).replace('.', '').replace(',', '.');
+      const gameprice2 = game.price_overview.slice(5).replace(",")
+      console.log(gamePrice)
+      console.log(gameprice2)
 
       if (game.price_overview === "Free") {
         game.price_overview = 0;
@@ -33,7 +36,8 @@ const allGames = async (req, res) => {
         const number = NP.times(gamePrice / 4177.5).toFixed(2);
         game.price_overview = Number(number);
       } else if (gameCurrency === "CDN") {
-        const number = NP.times(gamePrice / 1.32).toFixed(2);
+        const number = NP.times(gameprice2 / 1.3249).toFixed(2);
+        
         game.price_overview = Number(number);
       } else if (gameCurrency === "¥") {
         const number = NP.times(gamePrice, 0.0069).toFixed(2);
