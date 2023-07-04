@@ -183,7 +183,7 @@ const createAccount = async (req, res) => {
 //
 //        return res.redirect(URL_INICIO)
 //        
-//    } catch (error) {
+//    }catch (error) {
 //        res.status(500).json({message : error.message})
 //    }
 //}
