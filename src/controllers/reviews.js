@@ -1,5 +1,5 @@
 const moment = require('moment');
-const transporter = require('../middlewares/nodeMailer')
+const transporter = require('../middlewares/nodemailer')
 const { Users, Reviews, Games } = require('../db');
 const createReview = async (req, res) => {
   try {

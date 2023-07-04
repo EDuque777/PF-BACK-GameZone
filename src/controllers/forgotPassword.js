@@ -2,7 +2,7 @@ const router = require("express").Router()
 const { Users } = require("../db")
 const { createAccessToken } = require("../middlewares/jwt")
 const jwt = require("jsonwebtoken")
-const transporter = require("../middlewares/nodeMailer")
+const transporter = require("../middlewares/nodemailer")
 const bcrypt = require("bcryptjs")
 
 require("dotenv").config()

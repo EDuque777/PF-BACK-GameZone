@@ -1,7 +1,7 @@
 const { Users } = require("../db")
 const bcrypt = require("bcryptjs")
 //const { main } = require("../controllers/exampleMailer.js")
-const { transporter } = require("../middlewares/nodeMailer.js")
+const { transporter } = require("../middlewares/nodemailer.js")
 
 // ESTA FUNCION ESTA LISTA PARA SU USO
 
