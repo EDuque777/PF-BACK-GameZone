@@ -235,7 +235,7 @@ const profileImage = 'https://res.cloudinary.com/dcebtiiih/image/upload/v1686950
 const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
 const bcrypt = require("bcryptjs")
-const transporter = require('../middlewares/nodemailer')
+const transporter = require('../middlewares/nodeMailer')
 const { createAccessToken } = require("../middlewares/jwt.js")
 
 

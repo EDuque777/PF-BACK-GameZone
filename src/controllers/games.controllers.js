@@ -314,7 +314,7 @@
 //   reviewGames
 // };
 const { Games, Categories, Developers, Genres, Languages, Platforms, Publishers, Reviews } = require('../db');
-const transporter = require('../middlewares/nodemailer')
+const transporter = require('../middlewares/nodeMailer')
 
 // Ruta para traer todos los Games creados (borrado lógico)
 const getAllGames = async (req, res) => {

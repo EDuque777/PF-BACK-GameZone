@@ -87,7 +87,7 @@
 // }
 
 const { Users } = require("../db")
-const transporter = require('../middlewares/nodemailer')
+const transporter = require('../middlewares/nodeMailer')
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const { createAccessToken } = require("../middlewares/jwt.js")

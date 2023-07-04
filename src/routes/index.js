@@ -25,6 +25,9 @@ const { getAllGames, getGame, createGames, deleteGame, updateGame, banGame, revi
 const { getAllUsers, getUser, createUser, deleteUser, updateUser, banUser, gamesUser } = require('../controllers/users.controllers');
 const {cancelOrder, createOrder, captureOrder, priceFree} = require('../controllers/paypalControllers')
 const { createReview, updateReview, deleteReview } = require("../controllers/reviews");
+const { updatePassword } = require("../controllers/updatePassword")
+//const { main } = require("../controllers/exampleMailer.js")
+const { forgotPassword, verifyUrl, resetPassword } = require("../controllers/forgotPassword")
 
 const router = Router();
 //Free
@@ -219,5 +222,13 @@ router.get('/user/games', gamesUser)
 router.get('/game/reviews', reviewGames)
 //Borrar review
 router.delete('/user/deleteReview/:id', deleteReview)
+
+router.put("/updatePassword/:id", updatePassword)// esta es para actualizar contraseñas
+
+// Recuperar cuenta del usuario
+
+router.post("/forgot-password", forgotPassword)// primero envio un dato (email)
+router.get("/verify-url/:id/:token", verifyUrl)
+router.put("/reset-password/:id/:token", resetPassword)
 
 module.exports = router;

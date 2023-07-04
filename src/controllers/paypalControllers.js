@@ -1,5 +1,5 @@
 require('dotenv').config();
-const transporter = require('../middlewares/nodemailer')
+const transporter = require('../middlewares/nodeMailer')
 const { PAYPAL_ID, PAYPAL_SECRET_KEY, PAYPAL_URL } = process.env;
 const { Users, Games } = require('../db');
 const axios = require('axios');
