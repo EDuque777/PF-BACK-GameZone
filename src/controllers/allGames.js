@@ -5,7 +5,7 @@ require('dotenv').config();
 const allGames = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 50;
+    const limit = parseInt(req.query.limit) || 80;
 
     const dbGames = await Games.findAll({
       attributes: { exclude: ["currency", "support_info", "abouth_the_game", "short_description"] },
