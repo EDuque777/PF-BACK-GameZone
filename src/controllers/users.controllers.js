@@ -452,12 +452,12 @@ const banUser = async (req, res) => {
 
 const gamesUser = async (req, res) => {
   try {
-    const { id } = req.body;
-
+    const { id } = req.query || req.params;
+console.log(id);
     const userGames = await Users.findByPk(id, {
       attributes: { exclude: ['id', 'role', 'email', 'password', 'country', 'confirmPassword'] },
       include: [
-        { model: Games, attributes: ['name', 'header_image'], through: { attributes: [] },
+        { model: Games, attributes: ['id','name', 'header_image'], through: { attributes: [] },
           include: [
             {
               model: Reviews, include: [{ model: Users, attributes: ['name'], through: { attributes: [] } }]
@@ -472,7 +472,6 @@ const gamesUser = async (req, res) => {
     res.status(400).send({ error: error.message });
   }
 };
-
 
 
 

@@ -164,17 +164,22 @@ const gameUrl = 'https://store.steampowered.com/api/appdetails?appids=';
 const saveGames = async (req, res) => {
   try {
     const { data: appList } = await axios.get(URL);
-    const idGames = appList.applist.apps.filter(app => app.name.length > 0); 
-
-    // let i = idGames.length - 1;;
+    const idGames = [{appid:105450,name:"Age of Empires® III (2007)"},{appid:1017900,name:"Age of Empires: Definitive Edition"}
+    ,{appid:813780, name:"Age of Empires II: Definitive Edition"},{appid:209000,name:"Batman™: Arkham Origins"},
+    {appid:208650,name:"Batman™: Arkham Knight"},{appid:200260,name:"Batman: Arkham City GOTY"},{appid:35140,name:"Batman: Arkham Asylum GOTY Edition"},
+    {appid:1817070,name:"Marvel’s Spider-Man Remastered"},{appid:1817190,name:"Marvel's Spider-Man: Miles Morales"}]
+    console.log(idGames)
+    // let i = idGames.length - 1;
     // let gamesSaved = 0;
 let i = 0
 let gamesSaved = 0
 
     do {
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      console.log("cargando juego", idGames[i])
       const { data } = await axios.get(`${gameUrl}${idGames[i].appid}`);
       const info = data[idGames[i].appid.toString()].data;
+      console.log(info)
       if (info ) {
         const existingGame = await Games.findOne({ where: { name: info.name } });
         if (existingGame) {
@@ -308,7 +313,7 @@ let gamesSaved = 0
 
       // Incrementar el contador
       i++;
-    } while (gamesSaved <= 10);
+    } while (gamesSaved <= 40);
 
     return res.status(200).json("¡Juegos guardados exitosamente!");
   } catch (error) {
