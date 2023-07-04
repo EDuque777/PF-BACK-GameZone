@@ -15,7 +15,8 @@ const {
   DB_HOST,
   DB_NAME,
   DB_RAILWAY,
-  DB_RENDER
+  DB_RENDER,
+  DB_RENDER2
 } = process.env;
 
 //  const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`, {
@@ -31,7 +32,7 @@ const {
 // })
 
 
-const sequelize = new Sequelize(DB_RENDER , {
+const sequelize = new Sequelize(DB_RENDER2 , {
   logging: false, // set to console.log to see the raw SQL queries
   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
   dialectOptions: {
