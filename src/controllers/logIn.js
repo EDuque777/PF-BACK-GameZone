@@ -48,7 +48,8 @@ const logIn = async (req, res) => {
                         email : existingUser.email,
                         user_name : existingUser.user_name,
                         country : existingUser.country,
-                        profileImage : existingUser.profileImage
+                        profileImage : existingUser.profileImage,
+                        password : existingUser.password
                     })
                 }
             }
