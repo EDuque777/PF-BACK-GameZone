@@ -27,8 +27,8 @@ const allGames = async (req, res) => {
       const gameCurrency = game.price_overview.slice(0, 3);
       const gamePrice = game.price_overview.slice(5).replace('.', '').replace(',', '.');
       const gameprice2 = game.price_overview.slice(5).replace(",")
-      console.log(gamePrice)
-      console.log(gameprice2)
+      const gamename = game.name
+      console.log(gamename)
 
       if (game.price_overview === "Free") {
         game.price_overview = 0;
@@ -50,7 +50,6 @@ const allGames = async (req, res) => {
         game.price_overview = Number(number);
       } else if (gameCurrency === "ARS") {
         const number = NP.times(gamePrice / 266.5).toFixed(2);
-        console.log(number)
         game.price_overview = Number(number);
       } else if (gameCurrency === "Mex") {
         const number = NP.times(gamePrice / 17.12).toFixed(2);

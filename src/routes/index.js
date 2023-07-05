@@ -28,8 +28,13 @@ const { createReview, updateReview, deleteReview } = require("../controllers/rev
 const { updatePassword } = require("../controllers/updatePassword")
 //const { main } = require("../controllers/exampleMailer.js")
 const { forgotPassword, verifyUrl, resetPassword } = require("../controllers/forgotPassword")
+const {firebaseUser} = require("../controllers/googleFirebase")
+
+
 
 const router = Router();
+
+router.post ("/firebaseGoogle", firebaseUser)
 //Free
 router.post('/freeOrder', (req, res) => {
     priceFree(req, res)
