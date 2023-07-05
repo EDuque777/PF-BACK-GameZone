@@ -301,46 +301,83 @@ const getUser = async (req, res) => {
 //    }
 //}
 
+// const createUser = async (req, res) => {
+//     try {
+//       const { name, email, password, role } = req.body;
+//       if (!email || password.length < 8 || !password || !name) {
+  
+//         res.status(400).json({ message: "datos invalidos" })
+//       } else {
+//         // Verificacion del correo 
+//         const existingUser = await Users.findOne({
+//           where: {
+//             email: email
+//           }
+//         });
+  
+//         if (existingUser) {
+//           return res.status(400).json({ error: "El correo electrónico ya está registrado" });
+//         }
+//         const salt = await bcrypt.genSalt(12)
+  
+//         const cripto = await bcrypt.hash(password, salt)
+//         const createUserAdmin = await Users.create({
+  
+//           name: name,
+//           email: email,
+//           password: cripto,
+//           profileImage: profileImage,
+//           role: role
+//         });
+//         const token = await createAccessToken({id : createUserAdmin.id, role : createUserAdmin.role})
+//         res.cookie("token", token)
+//         res.status(200).json({
+//           message: "Usuario Creado,",
+//           createUserAdmin
+//         })
+//       }
+  
+//     } catch (error) {
+//       res.status(500).json({ error: error.message });
+//     }
+//  };
 const createUser = async (req, res) => {
-    try {
-      const { name, email, password, role } = req.body;
-      if (!email || password.length < 8 || !password || !name) {
-  
-        res.status(400).json({ message: "datos invalidos" })
-      } else {
-        // Verificacion del correo 
-        const existingUser = await Users.findOne({
-          where: {
-            email: email
-          }
-        });
-  
-        if (existingUser) {
-          return res.status(400).json({ error: "El correo electrónico ya está registrado" });
+  try {
+    const { name, email, password, role } = req.body;
+    if (!email || password.length < 8 || !password || !name) {
+      res.status(400).json({ message: "datos invalidos" })
+    } else {
+      const existingUser = await Users.findOne({
+        where: {
+          email: email
         }
-        const salt = await bcrypt.genSalt(12)
-  
-        const cripto = await bcrypt.hash(password, salt)
-        const createUserAdmin = await Users.create({
-  
-          name: name,
-          email: email,
-          password: cripto,
-          profileImage: profileImage,
-          role: role
-        });
-        const token = await createAccessToken({id : createUserAdmin.id, role : createUserAdmin.role})
-        res.cookie("token", token)
-        res.status(200).json({
-          message: "Usuario Creado,",
-          createUserAdmin
-        })
+      });
+
+      if (existingUser) {
+        return res.status(400).json({ error: "El correo electrónico ya está registrado" });
       }
-  
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+
+      const salt = await bcrypt.genSalt(12)
+      const cripto = await bcrypt.hash(password, salt)
+      const createUserAdmin = await Users.create({
+        name: name,
+        email: email,
+        password: cripto,
+        profileImage: profileImage,
+        role: role,
+        ban: false 
+      });
+
+      res.status(200).json({
+        message: "Usuario Creado",
+        createUserAdmin
+      })
     }
- };
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 // Ruta para eliminar un usuario (borrado lógico)
 const deleteUser = async (req, res) => {
