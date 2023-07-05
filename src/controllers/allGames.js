@@ -1,5 +1,5 @@
 const NP = require('number-precision');
-const { Games, Developers, Languages, Platforms, Genres, Categories, Images, Videos, Reviews } = require("../db");
+const { Games, Developers, Languages, Platforms, Genres, Categories, Images, Videos, Reviews, Users } = require("../db");
 require('dotenv').config();
 
 const allGames = async (req, res) => {
@@ -17,8 +17,7 @@ const allGames = async (req, res) => {
         { model: Categories, attributes: ['category'], through: { attributes: [] } },
         { model: Images, attributes: ['image'], through: { attributes: [] } },
         { model: Videos, attributes: ['video'], through: { attributes: [] } },
-        { model: Reviews, attributes: ['reviews', 'rating', 'date'], through: { attributes: [] } },
-      ],
+        { model: Reviews, include: [{ model: Users, attributes: ['name', 'profileImage'], through: { attributes: [] } } ] }      ],
       offset: (page - 1) * limit,
       limit: limit
     });
